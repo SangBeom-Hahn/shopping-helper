@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: ${SOURCE_MYSQL_URL}
+    username: ${SOURCE_MYSQL_USERNAME}
+    password: ${SOURCE_MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: false
+        show_sql: false
