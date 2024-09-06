@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import static com.sketch2fashion.backend.domain.modelresult.Status.WAIT;
 
 @Getter
-@Entity
+@Entity(name = "clothes_model_result")
 @Table(name = "clothes_model_result")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Clothes extends BaseEntity {
