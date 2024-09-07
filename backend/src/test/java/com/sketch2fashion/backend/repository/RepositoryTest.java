@@ -11,4 +11,7 @@ public abstract class RepositoryTest {
 
     @Autowired
     protected MessageRepository messageRepository;
+
+    @Autowired
+    protected ClothesRepository clothesRepository;
 }
