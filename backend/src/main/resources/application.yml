@@ -10,3 +10,10 @@ spring:
       hibernate:
         format_sql: false
         show_sql: false
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          location: ${GCS_CREDENTIALS}
+        project-id: ${GCS_PROJECT_ID}
+        bucket: ${GCS_BUCKET}
