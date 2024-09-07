@@ -29,11 +29,13 @@ class ClothesRepositoryTest extends RepositoryTest {
     void save() {
         // given
         Clothes saveClothes = clothesRepository.save(clothes);
+        Message findMessage = saveClothes.getMessage();
 
         // then
         assertAll(
                 () -> assertThat(saveClothes.getId()).isNotNull(),
-                () -> assertThat(saveClothes).isEqualTo(clothes)
+                () -> assertThat(saveClothes).isEqualTo(clothes),
+                () -> assertThat(findMessage.getId()).isEqualTo(message.getId())
         );
     }
 
