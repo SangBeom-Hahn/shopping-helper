@@ -9,14 +9,20 @@ import com.sketch2fashion.backend.domain.upload.Clothes;
 import com.sketch2fashion.backend.service.dto.ClothesResponseDto;
 import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
 import com.sketch2fashion.backend.support.FileUploader;
+import jakarta.persistence.EntityManager;
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.xmlunit.builder.Input;
 
 import java.io.FileInputStream;
@@ -47,7 +53,7 @@ class ClothesServiceTest extends ServiceTest {
     @DisplayName("존재하지 않는 메세지로 이미지 메타 데이터를 저장하면 예외가 발생한다.")
     void throwException_noSuchMessage() {
         // given
-        Long invalidMessageId = 2L;
+        Long invalidMessageId = 3L;
 
         // then
         assertThatThrownBy(() -> clothesService.createClothes(invalidMessageId, "path", "name"))
