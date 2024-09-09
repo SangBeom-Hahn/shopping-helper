@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,6 +57,22 @@ class ClothesRepositoryTest extends RepositoryTest {
     }
 
     @Test
+    @DisplayName("추론 요청 메세지 id로 업로드한 메타 데이터를 찾는다.")
+    void findByMessage() {
+        // given
+        Long saveId = clothesRepository.save(clothes)
+                .getId();
+
+        // when
+        Clothes findClothes = clothesRepository.findById(saveId)
+                .orElseThrow();
+
+        // then
+        assertThat(findClothes).extracting("id", "uploadFileName", "storeFilePath")
+                .containsExactly(saveId, "name", "path");
+    }
+
+    @Test
     @DisplayName("디자인한 이미지 메타 데이터를 삭제한다.")
     void deleteById() {
         // given
@@ -64,7 +81,7 @@ class ClothesRepositoryTest extends RepositoryTest {
 
         // when
         clothesRepository.deleteById(saveId);
-      
+
         // then
         assertThat(clothesRepository.findById(saveId))
                 .isEmpty();
