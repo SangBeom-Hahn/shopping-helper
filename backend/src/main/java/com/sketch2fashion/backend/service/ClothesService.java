@@ -20,7 +20,7 @@ public class ClothesService {
 
     public ClothesSaveResponseDto createClothes(Long messageId, String storeFilePath, String uploadFileName) {
         Message message = messageRepository.findById(messageId)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException());
         Clothes clothes = new Clothes(message, uploadFileName, storeFilePath);
         Long saveId = clothesRepository.save(clothes)
                 .getId();
@@ -30,9 +30,9 @@ public class ClothesService {
 
     public ClothesResponseDto findClothes(Long messageId) {
         Message message = messageRepository.findById(messageId)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException());
         Clothes clothes = clothesRepository.findByMessage(message)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException());
 
         return ClothesResponseDto.from(clothes);
     }

@@ -25,6 +25,7 @@ import java.io.InputStream;
 
 import static com.sketch2fashion.backend.domain.file.FileExtension.JPEG;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -40,6 +41,17 @@ class ClothesServiceTest extends ServiceTest {
         message = new Message(ObjectType.CLOTHES, "path");
 
         messageRepository.save(message);
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 메세지로 이미지 메타 데이터를 저장하면 예외가 발생한다.")
+    void throwException_noSuchMessage() {
+        // given
+        Long invalidMessageId = 2L;
+
+        // then
+        assertThatThrownBy(() -> clothesService.createClothes(invalidMessageId, "path", "name"))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
