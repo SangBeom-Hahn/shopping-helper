@@ -21,3 +21,7 @@ spring:
           location: ${GCS_CREDENTIALS}
         project-id: ${GCS_PROJECT_ID}
         bucket: ${GCS_BUCKET}
+  redis:
+    data:
+      host: ${SOURCE_REDIS_URL}
+      port: ${SOURCE_REDIS_PORT}
