@@ -34,4 +34,9 @@ public enum FileExtension {
     private static int getDotIndex(String fileName) {
         return fileName.lastIndexOf(".");
     }
+
+    public static boolean isValidFormat(String fileName) {
+        return Arrays.stream(values())
+                .anyMatch(fileExtension -> fileExtension.values.equals(getExtension(fileName)));
+    }
 }

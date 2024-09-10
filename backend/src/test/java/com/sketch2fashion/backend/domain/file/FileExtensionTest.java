@@ -12,6 +12,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.stream.Stream;
 
 import static com.sketch2fashion.backend.domain.file.FileExtension.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,5 +42,13 @@ class FileExtensionTest {
                 Arguments.of("a.png", PNG),
                 Arguments.of("a.heic", HEIC)
         );
+    }
+
+    @ParameterizedTest
+    @DisplayName("지원하지 않는 파일 형식은 업로드가 불가능하다.")
+    @CsvSource(value = {"a.jpg:true", "a.jpeg:true", "a.png:true", "a.heic:true", "a.hwp:false", "a.word:false"}, delimiter = ':')
+    void isValidFormat(String fileName, boolean flag) {
+        assertThat(FileExtension.isValidFormat(fileName))
+                .isEqualTo(flag);
     }
 }
