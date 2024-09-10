@@ -40,9 +40,9 @@ create table message
 alter table clothes_model_result
     add constraint fk_result_clothes_message
         foreign key (message_id)
-            references message;
+            references message (message_id);
 
 alter table clothes_upload_file
     add constraint fk_upload_clothes_message
         foreign key (message_id)
-            references message;
+            references message (message_id);
