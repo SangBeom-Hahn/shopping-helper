@@ -14,5 +14,8 @@ public abstract class ServiceTest {
     protected ClothesService clothesService;
 
     @Autowired
+    protected MessageService messageService;
+
+    @Autowired
     protected MessageRepository messageRepository;
 }

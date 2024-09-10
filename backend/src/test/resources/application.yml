@@ -3,3 +3,7 @@ spring:
     url: jdbc:h2:mem:testdb;MODE=MYSQL
     username: sa
     password:
+  cloud:
+    gcp:
+      storage:
+        bucket: test
