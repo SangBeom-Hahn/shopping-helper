@@ -1,5 +1,6 @@
 package com.sketch2fashion.backend.config;
 
+import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,10 +27,10 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, MessageSaveResponseDto> redisTemplate() {
-        RedisTemplate<String, MessageSaveResponseDto> redisTemplate = new RedisTemplate<>();
-        Jackson2JsonRedisSerializer<MessageSaveResponseDto> jsonRedisSerializer =
-                new Jackson2JsonRedisSerializer<>(MessageSaveResponseDto.class);
+    public RedisTemplate<String, MessageResponseDto> redisTemplate() {
+        RedisTemplate<String, MessageResponseDto> redisTemplate = new RedisTemplate<>();
+        Jackson2JsonRedisSerializer<MessageResponseDto> jsonRedisSerializer =
+                new Jackson2JsonRedisSerializer<>(MessageResponseDto.class);
 
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
