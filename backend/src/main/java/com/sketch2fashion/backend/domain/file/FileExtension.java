@@ -27,7 +27,7 @@ public enum FileExtension {
                 .orElseThrow(() -> new IllegalArgumentException());
     }
 
-    private static String getExtension(String fileName) {
+    public static String getExtension(String fileName) {
         return fileName.substring(getDotIndex(fileName));
     }
 

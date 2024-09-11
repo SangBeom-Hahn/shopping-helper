@@ -6,7 +6,11 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public class ValidImageExtensionValidator implements ConstraintValidator<ValidImageExtension, MultipartFile> {
+
+    private final List<String> validExtensions = List.of(".jpeg", ".JPEG", ".jpg", ".JPG", ".png", ".PNG", ".heic", ".HEIC");
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
@@ -14,6 +18,6 @@ public class ValidImageExtensionValidator implements ConstraintValidator<ValidIm
             return true;
         }
 
-        return FileExtension.isValidFormat(value.getOriginalFilename());
+        return validExtensions.contains(FileExtension.getExtension(value.getOriginalFilename()));
     }
 }

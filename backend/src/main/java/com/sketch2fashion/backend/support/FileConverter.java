@@ -19,7 +19,7 @@ public class FileConverter {
                     image.getInputStream(),
                     originalFilename,
                     image.getContentType(),
-                    FileExtension.from(originalFilename)
+                    FileExtension.from(originalFilename.toLowerCase())
             );
         } catch (IOException e) {
             throw new RuntimeException(e);
