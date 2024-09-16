@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@Slf4j
-@RestController
+@Controller
 @RequestMapping("/api/clothes")
 @RequiredArgsConstructor
 public class ClothesController {
@@ -27,8 +28,13 @@ public class ClothesController {
     private final MessageService messageService;
     private final FileUploader fileUploader;
 
+    @GetMapping("/upload")
+    public String uploadForm() {
+        return "upload";
+    }
+
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ClothesSaveResponseDto> upload(@ModelAttribute @Validated ClothesSaveRequest clothesSaveRequest) {
+    public String upload(@ModelAttribute @Validated ClothesSaveRequest clothesSaveRequest, Model model) {
 
         FileMetaData fileMetaData = FileConverter.convertImage(clothesSaveRequest.getImage());
         String storeFilePath = fileUploader.upload(fileMetaData);
@@ -37,8 +43,7 @@ public class ClothesController {
         ClothesSaveResponseDto clothesSaveResponseDto =
                 clothesService.createClothes(saveMessageId, storeFilePath, fileMetaData.getOriginalFileName());
 
-        return ResponseEntity
-                .created(URI.create("/api/clothes/upload/" + clothesSaveResponseDto.getId()))
-                .body(clothesSaveResponseDto);
+        model.addAttribute("clothesSaveResponseDto", clothesSaveResponseDto);
+        return "result"; // TODO: 리다이렉트 페이지 구현 예정
     }
 }
