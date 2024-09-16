@@ -23,7 +23,7 @@ public class Clothes extends BaseEntity {
     @JoinColumn(name = "message_id", foreignKey = @ForeignKey(name = "fk_result_clothes_message"), nullable = false)
     private Message message;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 

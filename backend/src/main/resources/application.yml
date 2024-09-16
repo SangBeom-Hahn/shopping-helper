@@ -5,8 +5,23 @@ spring:
     password: ${SOURCE_MYSQL_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       hibernate:
         format_sql: false
         show_sql: false
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:db/init.sql, classpath:db/data.sql
+  cloud:
+    gcp:
+      storage:
+        credentials:
+          location: ${GCS_CREDENTIALS}
+        project-id: ${GCS_PROJECT_ID}
+        bucket: ${GCS_BUCKET}
+  redis:
+    data:
+      host: ${SOURCE_REDIS_URL}
+      port: ${SOURCE_REDIS_PORT}

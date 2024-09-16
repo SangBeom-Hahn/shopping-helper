@@ -32,4 +32,8 @@ public class Clothes extends BaseEntity {
         this.uploadFileName = uploadFileName;
         this.storeFilePath = storeFilePath;
     }
+
+    public Long getMember() {
+        return message.getId();
+    }
 }

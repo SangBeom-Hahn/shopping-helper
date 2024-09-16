@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Helper</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .bold-20 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+
+        .vh100-desktop-upload {
+            height: 100vh;
+        }
+        .poppins-regular-32 {
+            font-size: 32px;
+        }
+        .padding-h-30 {
+            padding-top: 30px;
+            padding-bottom: 35px;
+        }
+        .button {
+            background-color: #875D36;
+            height: 60px;
+            width: 70%;
+            border: none;
+            color: white;
+            box-shadow: 5px 5px 10px 1px gray;
+            border-radius: 10px;
+            cursor: pointer;
+            bottom: 0;
+            right: 50%;
+            font-family: 'Poppins', sans-serif;
+        }
+        .padding-bottom-50 {
+            padding-bottom: 50px;
+        }
+        .poppins-regular-18 {
+            font-size: 18px;
+            text-align: center;
+        }
+        .poppins-regular-24 {
+            font-size: 24px;
+            color: #AD6B2D;
+        }
+        .color-upload-guide-bg {
+            background-color: #e0ffff;
+        }
+        .padding-10 {
+            padding: 20px 10px;
+            font-size: 17px;
+            text-align: center;
+            line-height: 2;
+        }
+        .poppins-bold-13 {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .poppins-bold-18 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .poppins-bold-20 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+        .dropzone-area {
+            border: 3px dotted #AD6B2D;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #imagePreview {
+            margin-top: 100px;
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+        .v60 {
+            margin: auto;
+            padding: 0 30px;
+        }
+        .v80 {
+            margin: auto;
+            padding: 0 90px;
+            width: 70%;
+        }
+        .uploade-img {
+            height: 200px;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+<script>
+    function previewImage(input) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imgPreview = document.getElementById('imagePreview');
+            imgPreview.src = e.target.result;
+            imgPreview.style.display = 'block';
+            document.getElementById('uploader-img').style.display = 'none';
+            document.getElementById('uploader-message').style.display = 'none';
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function uploadImage() {
+        const fileInput = document.getElementById('file-upload');
+        const file = fileInput.files[0];
+
+        if (!file) {
+            alert("업로드할 이미지를 선택해주세요.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('image', file);
+
+        fetch('/api/clothes/upload', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw new Error('네트워크 응답이 실패했습니다.');
+            })
+            .then(html => {
+                document.open();
+                document.write(html);
+                document.close();
+            })
+            .catch(error => {
+                console.error('실패:', error);
+                alert('이미지 업로드에 실패했습니다.');
+            });
+    }
+</script>
+
+<div th:replace="~{fragment/header :: header}"></div>
+<hr class="divider">
+
+<div class="vh100-desktop-upload">
+    <div class="main">
+        <div class="v60">
+            <div class="poppins-regular-32 padding-h-30" style="margin-left: 80px;">찾고 싶은 디자인 이미지 업로드</div>
+            <div class="v80 padding-bottom-50">
+                <div class="stack" style="display: flex; justify-content: space-between;">
+
+                    <div style="width: 50%; min-height: 550px;">
+                        <div class="stack" style="display: flex; flex-direction: column; height: 100%;">
+
+
+
+                            <!-- Uploader 컴포넌트 -->
+                            <div style="height: 100%; border: 3px dotted #AD6B2D; position: relative;">
+                                <div class="dropzone-area" style="height: 100%; position: relative;">
+                                    <img id="imagePreview" alt="Image Preview" style="display: none;"/>
+                                    <div class="dropzone-text" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px;">
+                                        <img id="uploader-img" class="uploade-img" src="/img/file_plus.png" alt="Upload Image"/>
+                                        <div class="uploader-string upload-string-color-gray" style="text-align: center;">
+                                            <div id="uploader-message" style="font-size: 22px; color: #979797;">
+                                                가이드에 맞춘 이미지를 업로드 해주세요.<br/>
+                                                .png, .jpg, .heic
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="file" id="file-upload" accept=".png, .jpg, .heic" style="display: none;" onchange="previewImage(this)"/>
+                                    <label for="file-upload" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; cursor: pointer;"></label>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="poppins-regular-18" style="width: 50%; position: relative; margin-left: 16px;">
+                        <div class="poppins-regular-24">의류 디자인 가이드</div>
+                        <div class="color-upload-guide-bg" style="margin: 30px 0;">
+                            <div class="padding-10" style="padding: 20px 10px;">
+                                1. 검은색 펜으로 테두리를 그려주세요.
+                                <br/>
+                                테두리가 끊김이 없을수록 완성도가 높아집니다.
+                                <br/>
+                                2. 디자인한 의류가 정중앙에 오도록 해주세요.
+                                <br/>
+                                (한번에 한 의류만 검색할 수 있습니다.)
+                                <br/><br/>
+                                검색 품질을 높이기 위해 꼭!
+                                <br/>
+                                <a href="/api/guide" style="color: black; font-weight: bold; font-size: 20px;">상세 가이드</a>를 참고하여 디자인을 완성해주세요.
+                            </div>
+                        </div>
+
+                        <div class="margin-wrapper">
+                            Shopping Helper는 <span class="poppins-bold-18">딥러닝</span>을 기반으로 이미지를 채색, 재구성하는 프로그램입니다.
+                            <br/><br/>
+                            유저의 데이터에 따라 <span class="poppins-bold-18">최소 5초 ~ 최대 1분</span> 걸릴 수 있습니다.
+                            <br/><br/>
+                            조금만 기다려주세요.
+                        </div>
+
+                        <button class="button" style="margin: 80px auto auto;" onclick="uploadImage()">
+                            <div class="poppins-bold-20">이미지 검색하기</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
