@@ -19,7 +19,7 @@ class ClothesRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        message = new Message(ObjectType.CLOTHES, "path");
+        message = new Message(ObjectType.T_SHIRTS, "path");
         clothes = new Clothes(message, "name", "path");
 
         messageRepository.save(message);

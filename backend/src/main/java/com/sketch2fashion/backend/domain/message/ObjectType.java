@@ -2,7 +2,11 @@ package com.sketch2fashion.backend.domain.message;
 
 public enum ObjectType {
 
-    CLOTHES("CLOTHES");
+    T_SHIRTS("T_SHIRTS"),
+    PANTS("PANTS"),
+    SKIRT("SKIRT"),
+    HAT("HAT")
+    ;
 
     private final String value;
 

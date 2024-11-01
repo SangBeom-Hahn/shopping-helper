@@ -1,6 +1,7 @@
 package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.domain.message.Message;
+import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.repository.MessageRepository;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
@@ -9,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.sketch2fashion.backend.domain.message.ObjectType.CLOTHES;
+import static com.sketch2fashion.backend.domain.message.ObjectType.*;
+
 
 @Service
 @Transactional
@@ -20,7 +22,7 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
     public MessageSaveResponseDto createMessage(String storeFilePath) {
-        Message message = new Message(CLOTHES, storeFilePath);
+        Message message = new Message(SKIRT, storeFilePath);
         Long saveId = messageRepository.save(message)
                 .getId();
 

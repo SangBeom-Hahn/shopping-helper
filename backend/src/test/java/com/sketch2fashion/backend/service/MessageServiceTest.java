@@ -36,6 +36,6 @@ class MessageServiceTest extends ServiceTest {
 
         // then
         assertThat(messageResponseDto).extracting("id", "objectType", "storeFilePath")
-                .containsExactly(saveId, ObjectType.CLOTHES, "path");
+                .containsExactly(saveId, ObjectType.T_SHIRTS, "path");
     }
 }

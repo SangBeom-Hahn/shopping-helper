@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import static com.sketch2fashion.backend.domain.message.ObjectType.CLOTHES;
+import static com.sketch2fashion.backend.domain.message.ObjectType.SKIRT;
 
 @Component
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class MessagePublisher {
     @Async
     public void sendModelMessage(MessageResponseDto message) {
         redisTemplate.opsForList().leftPush(
-                CLOTHES.getValue(),
+                SKIRT.getValue(),
                 message
         );
     }

@@ -44,7 +44,7 @@ class ClothesServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
-        message = new Message(ObjectType.CLOTHES, "path");
+        message = new Message(ObjectType.T_SHIRTS, "path");
 
         messageRepository.save(message);
     }
