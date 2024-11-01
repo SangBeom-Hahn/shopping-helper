@@ -46,7 +46,7 @@ class MessageRepositoryTest extends RepositoryTest {
 
         // then
         assertThat(findMessage).extracting("id", "objectType", "storeFilePath")
-                .containsExactly(saveId, T_SHIRTS, "path");
+                .containsExactly(saveId, T_SHIRTS, findMessage.getStoreFilePath());
     }
     
     @Test
