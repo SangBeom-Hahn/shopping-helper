@@ -52,8 +52,14 @@ class ClothesRepositoryTest extends RepositoryTest {
                 .orElseThrow();
 
         // then
-        assertThat(findClothes).extracting("id", "uploadFileName", "storeFilePath")
-                .containsExactly(saveId, "name", "path");
+        assertThat(findClothes).extracting("id", "status", "statusMessage", "uploadFileName", "storeFilePath")
+                .containsExactly(
+                        saveId,
+                        findClothes.getStatus(),
+                        findClothes.getStatusMessage(),
+                        findClothes.getUploadFileName(),
+                        findClothes.getStoreFilePath()
+                );
     }
 
     @Test
@@ -64,12 +70,18 @@ class ClothesRepositoryTest extends RepositoryTest {
                 .getId();
 
         // when
-        Clothes findClothes = clothesRepository.findById(saveId)
+        Clothes findClothes = clothesRepository.findByMessage(message)
                 .orElseThrow();
 
         // then
-        assertThat(findClothes).extracting("id", "uploadFileName", "storeFilePath")
-                .containsExactly(saveId, "name", "path");
+        assertThat(findClothes).extracting("id", "status", "statusMessage", "uploadFileName", "storeFilePath")
+                .containsExactly(
+                        saveId,
+                        findClothes.getStatus(),
+                        findClothes.getStatusMessage(),
+                        findClothes.getUploadFileName(),
+                        findClothes.getStoreFilePath()
+                );
     }
 
     @Test
