@@ -3,11 +3,13 @@ package com.sketch2fashion.backend.repository;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.upload.Clothes;
+import com.sketch2fashion.backend.domain.upload.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.sketch2fashion.backend.domain.upload.Status.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,10 +57,10 @@ class ClothesRepositoryTest extends RepositoryTest {
         assertThat(findClothes).extracting("id", "status", "statusMessage", "uploadFileName", "storeFilePath")
                 .containsExactly(
                         saveId,
-                        findClothes.getStatus(),
-                        findClothes.getStatusMessage(),
-                        findClothes.getUploadFileName(),
-                        findClothes.getStoreFilePath()
+                        SUCCESS,
+                        SUCCESS.getMessage(),
+                        "name",
+                        "path"
                 );
     }
 
@@ -77,10 +79,10 @@ class ClothesRepositoryTest extends RepositoryTest {
         assertThat(findClothes).extracting("id", "status", "statusMessage", "uploadFileName", "storeFilePath")
                 .containsExactly(
                         saveId,
-                        findClothes.getStatus(),
-                        findClothes.getStatusMessage(),
-                        findClothes.getUploadFileName(),
-                        findClothes.getStoreFilePath()
+                        SUCCESS,
+                        SUCCESS.getMessage(),
+                        "name",
+                        "path"
                 );
     }
 
