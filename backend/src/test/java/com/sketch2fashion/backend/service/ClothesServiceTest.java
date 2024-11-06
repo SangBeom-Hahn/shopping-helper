@@ -6,6 +6,7 @@ import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.upload.Clothes;
+import com.sketch2fashion.backend.exception.NoSuchMessageException;
 import com.sketch2fashion.backend.service.dto.ClothesResponseDto;
 import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
 import com.sketch2fashion.backend.support.FileUploader;
@@ -57,7 +58,7 @@ class ClothesServiceTest extends ServiceTest {
 
         // then
         assertThatThrownBy(() -> clothesService.createClothes(invalidMessageId, "path", "name"))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NoSuchMessageException.class);
     }
 
     @Test

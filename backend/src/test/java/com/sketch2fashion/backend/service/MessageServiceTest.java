@@ -1,6 +1,7 @@
 package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.domain.message.ObjectType;
+import com.sketch2fashion.backend.exception.NoSuchMessageException;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.support.MessagePublisher;
 import org.assertj.core.api.Assertions;
@@ -28,7 +29,7 @@ class MessageServiceTest extends ServiceTest {
       
         // then
         assertThatThrownBy(() -> messageService.findMessage(invalidId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NoSuchMessageException.class);
     }
     
     @Test

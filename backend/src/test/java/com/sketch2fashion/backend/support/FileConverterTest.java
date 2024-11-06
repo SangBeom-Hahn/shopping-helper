@@ -2,6 +2,7 @@ package com.sketch2fashion.backend.support;
 
 import com.sketch2fashion.backend.domain.file.FileExtension;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
+import com.sketch2fashion.backend.exception.AbsentFileException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class FileConverterTest {
 
         // then
         Assertions.assertThatThrownBy(() -> FileConverter.convertImage(fakeFile))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(AbsentFileException.class);
     }
     
     @Test

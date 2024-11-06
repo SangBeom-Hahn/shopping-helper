@@ -1,5 +1,6 @@
 package com.sketch2fashion.backend.domain.file;
 
+import com.sketch2fashion.backend.exception.InvalidFileFormatException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ class FileExtensionTest {
     @ValueSource(strings = {"a.hwp", "a.word", "a.xlsx", "a.csv", "a.pptx", "a.ppt", "a.mp3", "a.mov", "a.mp4"})
     void throwException_invalidFileExtension(String invalidFileName) {
         assertThatThrownBy(() -> FileExtension.from(invalidFileName))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(InvalidFileFormatException.class);
     }
     
     @ParameterizedTest

@@ -2,6 +2,7 @@ package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
+import com.sketch2fashion.backend.exception.NoSuchMessageException;
 import com.sketch2fashion.backend.repository.MessageRepository;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
@@ -32,7 +33,7 @@ public class MessageService {
 
     public MessageResponseDto findMessage(Long id) {
         Message findMessage = messageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> new NoSuchMessageException(id));
 
         return MessageResponseDto.from(findMessage);
     }
