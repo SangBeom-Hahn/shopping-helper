@@ -12,4 +12,9 @@ public class PageController {
     public String uploadForm() {
         return "upload";
     }
+
+    @GetMapping("/guide")
+    public String guide() {
+        return "guide";
+    }
 }
