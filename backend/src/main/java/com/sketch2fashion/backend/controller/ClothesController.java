@@ -44,7 +44,7 @@ public class ClothesController {
                 clothesService.createClothes(saveMessageId, storeFilePath, fileMetaData.getOriginalFileName());
 
         return ResponseEntity
-                .created(URI.create("/api/upload/" + clothesSaveResponseDto.getId()))
+                .created(URI.create("/api/clothes/upload/" + clothesSaveResponseDto.getId()))
                 .body(clothesSaveResponseDto);
     }
 }
