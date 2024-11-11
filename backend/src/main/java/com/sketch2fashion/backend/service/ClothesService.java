@@ -24,10 +24,9 @@ public class ClothesService {
         Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NoSuchMessageException(messageId));
         Clothes clothes = new Clothes(message, uploadFileName, storeFilePath);
-        Long saveId = clothesRepository.save(clothes)
-                .getId();
+        clothesRepository.save(clothes);
 
-        return ClothesSaveResponseDto.from(saveId);
+        return ClothesSaveResponseDto.from(messageId);
     }
 
     public ClothesResponseDto findClothes(Long messageId) {

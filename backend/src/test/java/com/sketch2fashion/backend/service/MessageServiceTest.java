@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static com.sketch2fashion.backend.domain.message.ObjectType.SKIRT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,15 +38,17 @@ class MessageServiceTest extends ServiceTest {
     void createMessageAndFind() {
         // given
         String storeFilePath = "path";
+        ObjectType objectType = SKIRT;
+        Boolean refine = false;
     
         // when
         doNothing().when(fakePublisher).sendModelMessage(any());
-        Long saveId = messageService.createMessage(storeFilePath)
+        Long saveId = messageService.createMessage(objectType, storeFilePath, refine)
                 .getId();
         MessageResponseDto messageResponseDto = messageService.findMessage(saveId);
 
         // then
-        assertThat(messageResponseDto).extracting("id", "objectType", "storeFilePath")
-                .containsExactly(saveId, ObjectType.SKIRT, storeFilePath);
+        assertThat(messageResponseDto).extracting("id", "objectType", "storeFilePath", "refine")
+                .containsExactly(saveId, objectType, storeFilePath, refine);
     }
 }

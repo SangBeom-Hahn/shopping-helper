@@ -22,8 +22,8 @@ public class MessageService {
     private final MessagePublisher messagePublisher;
     private final MessageRepository messageRepository;
 
-    public MessageSaveResponseDto createMessage(String storeFilePath) {
-        Message message = new Message(SKIRT, storeFilePath);
+    public MessageSaveResponseDto createMessage(ObjectType objectType, String storeFilePath, Boolean refine) {
+        Message message = new Message(objectType, storeFilePath, refine);
         Long saveId = messageRepository.save(message)
                 .getId();
 
