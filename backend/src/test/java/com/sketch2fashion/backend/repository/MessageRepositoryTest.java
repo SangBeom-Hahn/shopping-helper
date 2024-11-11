@@ -17,7 +17,7 @@ class MessageRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        message = new Message(T_SHIRTS, "path");
+        message = new Message(T_SHIRTS, "path", false);
     }
 
     @Test

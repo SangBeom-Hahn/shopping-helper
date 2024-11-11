@@ -16,15 +16,19 @@ public class Message extends BaseEntity {
     @Column(name = "message_id")
     private Long id;
 
-    @Column(name = "object_type")
     @Enumerated(EnumType.STRING)
+    @Column(name = "object_type", nullable = false)
     private ObjectType objectType;
 
     @Column(name = "store_file_path", length = 255, nullable = false)
     private String storeFilePath;
 
-    public Message(ObjectType objectType, String storeFilePath) {
+    @Column(name = "refine", nullable = false)
+    private Boolean refine;
+
+    public Message(ObjectType objectType, String storeFilePath, Boolean refine) {
         this.objectType = objectType;
         this.storeFilePath = storeFilePath;
+        this.refine = refine;
     }
 }

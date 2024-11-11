@@ -17,7 +17,7 @@ class ClothesTest {
     @DisplayName("채색 요청을 받아서, 업로드 메타 데이터를 생성한다.")
     void construct() {
         // given
-        Message message = new Message(T_SHIRTS, "storeFilePath");
+        Message message = new Message(T_SHIRTS, "storeFilePath", false);
 
         // then
         Assertions.assertDoesNotThrow(() -> new Clothes(message, "uploadFileName", "storeFilePath"));
@@ -27,7 +27,7 @@ class ClothesTest {
     @DisplayName("업로드 데이터의 메세지 ID를 조회한다.")
     void getMessage() {
         // given
-        Message message = new Message(T_SHIRTS, "storeFilePath");
+        Message message = new Message(T_SHIRTS, "storeFilePath", false);
 
         // when
         Clothes clothes = new Clothes(message, "uploadFileName", "storeFilePath");
