@@ -1,7 +1,7 @@
 package com.sketch2fashion.backend.controller;
 
 import com.sketch2fashion.backend.support.FileUploader;
-import com.sketch2fashion.backend.support.MessagePublisher;
+import com.sketch2fashion.backend.support.publish.MessagePublisher;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
