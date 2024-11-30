@@ -25,6 +25,18 @@ public enum ObjectType {
                 .orElseThrow(() -> new NoSuchTypeException(objectType));
     }
 
+    public static boolean isTshirts(ObjectType objectType) {
+        return objectType == ObjectType.T_SHIRTS;
+    }
+
+    public static boolean isPants(ObjectType objectType) {
+        return objectType == ObjectType.PANTS;
+    }
+
+    public static boolean isHat(ObjectType objectType) {
+        return objectType == ObjectType.HAT;
+    }
+
     public String getValue() {
         return value;
     }
