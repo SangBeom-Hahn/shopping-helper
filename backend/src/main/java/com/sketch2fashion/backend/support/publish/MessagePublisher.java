@@ -12,7 +12,9 @@ import org.springframework.data.redis.connection.stream.RecordId;
 import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.convert.RedisConverter;
 import org.springframework.data.redis.hash.Jackson2HashMapper;
+import org.springframework.data.redis.hash.ObjectHashMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -23,16 +25,16 @@ import static com.sketch2fashion.backend.support.publish.Type.CLOTHES;
 @RequiredArgsConstructor
 public class MessagePublisher {
 
-    private final RedisTemplate<String, MessageResponseDto> redisTemplate;
+    private final RedisTemplate<String, Object> streamRedisTemplate;
 
     @Async
     public void sendModelMessage(MessageResponseDto message) {
         ObjectRecord<String, MessageResponseDto> record = StreamRecords.newRecord()
                 .in(CLOTHES.toString())
                 .ofObject(message)
-            .withId(RecordId.autoGenerate());
+                .withId(RecordId.autoGenerate());
 
-        redisTemplate.opsForStream(new Jackson2HashMapper(true))
+        streamRedisTemplate.opsForStream()
                 .add(record);
     }
 }

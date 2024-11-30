@@ -1,18 +1,30 @@
 package com.sketch2fashion.backend.config;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
+import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.data.redis.serializer.*;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import java.lang.runtime.ObjectMethods;
 
 @Configuration
+@EnableCaching
 public class RedisConfig {
 
     @Value("${spring.redis.data.host}")
@@ -27,14 +39,48 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, MessageResponseDto> redisTemplate() {
-        RedisTemplate<String, MessageResponseDto> redisTemplate = new RedisTemplate<>();
-        Jackson2JsonRedisSerializer<MessageResponseDto> jsonRedisSerializer =
-                new Jackson2JsonRedisSerializer<>(MessageResponseDto.class);
+    public Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer() {
+        return new Jackson2JsonRedisSerializer<>(InferencesResponse.class);
+    }
 
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+    @Bean
+    public RedisCacheManager cacheManager(
+            RedisConnectionFactory redisConnectionFactory,
+            Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer
+    ) {
+        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+                .disableCachingNullValues()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer));
+
+        return RedisCacheManager.RedisCacheManagerBuilder
+                .fromConnectionFactory(redisConnectionFactory)
+                .cacheDefaults(configuration)
+                .build();
+    }
+
+    @Bean
+    public RedisTemplate<String, InferencesResponse> redisTemplate(
+            RedisConnectionFactory redisConnectionFactory,
+            Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer
+    ) {
+        RedisTemplate<String, InferencesResponse> redisTemplate = new RedisTemplate<>();
+
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jsonRedisSerializer);
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> streamRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 }
