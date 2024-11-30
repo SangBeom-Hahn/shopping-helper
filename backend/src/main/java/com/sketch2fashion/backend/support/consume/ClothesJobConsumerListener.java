@@ -33,6 +33,7 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
         try {
             MessageResponseDto messageResponseDto = message.getValue();
             String modelPath = ModelSearcher.searchModel(messageResponseDto.getObjectType());
+            validateUrlS(modelPath);
 
             // TODO: storeFilePath로 변경 예정
             CloseableHttpResponse response = inferenceProcess(modelPath, "./Untitled.png");
@@ -48,6 +49,26 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
         } catch (JsonProcessingException e) {
             throw new InferenceFailException();
         }
+    }
+
+    private void validateUrlS(final String url) {
+        try {
+            URL dest = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) dest.openConnection();
+            connection.setUseCaches(false);
+            connection.setConnectTimeout(1000);
+            connection.setReadTimeout(1000);
+
+            if (canNotConnect(connection.getResponseCode())) {
+                throw new HealthCheckException();
+            }
+        } catch (IOException e) {
+            throw new HealthCheckException();
+        }
+    }
+
+    private boolean canNotConnect(final int responseStatus) throws IOException {
+        return HttpStatus.OK.value() != responseStatus;
     }
 
     private CloseableHttpResponse inferenceProcess(String modelPath, String storeFilePath) throws JsonProcessingException {
