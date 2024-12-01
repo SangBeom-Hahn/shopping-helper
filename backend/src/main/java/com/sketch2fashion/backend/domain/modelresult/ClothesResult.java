@@ -13,7 +13,7 @@ import static com.sketch2fashion.backend.domain.modelresult.Status.WAIT;
 @Entity(name = "clothes_model_result")
 @Table(name = "clothes_model_result")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Clothes extends BaseEntity {
+public class ClothesResult extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "result_id")
@@ -30,7 +30,7 @@ public class Clothes extends BaseEntity {
     @Column(name = "status_message", length = 50, nullable = false)
     private String statusMessage;
 
-    @Column(name = "store_file_path", length = 255, nullable = false)
+    @Column(name = "store_file_path", length = 255)
     private String storeFilePath;
 
     @Column(name = "rating", length = 2, nullable = false)
@@ -39,12 +39,19 @@ public class Clothes extends BaseEntity {
     @Column(name = "shared", nullable = false)
     private Boolean shared;
 
-    public Clothes(Message message, String storeFilePath) {
+    public ClothesResult(Message message) {
         this.message = message;
         this.status = WAIT;
         this.statusMessage = WAIT.getMessage();
-        this.storeFilePath = storeFilePath;
         this.rating = Rating.THIRD;
         this.shared = false;
+    }
+
+    public void changeRate(Rating rating) {
+        this.rating = rating;
+    }
+
+    public void changeShared(Boolean shared) {
+        this.shared = shared;
     }
 }

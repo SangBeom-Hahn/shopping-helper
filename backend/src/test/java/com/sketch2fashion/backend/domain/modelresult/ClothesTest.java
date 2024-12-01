@@ -19,7 +19,7 @@ class ClothesTest {
         Message message = new Message(ObjectType.T_SHIRTS, "storeFilePath", false);
 
         // when
-        Clothes clothes = new Clothes(message, "storeFilePath");
+        ClothesResult clothes = new ClothesResult(message);
 
         // then
         assertAll(
@@ -37,6 +37,6 @@ class ClothesTest {
         Message message = new Message(ObjectType.T_SHIRTS, "storeFilePath", false);
 
         // then
-        Assertions.assertDoesNotThrow(() -> new Clothes(message, "storeFilePath"));
+        Assertions.assertDoesNotThrow(() -> new ClothesResult(message));
     }
 }
