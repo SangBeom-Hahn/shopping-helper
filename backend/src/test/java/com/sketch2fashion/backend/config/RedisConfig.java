@@ -1,6 +1,7 @@
 package com.sketch2fashion.backend.config;
 
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
+import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -31,16 +32,16 @@ public class RedisConfig {
     }
 
     @Bean
-    public Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer() {
-        return new Jackson2JsonRedisSerializer<>(InferencesResponse.class);
+    public Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer() {
+        return new Jackson2JsonRedisSerializer<>(ResultResponseDto.class);
     }
 
     @Bean
-    public RedisTemplate<String, InferencesResponse> redisTemplate(
+    public RedisTemplate<String, ResultResponseDto> redisTemplate(
             RedisConnectionFactory redisConnectionFactory,
-            Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer
+            Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
     ) {
-        RedisTemplate<String, InferencesResponse> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, ResultResponseDto> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());

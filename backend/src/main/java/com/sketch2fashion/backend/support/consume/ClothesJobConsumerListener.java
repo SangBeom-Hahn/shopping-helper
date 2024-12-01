@@ -12,6 +12,7 @@ import com.sketch2fashion.backend.support.ModelSearcher;
 import com.sketch2fashion.backend.support.consume.dto.InferenceRequest;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.stream.StreamListener;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ClothesJobConsumerListener implements StreamListener<String, ObjectRecord<String, MessageResponseDto>> {
 
@@ -42,6 +44,7 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
             // TODO: 추론 서버 예외처리
             if(statusCode.isOk()) {
                 InferencesResponse inferenceResponse = SearchConverter.convertResponse(response);
+                resultService.saveResult(messageResponseDto.getId(), inferenceResponse);
             } else {
                 throw new InferenceFailException();
             }
