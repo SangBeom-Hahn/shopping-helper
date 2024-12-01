@@ -14,4 +14,10 @@ public abstract class RepositoryTest {
 
     @Autowired
     protected ClothesRepository clothesRepository;
+
+    @Autowired
+    protected ResultRepository resultRepository;
+
+    @Autowired
+    protected SearchRepository searchRepository;
 }
