@@ -16,7 +16,7 @@ class ClothesTest {
     @DisplayName("채색 결과 메타 데이터의 기본 값을 확인한다.")
     void createAndFineDefaultValue() {
         // given
-        Message message = new Message(ObjectType.CLOTHES, "storeFilePath");
+        Message message = new Message(ObjectType.T_SHIRTS, "storeFilePath", false);
 
         // when
         Clothes clothes = new Clothes(message, "storeFilePath");
@@ -34,7 +34,7 @@ class ClothesTest {
     @DisplayName("채색 결과 메타 데이터를 생성합니다.")
     void construct() {
         // given
-        Message message = new Message(ObjectType.CLOTHES, "storeFilePath");
+        Message message = new Message(ObjectType.T_SHIRTS, "storeFilePath", false);
 
         // then
         Assertions.assertDoesNotThrow(() -> new Clothes(message, "storeFilePath"));

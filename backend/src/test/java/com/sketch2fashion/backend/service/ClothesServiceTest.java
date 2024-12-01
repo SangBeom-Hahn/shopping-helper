@@ -1,29 +1,14 @@
 package com.sketch2fashion.backend.service;
 
-import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
-import com.sketch2fashion.backend.domain.file.FileExtension;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
-import com.sketch2fashion.backend.domain.upload.Clothes;
+import com.sketch2fashion.backend.exception.NoSuchMessageException;
 import com.sketch2fashion.backend.service.dto.ClothesResponseDto;
-import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
-import com.sketch2fashion.backend.support.FileUploader;
-import jakarta.persistence.EntityManager;
-import org.apache.tomcat.util.http.fileupload.FileUpload;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
-import org.xmlunit.builder.Input;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -32,19 +17,15 @@ import java.io.InputStream;
 import static com.sketch2fashion.backend.domain.file.FileExtension.JPEG;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 class ClothesServiceTest extends ServiceTest {
 
     private Message message;
 
-    @MockBean
-    private FileUploader fakeUploader;
-
     @BeforeEach
     void setUp() {
-        message = new Message(ObjectType.CLOTHES, "path");
+        message = new Message(ObjectType.T_SHIRTS, "path", false);
 
         messageRepository.save(message);
     }
@@ -57,7 +38,7 @@ class ClothesServiceTest extends ServiceTest {
 
         // then
         assertThatThrownBy(() -> clothesService.createClothes(invalidMessageId, "path", "name"))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NoSuchMessageException.class);
     }
 
     @Test

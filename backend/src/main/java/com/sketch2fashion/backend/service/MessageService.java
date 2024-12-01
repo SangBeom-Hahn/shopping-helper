@@ -1,15 +1,16 @@
 package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.domain.message.Message;
+import com.sketch2fashion.backend.domain.message.ObjectType;
+import com.sketch2fashion.backend.exception.NoSuchMessageException;
 import com.sketch2fashion.backend.repository.MessageRepository;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
-import com.sketch2fashion.backend.support.MessagePublisher;
+import com.sketch2fashion.backend.support.publish.MessagePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.sketch2fashion.backend.domain.message.ObjectType.CLOTHES;
 
 @Service
 @Transactional
@@ -19,8 +20,8 @@ public class MessageService {
     private final MessagePublisher messagePublisher;
     private final MessageRepository messageRepository;
 
-    public MessageSaveResponseDto createMessage(String storeFilePath) {
-        Message message = new Message(CLOTHES, storeFilePath);
+    public MessageSaveResponseDto createMessage(ObjectType objectType, String storeFilePath, Boolean refine) {
+        Message message = new Message(objectType, storeFilePath, refine);
         Long saveId = messageRepository.save(message)
                 .getId();
 
@@ -30,7 +31,7 @@ public class MessageService {
 
     public MessageResponseDto findMessage(Long id) {
         Message findMessage = messageRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> new NoSuchMessageException(id));
 
         return MessageResponseDto.from(findMessage);
     }

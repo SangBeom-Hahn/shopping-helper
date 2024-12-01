@@ -3,11 +3,13 @@ package com.sketch2fashion.backend.repository;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.upload.Clothes;
+import com.sketch2fashion.backend.domain.upload.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.sketch2fashion.backend.domain.upload.Status.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,7 +21,7 @@ class ClothesRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        message = new Message(ObjectType.CLOTHES, "path");
+        message = new Message(ObjectType.T_SHIRTS, "path", false);
         clothes = new Clothes(message, "name", "path");
 
         messageRepository.save(message);
@@ -52,8 +54,14 @@ class ClothesRepositoryTest extends RepositoryTest {
                 .orElseThrow();
 
         // then
-        assertThat(findClothes).extracting("id", "uploadFileName", "storeFilePath")
-                .containsExactly(saveId, "name", "path");
+        assertThat(findClothes).extracting("id", "status", "statusMessage", "uploadFileName", "storeFilePath")
+                .containsExactly(
+                        saveId,
+                        SUCCESS,
+                        SUCCESS.getMessage(),
+                        "name",
+                        "path"
+                );
     }
 
     @Test
@@ -64,12 +72,18 @@ class ClothesRepositoryTest extends RepositoryTest {
                 .getId();
 
         // when
-        Clothes findClothes = clothesRepository.findById(saveId)
+        Clothes findClothes = clothesRepository.findByMessage(message)
                 .orElseThrow();
 
         // then
-        assertThat(findClothes).extracting("id", "uploadFileName", "storeFilePath")
-                .containsExactly(saveId, "name", "path");
+        assertThat(findClothes).extracting("id", "status", "statusMessage", "uploadFileName", "storeFilePath")
+                .containsExactly(
+                        saveId,
+                        SUCCESS,
+                        SUCCESS.getMessage(),
+                        "name",
+                        "path"
+                );
     }
 
     @Test

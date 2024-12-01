@@ -17,7 +17,7 @@ class MessageRepositoryTest extends RepositoryTest {
 
     @BeforeEach
     void setUp() {
-        message = new Message(CLOTHES, "path");
+        message = new Message(T_SHIRTS, "path", false);
     }
 
     @Test
@@ -46,7 +46,7 @@ class MessageRepositoryTest extends RepositoryTest {
 
         // then
         assertThat(findMessage).extracting("id", "objectType", "storeFilePath")
-                .containsExactly(saveId, CLOTHES, "path");
+                .containsExactly(saveId, T_SHIRTS, "path");
     }
     
     @Test

@@ -1,6 +1,7 @@
 package com.sketch2fashion.backend.config;
 
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
+import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,14 +31,32 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, MessageResponseDto> redisTemplate() {
-        RedisTemplate<String, MessageResponseDto> redisTemplate = new RedisTemplate<>();
-        Jackson2JsonRedisSerializer<MessageResponseDto> jsonRedisSerializer =
-                new Jackson2JsonRedisSerializer<>(MessageResponseDto.class);
+    public Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer() {
+        return new Jackson2JsonRedisSerializer<>(InferencesResponse.class);
+    }
 
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+    @Bean
+    public RedisTemplate<String, InferencesResponse> redisTemplate(
+            RedisConnectionFactory redisConnectionFactory,
+            Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer
+    ) {
+        RedisTemplate<String, InferencesResponse> redisTemplate = new RedisTemplate<>();
+
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(jsonRedisSerializer);
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> streamRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 

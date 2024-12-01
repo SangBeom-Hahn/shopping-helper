@@ -7,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import static com.sketch2fashion.backend.domain.upload.Status.SUCCESS;
+
 @Getter
 @Entity
 @Table(name = "clothes_upload_file")
@@ -21,6 +23,13 @@ public class Clothes extends BaseEntity {
     @JoinColumn(name = "message_id", foreignKey = @ForeignKey(name = "fk_upload_clothes_message"), nullable = false)
     private Message message;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private Status status;
+
+    @Column(name = "status_message", length = 50, nullable = false)
+    private String statusMessage;
+
     @Column(name = "upload_file_name", length = 50, nullable = false)
     private String uploadFileName;
 
@@ -29,11 +38,13 @@ public class Clothes extends BaseEntity {
 
     public Clothes(Message message, String uploadFileName, String storeFilePath) {
         this.message = message;
+        this.status = SUCCESS;
+        this.statusMessage = SUCCESS.getMessage();
         this.uploadFileName = uploadFileName;
         this.storeFilePath = storeFilePath;
     }
 
-    public Long getMember() {
+    public Long getMessageId() {
         return message.getId();
     }
 }

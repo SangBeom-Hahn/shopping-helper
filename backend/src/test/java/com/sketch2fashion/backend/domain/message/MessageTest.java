@@ -11,6 +11,6 @@ class MessageTest {
     @Test
     @DisplayName("추론 요청을 받아서, 메세지를 생성한다.")
     void construct() {
-        Assertions.assertDoesNotThrow(() -> new Message(ObjectType.CLOTHES, "storeFilePath"));
+        Assertions.assertDoesNotThrow(() -> new Message(ObjectType.SKIRT, "storeFilePath", false));
     }
 }

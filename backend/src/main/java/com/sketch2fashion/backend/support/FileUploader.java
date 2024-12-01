@@ -6,6 +6,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.sketch2fashion.backend.domain.file.FileExtension;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
+import com.sketch2fashion.backend.exception.AbsentFileException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -53,7 +54,7 @@ public class FileUploader {
 
     private void validateExistImage(FileMetaData fileMetaData) {
         if(fileMetaData == null) {
-            throw new IllegalArgumentException();
+            throw new AbsentFileException();
         }
     }
 }

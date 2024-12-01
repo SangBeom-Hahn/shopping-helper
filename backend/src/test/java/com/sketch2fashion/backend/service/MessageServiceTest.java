@@ -1,14 +1,16 @@
 package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.domain.message.ObjectType;
+import com.sketch2fashion.backend.exception.NoSuchMessageException;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.sketch2fashion.backend.domain.message.ObjectType.SKIRT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 
 class MessageServiceTest extends ServiceTest {
 
@@ -20,7 +22,7 @@ class MessageServiceTest extends ServiceTest {
       
         // then
         assertThatThrownBy(() -> messageService.findMessage(invalidId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NoSuchMessageException.class);
     }
     
     @Test
@@ -28,14 +30,17 @@ class MessageServiceTest extends ServiceTest {
     void createMessageAndFind() {
         // given
         String storeFilePath = "path";
+        ObjectType objectType = SKIRT;
+        Boolean refine = false;
     
         // when
-        Long saveId = messageService.createMessage(storeFilePath)
+        doNothing().when(fakePublisher).sendModelMessage(any());
+        Long saveId = messageService.createMessage(objectType, storeFilePath, refine)
                 .getId();
         MessageResponseDto messageResponseDto = messageService.findMessage(saveId);
 
         // then
-        assertThat(messageResponseDto).extracting("id", "objectType", "storeFilePath")
-                .containsExactly(saveId, ObjectType.CLOTHES, "path");
+        assertThat(messageResponseDto).extracting("id", "objectType", "storeFilePath", "refine")
+                .containsExactly(saveId, objectType, storeFilePath, refine);
     }
 }

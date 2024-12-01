@@ -1,5 +1,6 @@
 package com.sketch2fashion.backend.domain.file;
 
+import com.sketch2fashion.backend.exception.InvalidFileFormatException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +25,7 @@ public enum FileExtension {
         return Arrays.stream(values())
                 .filter(fileExtension -> fileExtension.values.equals(getExtension(fileName)))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException());
+                .orElseThrow(() -> new InvalidFileFormatException());
     }
 
     public static String getExtension(String fileName) {

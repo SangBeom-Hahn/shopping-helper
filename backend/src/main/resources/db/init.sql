@@ -24,6 +24,8 @@ create table clothes_upload_file
     message_id bigint not null unique,
     upload_file_name varchar(50) not null,
     store_file_path varchar(255) not null,
+    status enum ('SUCCESS','FAIL') not null,
+    status_message varchar(50) not null,
     primary key (upload_id)
 );
 
@@ -33,7 +35,8 @@ create table message
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,
     store_file_path varchar(255) not null,
-    object_type enum ('CLOTHES'),
+    object_type enum ('T_SHIRTS', 'PANTS', 'SKIRT', 'HAT') not null,
+    refine boolean not null,
     primary key (message_id)
 );
 

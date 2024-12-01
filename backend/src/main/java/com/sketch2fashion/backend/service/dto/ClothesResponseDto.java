@@ -22,7 +22,7 @@ public class ClothesResponseDto {
     public static ClothesResponseDto from(Clothes clothes) {
         return new ClothesResponseDto(
                 clothes.getId(),
-                clothes.getMember(),
+                clothes.getMessageId(),
                 clothes.getUploadFileName(),
                 clothes.getStoreFilePath()
         );

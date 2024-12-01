@@ -18,11 +18,14 @@ public class MessageResponseDto {
 
     private String storeFilePath;
 
+    private Boolean refine;
+
     public static MessageResponseDto from(Message message) {
         return new MessageResponseDto(
                 message.getId(),
                 message.getObjectType(),
-                message.getStoreFilePath()
+                message.getStoreFilePath(),
+                message.getRefine()
         );
     }
 }
