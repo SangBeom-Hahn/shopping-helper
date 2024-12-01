@@ -10,7 +10,7 @@ model = Tshirts_GAN()
 
 class TshirtsWorker(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
-        self._send_response(OK, {STATUS: OK})
+        self._send_response(Status.OK, {STATUS: Status.OK})
     
     def do_POST(self) -> None:
         input_data = self._get_input_data()
@@ -19,9 +19,9 @@ class TshirtsWorker(BaseHTTPRequestHandler):
             inference_result = self._inference_process(input_data)
             search_result = ImageSearcher.search(inference_result)
             
-            self._send_response(OK, search_result)
+            self._send_response(Status.OK, search_result)
         except Exception as e:
-            self._send_response(BAD, {ERROR: e})
+            self._send_response(Status.BAD, {ERROR: e})
 
     def _inference_process(self, input_data):
         return model.inference(input_data)
