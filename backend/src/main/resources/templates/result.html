@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사이트별 검색 결과</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .bold-20 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        .image-comparison {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .image-container {
+            margin: 0 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .image-container h3 {
+            margin-bottom: 20px;
+            margin-top: 5px;
+            font-size: 20px;
+            color: #333;
+        }
+        .image-container img {
+            transition: transform 0.3s ease;
+        }
+        .button-container {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .site-button {
+            background-color: transparent;
+            color: #007BFF;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .site-button:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+        #tooltip {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 5px;
+            padding: 5px;
+            border: 1px solid black;
+            z-index: 1000;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragment/header :: header}"></div>
+    <hr class="divider">
+    <div class="image-comparison">
+        <div class="image-container before">
+            <h3>Before</h3>
+            <img id="beforeImage" th:src="@{/api/clothes/images/Untitled.png}" width="420" height="420"/>
+        </div>
+        <div class="image-container after">
+            <h3>After</h3>
+            <img id="afterImage" th:src="@{/api/clothes/images/result.png}" width="420" height="420"/>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="site-button" onclick="goToFarfetch()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Farfetch</button>
+        <button class="site-button" onclick="goToAmazon()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Amazon</button>
+        <button class="site-button" onclick="goToPinterest()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Pinterest</button>
+        <button class="site-button" onclick="goToEtsy()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Etsy</button>
+        <a href="walmart.html" class="site-button">Walmart</a>
+        <a href="ebay.html" class="site-button">eBay</a>
+        <button class="site-button" onclick="goToNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">무작위사이트</button>
+    </div>
+    <div id="tooltip">검색 결과로 이동합니다.</div>
+    <script>
+        function showTooltip(event) {
+            const tooltip = document.getElementById('tooltip');
+            const button = event.target;
+            const siteName = button.textContent;
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'))
+            let searchResultsCount = 0;
+
+            if (siteName === "Farfetch") {
+                searchResultsCount = historyData.inferencesResponse.farfetch;
+            } else if (siteName === "Amazon") {
+                searchResultsCount = historyData.inferencesResponse.amazon;
+            } else if (siteName === "Pinterest") {
+                searchResultsCount = historyData.inferencesResponse.pinterest;
+            } else if (siteName === "Etsy") {
+                searchResultsCount = historyData.inferencesResponse.etsy;
+            } else if (siteName === "무작위사이트") {
+                searchResultsCount = historyData.inferencesResponse.noFilter;
+            }
+
+            const siteInfo = {
+                Farfetch: {
+                    description: "Farfetch는 다양한 패션 브랜드의 제품을 제공합니다.",
+                    searchResults: `검색 결과: <span style="color: #66FF66;">${searchResultsCount}개</span>`
+                },
+                Pinterest: {
+                    description: "Pinterest는 이미지 기반의 소셜 미디어 플랫폼입니다.",
+                    searchResults: `검색 결과: <span style="color: #66FF99;">${searchResultsCount}개</span>`
+                },
+                Amazon: {
+                    description: "Amazon은 세계 최대 규모의 온라인 쇼핑몰입니다.",
+                    searchResults: `검색 결과: <span style="color: #FF9966;">${searchResultsCount}개</span>`
+                },
+                Etsy: {
+                    description: "Etsy는 핸드메이드 및 빈티지 제품 등을 판매합니다.",
+                    searchResults: `검색 결과: <span style="color: #FF99FF;">${searchResultsCount}개</span>`
+                },
+                무작위사이트: {
+                    description: "세계 각국의 여러 사이트를 무작위로 검색합니다.",
+                    searchResults: `검색 결과: <span style="color: #99FFFF;">${searchResultsCount}개</span>`
+                },
+            };
+
+            if (siteInfo[siteName]) {
+                const info = siteInfo[siteName];
+                tooltip.innerHTML = `${info.description}<br>${info.searchResults}`;
+            }
+
+            tooltip.style.display = 'block';
+
+            const rect = button.getBoundingClientRect();
+            const buttonCenterX = rect.left + rect.width / 2;
+            const buttonTopY = rect.top;
+
+            tooltip.style.left = buttonCenterX + 'px';
+            tooltip.style.top = (buttonTopY - tooltip.offsetHeight - 10) + 'px';
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'none';
+            tooltip.innerHTML = '';
+        }
+
+        function goToPinterest() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const pinterestResults = results.filter(item => item.site === 'pinterest');
+                sessionStorage.setItem('pinterestResults', JSON.stringify(pinterestResults));
+            }
+            window.location.href = '/api/pinterest';
+        }
+
+        function goToAmazon() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const amazonResults = results.filter(item => item.site === 'amazon');
+                sessionStorage.setItem('amazonResults', JSON.stringify(amazonResults));
+            }
+            window.location.href = '/api/amazon';
+        }
+
+        function goToEtsy() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const etsyResults = results.filter(item => item.site === 'etsy');
+                sessionStorage.setItem('etsyResults', JSON.stringify(etsyResults));
+            }
+            window.location.href = '/api/etsy';
+        }
+
+        function goToNo() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const noResults = results.filter(item => item.site === 'noFilter');
+                sessionStorage.setItem('noResults', JSON.stringify(noResults));
+            }
+            window.location.href = '/api/noFilter';
+        }
+
+        function goToFarfetch() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                var farfetchResults = results.filter(item => item.site === 'farfetch');
+
+                const updatedResults = farfetchResults.map(item => {
+                    const urlParts = item.hostPageUrl.split('/');
+                    const domainIndex = urlParts.indexOf('www.farfetch.com');
+
+                    if (domainIndex > -1 && domainIndex + 1 < urlParts.length) {
+                        const countryCode = urlParts[domainIndex + 1];
+
+                        if (countryCode.length === 2) {
+                            urlParts[domainIndex + 1] = 'kr';
+                        } else {
+                            urlParts.splice(domainIndex + 1, 0, 'kr');
+                        }
+                    }
+                    item.hostPageUrl = urlParts.join('/');
+                    return item;
+                });
+
+                farfetchResults = updatedResults;
+                sessionStorage.setItem('farfetchResults', JSON.stringify(farfetchResults));
+            }
+            window.location.href = '/api/farfetch';
+        }
+
+        const beforeImage = document.getElementById('beforeImage');
+        const afterImage = document.getElementById('afterImage');
+
+        beforeImage.addEventListener('mouseover', function() {
+            beforeImage.style.transform = 'scale(1.1)';
+            beforeImage.style.transition = 'transform 0.3s ease';
+        });
+
+        beforeImage.addEventListener('mouseout', function() {
+            beforeImage.style.transform = 'scale(1)';
+        });
+
+        afterImage.addEventListener('mouseover', function() {
+            afterImage.style.transform = 'scale(1.1)';
+            afterImage.style.transition = 'transform 0.3s ease';
+        });
+
+        afterImage.addEventListener('mouseout', function() {
+            afterImage.style.transform = 'scale(1)';
+        });
+    </script>
+</body>
+</html>

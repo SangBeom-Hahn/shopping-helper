@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farfetch 검색 결과</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .bold-20 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        .result-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+            background-color: white;
+        }
+        .result-item img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .site-title {
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        .back-button {
+            margin-bottom: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+        .url-button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 8px 6px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .url-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragment/header :: header}"></div>
+    <hr class="divider">
+    <h1>연관 검색 결과</h1>
+    <a href="index.html" class="back-button">메인 화면으로 돌아가기</a>
+    <a href="#" id="backToResults" class="back-button">검색 결과 페이지로 돌아가기</a>
+    <div id="results" class="result-container"></div>
+
+    <script>
+        document.getElementById('backToResults').addEventListener('click', function(event) {
+            event.preventDefault();
+            window.location.href = '/api/result';
+        });
+
+        const historyData = JSON.parse(sessionStorage.getItem('noResults'));
+
+        function displayResults(data) {
+            const resultsContainer = document.getElementById('results');
+
+            if (data && data.length > 0) {
+                const results = data;
+
+                results.forEach(item => {
+                    const resultItem = document.createElement('div');
+                    resultItem.className = 'result-item';
+
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = item.thumbnailUrl;
+                    resultItem.appendChild(thumbnail);
+
+                    const hostLink = document.createElement('a');
+                    hostLink.href = item.hostPageUrl;
+                    hostLink.target = '_blank';
+                    hostLink.textContent = '자세히 보기';
+                    hostLink.className = 'url-button';
+                    resultItem.appendChild(hostLink);
+
+                    const webSearchLink = document.createElement('a');
+                    webSearchLink.href = item.webSearchUrl;
+                    webSearchLink.target = '_blank';
+                    webSearchLink.textContent = '웹에서 검색';
+                    webSearchLink.className = 'url-button';
+                    resultItem.appendChild(webSearchLink);
+
+                    const linkContainer = document.createElement('div');
+                    linkContainer.className = 'link-container';
+                    linkContainer.style.display = 'flex';
+                    linkContainer.style.justifyContent = 'space-evenly';
+                    linkContainer.style.gap = '5px';
+                    linkContainer.style.marginTop = 'auto';
+                    linkContainer.appendChild(hostLink);
+                    linkContainer.appendChild(webSearchLink);
+                    resultItem.appendChild(linkContainer);
+
+                    resultsContainer.appendChild(resultItem);
+                });
+            } else {
+                resultsContainer.innerHTML = "<p>결과가 없습니다.</p>";
+            }
+        }
+
+        displayResults(historyData);
+    </script>
+
+</body>
+</html>
