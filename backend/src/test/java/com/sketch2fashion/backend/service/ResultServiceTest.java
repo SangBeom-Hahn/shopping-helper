@@ -112,7 +112,7 @@ class ResultServiceTest extends ServiceTest {
     }
 
     private ResultResponseDto createResultResponseDto() {
-        List<InferenceListResponse> inferenceListResponses = Stream.generate(() -> InferenceListResponse.of("url", "url", "url", "site"))
+        List<InferenceListResponse> inferenceListResponses = Stream.generate(() -> InferenceListResponse.of("url", "url", "url", "name","site"))
                 .limit(3)
                 .collect(Collectors.toList());
         InferencesResponse inferencesResponse = InferencesResponse.of(1, 1, 1, 1, 1, 1, 1, inferenceListResponses);
