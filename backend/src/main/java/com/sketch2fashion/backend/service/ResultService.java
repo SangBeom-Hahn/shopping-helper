@@ -12,6 +12,7 @@ import com.sketch2fashion.backend.repository.MessageRepository;
 import com.sketch2fashion.backend.repository.ResultRepository;
 import com.sketch2fashion.backend.repository.SearchRepository;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
+import com.sketch2fashion.backend.support.SignedUrlBuilder;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -29,6 +30,7 @@ public class ResultService {
     private final MessageRepository messageRepository;
     private final ResultRepository resultRepository;
     private final SearchRepository searchRepository;
+    private final SignedUrlBuilder signedUrlBuilder;
 
     @Cacheable(
             value = "RESULT_CACHE",
@@ -45,8 +47,8 @@ public class ResultService {
 
         return ResultResponseDto.of(
                 inferencesResponse,
-                clothes.getStoreFilePath(),
-                clothesResult.getStoreFilePath()
+                signedUrlBuilder.generateSignedUrl(clothes.getStoreFilePath()),
+                signedUrlBuilder.generateSignedUrl(clothesResult.getStoreFilePath())
         );
     }
 

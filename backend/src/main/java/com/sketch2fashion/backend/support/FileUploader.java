@@ -39,14 +39,14 @@ public class FileUploader {
             String contentType = fileMetaData.getContentType();
             String extension = fileMetaData.getExtension()
                     .getValues();
-            String storePath = "sketch2fashion/upload/" + uuid + extension;
+            String storePath = "ztyle/upload/" + uuid + extension;
 
             BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, storePath)
                     .setContentType(contentType)
                     .build();
 
             storage.create(blobInfo, file);
-            return String.format("%s/%s/%s", "https://storage.googleapis.com", bucketName, storePath);
+            return storePath;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

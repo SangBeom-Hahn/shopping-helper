@@ -37,8 +37,7 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
             String modelPath = ModelSearcher.searchModel(messageResponseDto.getObjectType());
             validateUrlS(modelPath);
 
-            // TODO: storeFilePath로 변경 예정
-            CloseableHttpResponse response = inferenceProcess(modelPath, "./Untitled.png");
+            CloseableHttpResponse response = inferenceProcess(modelPath, messageResponseDto);
             StatusCode statusCode = StatusCode.from(response.getStatusLine().getStatusCode());
 
             // TODO: 추론 서버 예외처리
@@ -74,8 +73,8 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
         return HttpStatus.OK.value() != responseStatus;
     }
 
-    private CloseableHttpResponse inferenceProcess(String modelPath, String storeFilePath) throws JsonProcessingException {
-        InferenceRequest requestBody = InferenceRequest.from(storeFilePath);
+    private CloseableHttpResponse inferenceProcess(String modelPath, MessageResponseDto messageResponseDto) throws JsonProcessingException {
+        InferenceRequest requestBody = InferenceRequest.from(messageResponseDto);
         return clothesModelHttpCaller.callModel(
                 modelPath,
                 objectMapper.writeValueAsString(requestBody)
