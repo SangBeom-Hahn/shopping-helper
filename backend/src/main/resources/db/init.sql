@@ -6,13 +6,14 @@ drop table if exists message;
 create table clothes_model_result
 (
     result_id bigint not null auto_increment,
-    rating tinyint not null check (rating between 0 and 4),
+    rating tinyint check (rating between 0 and 4),
     shared boolean not null,
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,
     message_id bigint not null unique,
     status_message varchar(50) not null,
     store_file_path varchar(255),
+    review varchar(2000),
     status enum ('ERROR','FINISH','WAIT') not null,
     primary key (result_id)
 );

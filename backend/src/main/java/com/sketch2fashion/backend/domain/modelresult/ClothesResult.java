@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import static com.sketch2fashion.backend.domain.modelresult.Status.WAIT;
 
@@ -33,8 +34,11 @@ public class ClothesResult extends BaseEntity {
     @Column(name = "store_file_path", length = 255)
     private String storeFilePath;
 
-    @Column(name = "rating", length = 2, nullable = false)
-    private Rating rating;
+    @Column(name = "rating", length = 2)
+    private int rating;
+
+    @Column(name = "review", length = 2000)
+    private String review;
 
     @Column(name = "shared", nullable = false)
     private Boolean shared;
@@ -43,12 +47,15 @@ public class ClothesResult extends BaseEntity {
         this.message = message;
         this.status = WAIT;
         this.statusMessage = WAIT.getMessage();
-        this.rating = Rating.THIRD;
         this.shared = false;
     }
 
-    public void changeRate(Rating rating) {
+    public void changeRate(int rating) {
         this.rating = rating;
+    }
+
+    public void changeReview(String review) {
+        this.review = review;
     }
 
     public void changeShared(Boolean shared) {
