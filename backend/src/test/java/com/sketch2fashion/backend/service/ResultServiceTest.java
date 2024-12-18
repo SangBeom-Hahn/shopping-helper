@@ -1,11 +1,13 @@
 package com.sketch2fashion.backend.service;
 
+import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
 import com.sketch2fashion.backend.domain.modelresult.Search;
 import com.sketch2fashion.backend.domain.upload.Clothes;
 import com.sketch2fashion.backend.exception.DuplicateResultException;
+import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.consume.dto.InferenceListResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
@@ -13,7 +15,12 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +32,7 @@ class ResultServiceTest extends ServiceTest {
 
     private Message message;
     private Message message1;
+    private Message message2;
     private ClothesResult clothesResult;
     private ClothesResult clothesResult1;
     private Search search;
@@ -34,6 +42,7 @@ class ResultServiceTest extends ServiceTest {
     void setUp() {
         message = new Message(ObjectType.SKIRT, "path", false);
         message1 = new Message(ObjectType.SKIRT, "path", false);
+        message2 = new Message(ObjectType.SKIRT, "path", false);
         clothes = new Clothes(message, "name", "path");
         clothesResult = new ClothesResult(message);
         clothesResult1 = new ClothesResult(message1);
@@ -41,6 +50,7 @@ class ResultServiceTest extends ServiceTest {
 
         messageRepository.save(message);
         messageRepository.save(message1);
+        messageRepository.save(message2);
         resultRepository.save(clothesResult);
         resultRepository.save(clothesResult1);
         searchRepository.save(search);
@@ -109,6 +119,32 @@ class ResultServiceTest extends ServiceTest {
                         ),
                 () -> assertThat(resultService.findResult(message1.getId())).isNull()
         );
+    }
+
+    @Test
+    @DisplayName("채색 결과에 평점을 부여한다.")
+    void updateResult() throws IOException {
+        // given
+        FileInputStream fileInputStream = new FileInputStream(new File("src/test/resources/test.jpeg"));
+        MockMultipartFile file = new MockMultipartFile("mockfile", "test", "jpeg", fileInputStream);
+        String URL = "https://storage.googleapis.com/test/1234abcd1234abcd.png";
+        int expectedRate = 5;
+        String expectedReview = "GOOD";
+
+        Long saveId = clothesService.createClothes(
+                message2.getId(),
+                URL,
+                file.getName()
+        ).getId();
+
+        // when
+        resultService.updateResult(saveId, expectedRate, expectedReview);
+        ClothesResult findClothesResult = resultRepository.findById(saveId)
+                .orElseThrow();
+
+        // then
+        assertThat(findClothesResult).extracting("rating", "review")
+                .containsExactly(expectedRate, expectedReview);
     }
 
     private ResultResponseDto createResultResponseDto() {

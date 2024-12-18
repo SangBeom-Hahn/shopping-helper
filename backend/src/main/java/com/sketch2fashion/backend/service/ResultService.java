@@ -88,6 +88,14 @@ public class ResultService {
         redisTemplate.delete("RESULT_CACHE::" + messageId);
     }
 
+    public void updateResult(Long id, Integer rating, String review) {
+        ClothesResult clothesResult = resultRepository.findById(id)
+                .orElseThrow(() -> new NoSuchClothesException(id));
+
+        clothesResult.changeReview(review);
+        clothesResult.changeRate(rating);
+    }
+
     private void validateDuplicateResult(ClothesResult clothesResult) {
         if(searchRepository.existsByClothes(clothesResult)) {
             throw new DuplicateResultException(clothesResult.getId());
