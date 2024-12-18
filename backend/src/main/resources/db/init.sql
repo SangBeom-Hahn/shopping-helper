@@ -6,7 +6,7 @@ drop table if exists message;
 create table clothes_model_result
 (
     result_id bigint not null auto_increment,
-    rating tinyint check (rating between 0 and 4),
+    rating int,
     shared boolean not null,
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,

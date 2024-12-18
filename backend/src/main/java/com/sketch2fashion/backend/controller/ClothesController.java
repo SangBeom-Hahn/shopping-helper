@@ -2,6 +2,7 @@ package com.sketch2fashion.backend.controller;
 
 
 import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
+import com.sketch2fashion.backend.controller.dto.ClothesUpdateRequest;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.service.ClothesService;
@@ -53,5 +54,14 @@ public class ClothesController {
     @GetMapping("/{messageId}")
     public ResponseEntity<ResultResponseDto> findInferenceResult(@PathVariable("messageId") Long messageId) {
         return ResponseEntity.ok(resultService.findResult(messageId));
+    }
+
+    @PutMapping("/{messageId}")
+    public ResponseEntity<Void> updateRate(
+            @PathVariable("messageId") Long messageId,
+            @RequestBody @Validated ClothesUpdateRequest clothesUpdateRequest
+    ) {
+        resultService.updateResult(messageId, clothesUpdateRequest.getRating(), clothesUpdateRequest.getReview());
+        return ResponseEntity.noContent().build();
     }
 }

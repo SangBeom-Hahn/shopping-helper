@@ -1,6 +1,7 @@
 package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
+import com.sketch2fashion.backend.controller.dto.ClothesUpdateRequest;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
@@ -130,15 +131,13 @@ class ResultServiceTest extends ServiceTest {
         String URL = "https://storage.googleapis.com/test/1234abcd1234abcd.png";
         int expectedRate = 5;
         String expectedReview = "GOOD";
-
-        Long saveId = clothesService.createClothes(
-                message2.getId(),
-                URL,
-                file.getName()
-        ).getId();
+        ClothesUpdateRequest clothesUpdateRequest = new ClothesUpdateRequest(expectedRate, expectedReview);
 
         // when
-        resultService.updateResult(saveId, expectedRate, expectedReview);
+        Long saveId = clothesService.createClothes(message2.getId(), URL, file.getName())
+                .getId();
+
+        resultService.updateResult(saveId, clothesUpdateRequest.getRating(), clothesUpdateRequest.getReview());
         ClothesResult findClothesResult = resultRepository.findById(saveId)
                 .orElseThrow();
 
