@@ -96,6 +96,13 @@ public class ResultService {
         clothesResult.changeRate(rating);
     }
 
+    public void updateShared(Long id, Boolean shared) {
+        ClothesResult clothesResult = resultRepository.findById(id)
+                .orElseThrow(() -> new NoSuchClothesException(id));
+
+        clothesResult.changeShared(shared);
+    }
+
     private void validateDuplicateResult(ClothesResult clothesResult) {
         if(searchRepository.existsByClothes(clothesResult)) {
             throw new DuplicateResultException(clothesResult.getId());
