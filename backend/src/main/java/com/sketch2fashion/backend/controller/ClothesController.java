@@ -2,6 +2,7 @@ package com.sketch2fashion.backend.controller;
 
 
 import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
+import com.sketch2fashion.backend.controller.dto.ClothesSharedRequest;
 import com.sketch2fashion.backend.controller.dto.ClothesUpdateRequest;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.domain.message.ObjectType;
@@ -62,6 +63,15 @@ public class ClothesController {
             @RequestBody @Validated ClothesUpdateRequest clothesUpdateRequest
     ) {
         resultService.updateResult(messageId, clothesUpdateRequest.getRating(), clothesUpdateRequest.getReview());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{messageId}/share")
+    public ResponseEntity<Void> share(
+            @PathVariable("messageId") Long messageId,
+            @RequestBody @Validated ClothesSharedRequest clothesSharedRequest
+    ) {
+        resultService.updateShared(messageId, clothesSharedRequest.getShared());
         return ResponseEntity.noContent().build();
     }
 }
