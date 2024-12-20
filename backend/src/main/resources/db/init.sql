@@ -46,9 +46,9 @@ create table search
 (
     search_id bigint not null auto_increment,
     result_id bigint not null,
-    thumbnail_url varchar(255),
-    web_search_url varchar(255),
-    host_page_url varchar(255),
+    thumbnail_url varchar(1000),
+    web_search_url varchar(1000),
+    host_page_url varchar(1000),
     site varchar(50) not null,
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,

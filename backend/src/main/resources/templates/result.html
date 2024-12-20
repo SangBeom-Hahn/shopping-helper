@@ -104,6 +104,67 @@
             transform: translateX(-50%);
             white-space: nowrap;
         }
+        .review-container {
+            display: none;
+            margin: 80px auto;
+            padding: 20px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            max-width: 500px;
+            width: 90%;
+        }
+        .review-container h3 {
+            margin-bottom: 15px;
+            color: #007BFF;
+        }
+        .review-container label {
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+        }
+        .review-container input[type="number"],
+        .review-container textarea {
+            width: 98%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        input[type="number"] {
+            text-align: center;
+        }
+        .review-container textarea::-webkit-scrollbar {
+            width: 15px;
+        }
+        .review-container textarea::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        .review-container textarea::-webkit-scrollbar-thumb {
+            background: #007BFF;
+            border-radius: 5px;
+        }
+        .review-container textarea::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+        .review-container button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 20%;
+        }
+        .review-container button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -112,23 +173,32 @@
     <div class="image-comparison">
         <div class="image-container before">
             <h3>Before</h3>
-            <img id="beforeImage" th:src="@{/api/clothes/images/Untitled.png}" width="420" height="420"/>
+            <img id="beforeImage" alt="업로드된 이미지" width="420" height="420"/>
         </div>
         <div class="image-container after">
             <h3>After</h3>
-            <img id="afterImage" th:src="@{/api/clothes/images/result.png}" width="420" height="420"/>
+            <img id="afterImage" alt="업로드된 이미지" width="420" height="420"/>
         </div>
     </div>
     <div class="button-container">
-        <button class="site-button" onclick="goToFarfetch()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Farfetch</button>
-        <button class="site-button" onclick="goToAmazon()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Amazon</button>
-        <button class="site-button" onclick="goToPinterest()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Pinterest</button>
-        <button class="site-button" onclick="goToEtsy()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Etsy</button>
+        <button class="site-button" onclick="handleFarfetch()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Farfetch</button>
+        <button class="site-button" onclick="handleAmazon()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Amazon</button>
+        <button class="site-button" onclick="handlePinterest()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Pinterest</button>
+        <button class="site-button" onclick="handleEtsy()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Etsy</button>
         <a href="walmart.html" class="site-button">Walmart</a>
         <a href="ebay.html" class="site-button">eBay</a>
-        <button class="site-button" onclick="goToNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">무작위사이트</button>
+        <button class="site-button" onclick="handleNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">무작위사이트</button>
     </div>
     <div id="tooltip">검색 결과로 이동합니다.</div>
+    <div class="review-container" id="reviewContainer">
+        <h3>검색 결과를 만족하시나요?</h3>
+        <label for="rating">당신의 평점 (1-5): </label>
+        <input type="number" id="rating" min="1" max="5" required>
+        <br>
+        <textarea id="review" required>채색이나 검색 결과 피드백 혹은, 채색 꿀팁을 남겨주세요!</textarea>
+        <br>
+        <button onclick="saveReview()">보내기</button>
+    </div>
     <script>
         function showTooltip(event) {
             const tooltip = document.getElementById('tooltip');
@@ -282,6 +352,99 @@
         afterImage.addEventListener('mouseout', function() {
             afterImage.style.transform = 'scale(1)';
         });
+
+        const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+
+        if (historyData.uploadFilePath) {
+            const imgElement = document.getElementById('beforeImage');
+            imgElement.src = historyData.uploadFilePath;
+        } else {
+            document.querySelector('.image-container.before').innerText = '이미지가 없습니다.';
+        }
+
+        if (historyData.resultFilePath) {
+            const imgElement = document.getElementById('afterImage');
+            imgElement.src = historyData.resultFilePath;
+        } else {
+            document.querySelector('.image-container.after').innerText = '이미지가 없습니다.';
+        }
+
+        function showReviewForm() {
+            document.getElementById('reviewContainer').style.display = 'block';
+            sessionStorage.setItem('reviewFormVisible', 'true');
+        }
+
+        function handleFarfetch() {
+            goToFarfetch();
+            showReviewForm();
+        }
+
+        function handleAmazon() {
+            goToAmazon();
+            showReviewForm();
+        }
+
+        function handlePinterest() {
+            goToPinterest();
+            showReviewForm();
+        }
+
+        function handleEtsy() {
+            goToEtsy();
+            showReviewForm();
+        }
+
+        function handleNo() {
+            goToNo();
+            showReviewForm();
+        }
+
+        function loadReviewFormVisibility() {
+            const isVisible = sessionStorage.getItem('reviewFormVisible');
+            if (isVisible === 'true') {
+                document.getElementById('reviewContainer').style.display = 'block';
+            }
+        }
+
+        async function saveReview() {
+            const rating = document.getElementById('rating').value;
+            const review = document.getElementById('review').value;
+
+            if (rating && review) {
+                const messageId = sessionStorage.getItem('messageId');
+                const url = `/api/clothes/${messageId}`;
+                const data = { rating: rating, review: review };
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const reviewItem = document.createElement('li');
+                        reviewItem.textContent = `평점: ${rating}, 리뷰: ${review}`;
+                        document.getElementById('reviews').appendChild(reviewItem);
+
+                        document.getElementById('rating').value = '';
+                        document.getElementById('review').value = '';
+
+                        alert('리뷰를 제공해주셔서 감사합니다.');
+                    } else {
+                        alert('리뷰 저장에 실패했습니다.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('서버와의 연결에 문제가 발생했습니다.');
+                }
+            } else {
+                alert('모든 필드를 입력해주세요.');
+            }
+        }
+        window.onload = loadReviewFormVisibility;
     </script>
 </body>
 </html>

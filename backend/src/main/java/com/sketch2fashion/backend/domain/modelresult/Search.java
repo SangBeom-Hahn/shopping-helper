@@ -16,13 +16,13 @@ public class Search extends BaseEntity {
     @Column(name = "search_id")
     private Long id;
 
-    @Column(name = "thumbnail_url", length = 255, nullable = true)
+    @Column(name = "thumbnail_url", length = 1000, nullable = true)
     private String thumbnailUrl;
 
-    @Column(name = "web_search_url", length = 255, nullable = true)
+    @Column(name = "web_search_url", length = 1000, nullable = true)
     private String webSearchUrl;
 
-    @Column(name = "host_page_url", length = 255, nullable = true)
+    @Column(name = "host_page_url", length = 1000, nullable = true)
     private String hostPageUrl;
 
     @Column(name = "site", length = 50, nullable = false)
