@@ -14,4 +14,6 @@ public interface ResultRepository extends JpaRepository<ClothesResult, Long> {
 
     @Query("select AVG(cr.rating) from clothes_model_result cr")
     Long averageOfRating();
+
+    List<ClothesResult> findAllByShared(Boolean shared);
 }

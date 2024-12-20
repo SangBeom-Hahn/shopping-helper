@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static com.sketch2fashion.backend.domain.modelresult.Rating.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -88,5 +90,22 @@ class ResultRepositoryTest extends RepositoryTest {
 
         // then
         assertThat(resultRepository.averageOfRating()).isEqualTo(4L);
+    }
+
+    @Test
+    @DisplayName("")
+    void findAllByShared() {
+        // given
+        clothes.changeShared(true);
+        clothes1.changeShared(true);
+        resultRepository.save(clothes);
+        resultRepository.save(clothes1);
+
+        // when
+        List<ClothesResult> sharedResults = resultRepository.findAllByShared(true);
+
+        // then
+        assertThat(sharedResults).extracting("id")
+                .containsExactly(clothes.getId(), clothes1.getId());
     }
 }
