@@ -24,8 +24,8 @@ class SearchRepositoryTest extends RepositoryTest {
     void setUp() {
         message = new Message(ObjectType.SKIRT, "path", false);
         clothes = new ClothesResult(message);
-        search = new Search("url", "url", "url", "site", clothes);
-        search1 = new Search("url", "url", "url", "site", clothes);
+        search = new Search("url", "url", "url", "site", "name", clothes);
+        search1 = new Search("url", "url", "url", "site", "name", clothes);
 
         messageRepository.save(message);
         resultRepository.save(clothes);

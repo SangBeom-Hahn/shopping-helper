@@ -47,7 +47,7 @@ class ResultServiceTest extends ServiceTest {
         clothes = new Clothes(message, "name", "path");
         clothesResult = new ClothesResult(message);
         clothesResult1 = new ClothesResult(message1);
-        search = new Search("url", "url", "url", "site", clothesResult);
+        search = new Search("url", "url", "url", "name", "site", clothesResult);
 
         messageRepository.save(message);
         messageRepository.save(message1);

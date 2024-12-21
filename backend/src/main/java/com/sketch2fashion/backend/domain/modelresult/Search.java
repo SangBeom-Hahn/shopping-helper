@@ -25,6 +25,9 @@ public class Search extends BaseEntity {
     @Column(name = "host_page_url", length = 1000, nullable = true)
     private String hostPageUrl;
 
+    @Column(name = "name", length = 500, nullable = false)
+    private String name;
+
     @Column(name = "site", length = 50, nullable = false)
     private String site;
 
@@ -32,10 +35,11 @@ public class Search extends BaseEntity {
     @JoinColumn(name = "result_id", nullable = false, foreignKey = @ForeignKey(name = "fk_search_result"))
     private ClothesResult clothes;
 
-    public Search(String thumbnailUrl, String webSearchUrl, String hostPageUrl, String site, ClothesResult clothes) {
+    public Search(String thumbnailUrl, String webSearchUrl, String hostPageUrl, String name, String site, ClothesResult clothes) {
         this.thumbnailUrl = thumbnailUrl;
         this.webSearchUrl = webSearchUrl;
         this.hostPageUrl = hostPageUrl;
+        this.name = name;
         this.site = site;
         this.clothes = clothes;
     }

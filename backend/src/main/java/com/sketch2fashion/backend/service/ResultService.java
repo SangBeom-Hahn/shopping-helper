@@ -77,6 +77,7 @@ public class ResultService {
                             findResponse.getThumbnailUrl(),
                             findResponse.getWebSearchUrl(),
                             findResponse.getHostPageUrl(),
+                            findResponse.getName(),
                             findResponse.getSite(),
                             clothesResult
                     );

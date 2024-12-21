@@ -21,6 +21,7 @@ class SearchTest {
                 "url",
                 "url",
                 "url",
+                "name",
                 "site",
                 clothes
         ));

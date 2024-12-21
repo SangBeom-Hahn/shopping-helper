@@ -37,6 +37,9 @@ public abstract class ServiceTest {
     protected ResultService resultService;
 
     @Autowired
+    protected GalleryService galleryService;
+
+    @Autowired
     protected ResultRepository resultRepository;
 
     @Autowired
