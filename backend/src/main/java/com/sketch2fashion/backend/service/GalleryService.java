@@ -11,6 +11,7 @@ import com.sketch2fashion.backend.service.dto.GalleryListResponseDto;
 import com.sketch2fashion.backend.service.dto.GallerysResponseDto;
 import com.sketch2fashion.backend.service.dto.SearchResponseDto;
 import com.sketch2fashion.backend.service.dto.SearchsResponseDto;
+import com.sketch2fashion.backend.support.SignedUrlBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,9 @@ public class GalleryService {
     private final ResultRepository resultRepository;
     private final ClothesRepository clothesRepository;
     private final SearchRepository searchRepository;
+    private final SignedUrlBuilder signedUrlBuilder;
 
+    @Transactional(readOnly = true)
     public GallerysResponseDto findAllGallery() {
         List<GalleryListResponseDto> galleryResponseDtos = resultRepository.findAllByShared(true)
                 .stream()
@@ -40,9 +43,14 @@ public class GalleryService {
         Clothes clothes = clothesRepository.findByMessage(message)
                 .orElseThrow(() -> new NoSuchClothesException(clothesResult.getId()));
 
-        return GalleryListResponseDto.of(clothesResult, clothes.getUploadFileName());
+        return GalleryListResponseDto.of(
+                clothesResult,
+                signedUrlBuilder.generateSignedUrl(clothesResult.getStoreFilePath()),
+                clothes.getUploadFileName()
+        );
     }
 
+    @Transactional(readOnly = true)
     public SearchsResponseDto findAllSearch(Long id) {
         ClothesResult clothesResult = resultRepository.findById(id)
                 .orElseThrow(() -> new NoSuchClothesException(id));

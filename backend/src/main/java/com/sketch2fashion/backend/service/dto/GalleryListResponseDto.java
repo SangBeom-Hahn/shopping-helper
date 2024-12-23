@@ -17,11 +17,14 @@ public class GalleryListResponseDto {
 
     private String uploadFileName;
 
-    public static GalleryListResponseDto of(ClothesResult clothesResult, String uploadFileName) {
+    private int rating;
+
+    public static GalleryListResponseDto of(ClothesResult clothesResult, String storeFilePath, String uploadFileName) {
         return new GalleryListResponseDto(
                 clothesResult.getId(),
-                clothesResult.getStoreFilePath(),
-                uploadFileName
+                storeFilePath,
+                uploadFileName,
+                clothesResult.getRating()
         );
     }
 }

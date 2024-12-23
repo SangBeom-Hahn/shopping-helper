@@ -76,9 +76,9 @@ class GalleryServiceTest extends ServiceTest {
         resultRepository.save(clothesResult2);
 
         List<GalleryListResponseDto> galleryListResponseDtos = List.of(
-                GalleryListResponseDto.of(clothesResult, clothes.getUploadFileName()),
-                GalleryListResponseDto.of(clothesResult1, clothes1.getUploadFileName()),
-                GalleryListResponseDto.of(clothesResult2, clothes2.getUploadFileName())
+                GalleryListResponseDto.of(clothesResult, clothesResult.getStoreFilePath(), clothes.getUploadFileName()),
+                GalleryListResponseDto.of(clothesResult1, clothesResult1.getStoreFilePath(), clothes1.getUploadFileName()),
+                GalleryListResponseDto.of(clothesResult2, clothesResult2.getStoreFilePath(), clothes2.getUploadFileName())
         );
         GallerysResponseDto expected = GallerysResponseDto.from(galleryListResponseDtos);
 

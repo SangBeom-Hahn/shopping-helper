@@ -18,11 +18,14 @@ public class SearchResponseDto {
 
     private String hostPageUrl;
 
+    private String name;
+
     public static SearchResponseDto from(Search search) {
         return new SearchResponseDto(
                 search.getThumbnailUrl(),
                 search.getWebSearchUrl(),
-                search.getHostPageUrl()
+                search.getHostPageUrl(),
+                search.getName()
         );
     }
 }
