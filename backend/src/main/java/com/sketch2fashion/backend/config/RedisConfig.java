@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
+import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
@@ -39,14 +40,14 @@ public class RedisConfig {
     }
 
     @Bean
-    public Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer() {
-        return new Jackson2JsonRedisSerializer<>(InferencesResponse.class);
+    public Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer() {
+        return new Jackson2JsonRedisSerializer<>(ResultResponseDto.class);
     }
 
     @Bean
     public RedisCacheManager cacheManager(
             RedisConnectionFactory redisConnectionFactory,
-            Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer
+            Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
     ) {
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
@@ -60,11 +61,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, InferencesResponse> redisTemplate(
+    public RedisTemplate<String, ResultResponseDto> redisTemplate(
             RedisConnectionFactory redisConnectionFactory,
-            Jackson2JsonRedisSerializer<InferencesResponse> jsonRedisSerializer
+            Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
     ) {
-        RedisTemplate<String, InferencesResponse> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, ResultResponseDto> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());

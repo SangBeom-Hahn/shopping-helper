@@ -2,19 +2,22 @@ package com.sketch2fashion.backend.controller;
 
 
 import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
+import com.sketch2fashion.backend.controller.dto.ClothesSharedRequest;
+import com.sketch2fashion.backend.controller.dto.ClothesUpdateRequest;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.service.ClothesService;
 import com.sketch2fashion.backend.service.MessageService;
+import com.sketch2fashion.backend.service.ResultService;
 import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
+import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.FileConverter;
 import com.sketch2fashion.backend.support.FileUploader;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +31,7 @@ public class ClothesController {
     private final ClothesService clothesService;
     private final MessageService messageService;
     private final FileUploader fileUploader;
+    private final ResultService resultService;
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ClothesSaveResponseDto> upload(@ModelAttribute @Validated ClothesSaveRequest clothesSaveRequest) {
@@ -46,5 +50,28 @@ public class ClothesController {
         return ResponseEntity
                 .created(URI.create("/api/clothes/upload/" + clothesSaveResponseDto.getId()))
                 .body(clothesSaveResponseDto);
+    }
+
+    @GetMapping("/{messageId}")
+    public ResponseEntity<ResultResponseDto> findInferenceResult(@PathVariable("messageId") Long messageId) {
+        return ResponseEntity.ok(resultService.findResult(messageId));
+    }
+
+    @PutMapping("/{messageId}")
+    public ResponseEntity<Void> updateRate(
+            @PathVariable("messageId") Long messageId,
+            @RequestBody @Validated ClothesUpdateRequest clothesUpdateRequest
+    ) {
+        resultService.updateResult(messageId, clothesUpdateRequest.getRating(), clothesUpdateRequest.getReview());
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{messageId}/share")
+    public ResponseEntity<Void> share(
+            @PathVariable("messageId") Long messageId,
+            @RequestBody @Validated ClothesSharedRequest clothesSharedRequest
+    ) {
+        resultService.updateShared(messageId, clothesSharedRequest.getShared());
+        return ResponseEntity.noContent().build();
     }
 }

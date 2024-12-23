@@ -29,6 +29,14 @@
             border-radius: 20px;
             cursor: pointer;
         }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
         .bold-34 {
             color: #7c6251;
             font-family: 'Poppins', sans-serif;
@@ -45,7 +53,6 @@
             background-color: darkgray;
             margin: 0;
         }
-
         .main {
             padding-bottom: 20px;
             padding: 0px;
@@ -55,7 +62,6 @@
             padding: 22px;
             background-color: lightcyan;
         }
-
         .color-main {
             color: #AD6B2D;
         }
@@ -98,7 +104,6 @@
         .poppins-bold-52 {
             font-size: 52px;
         }
-
         .poppins-bold-20 {
             font-size: 20px;
         }
@@ -128,7 +133,7 @@
         }
     </style>
 </head>
-<body>
+<body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
 <div th:replace="~{fragment/header :: header}"></div>
 <hr class="divider">
 <div class="main">
@@ -140,12 +145,10 @@
             본인의 니즈를 완벽히 충족하는 의류 상품을 찾으세요.
         </p>
         <div style="padding-top: 10px;">
-            <!-- TODO: 갤러리 기능 구현 예정
-            <button class="button" onclick="location.href='/api/gallery'">
+            <button class="button" onclick="location.href='/api/gallerys'">
                 <span class="poppins-bold-20">갤러리 구경</span>
             </button>
-            -->
-            <button class="button" onclick="location.href='/api/clothes/upload'" style="margin-left: 80px;">
+            <button class="button" onclick="location.href='/api/upload'" style="margin-left: 80px;">
                 <span class="poppins-bold-20">원하는 제품 검색</span>
             </button>
         </div>
