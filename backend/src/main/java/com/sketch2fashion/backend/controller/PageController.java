@@ -35,6 +35,16 @@ public class PageController {
         return "result";
     }
 
+    @GetMapping("/gallerys")
+    public String gallery() {
+        return "gallery";
+    }
+
+    @GetMapping("/search")
+    public String search() {
+        return "search";
+    }
+
     @GetMapping("/farfetch")
     public String farfetch() {
         return "farfetch";

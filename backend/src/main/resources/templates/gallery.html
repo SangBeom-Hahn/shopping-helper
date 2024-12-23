@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <title>갤러리</title>
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .bold-20 {
+            color: #7c6251;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        body {
+            margin: 0px 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .gallery-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            width: 200px;
+            height: 280px;
+            text-align: left;
+            background-color: white;
+        }
+        .result-item img {
+            max-width: 100%;
+            height: 250px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
+    <div th:replace="~{fragment/header :: header}"></div>
+    <hr class="divider">
+
+    <h1>갤러리</h1>
+    <div id="gallery1" class="gallery-item"></div>
+    <script>
+        async function fetchGallery() {
+            try {
+                const response = await fetch('/api/gallery');
+                if (!response.ok) {
+                    throw new Error('네트워크 응답이 좋지 않습니다.');
+                }
+                const data = await response.json();
+                displayGallery(data.galleryListResponseDtos);
+            } catch (error) {
+                console.error('갤러리 데이터를 가져오는 중 오류가 발생했습니다:', error);
+            }
+        }
+
+        function displayGallery(galleryList) {
+            const galleryDiv = document.getElementById('gallery1');
+            galleryDiv.innerHTML = '';
+
+            galleryList.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'result-item';
+
+                const img = document.createElement('img');
+                img.src = item.storeFilePath;
+
+                img.addEventListener('click', () => {
+                    sessionStorage.setItem('resultId', item.id);
+                    location.href='/api/search';
+                });
+                img.style.cursor = 'pointer';
+                img.style.transition = 'box-shadow 0.2s';
+                img.addEventListener('mouseenter', () => {
+                    img.style.boxShadow = '3px 3px 5px rgba(0, 0, 0, 0.2), -3px -3px 5px rgba(0, 0, 0, 0.2), 0 3px 5px rgba(0, 0, 0, 0.2)';
+                });
+                img.addEventListener('mouseleave', () => {
+                    img.style.boxShadow = 'none';
+                });
+
+                const descriptionContainer = document.createElement('div');
+                descriptionContainer.style.display = 'flex';
+                descriptionContainer.style.justifyContent = 'space-between';
+                descriptionContainer.style.alignItems = 'center';
+
+                const description = document.createElement('p');
+                description.textContent = item.uploadFileName;
+                description.className = 'image-description';
+                description.style.overflow = 'hidden';
+                description.style.whiteSpace = 'nowrap';
+                description.style.textOverflow = 'ellipsis';
+                description.style.width = '70%';
+                description.style.margin = '0';
+                description.style.flexGrow = '1';
+                description.style.cursor = 'pointer';
+                description.addEventListener('click', () => {
+                    sessionStorage.setItem('resultId', item.id);
+                    location.href='/api/search';
+                });
+
+                description.style.textDecoration = 'none';
+                description.addEventListener('mouseenter', () => {
+                    description.style.textDecoration = 'underline';
+                    description.style.textDecorationColor = 'black';
+                });
+                description.addEventListener('mouseleave', () => {
+                    description.style.textDecoration = 'none';
+                });
+
+                const ratingContainer = document.createElement('span');
+                const totalStars = 5;
+                const ratingValue = item.rating;
+
+                for (let i = 1; i <= totalStars; i++) {
+                    const star = document.createElement('i');
+                    star.className = 'fas fa-star';
+                    star.style.fontSize = '10px';
+                    star.style.color = (i <= ratingValue) ? '#6298E0' : '#CCCCCC';
+                    ratingContainer.appendChild(star);
+                }
+
+                // TODO: 평점 전시를 위한 숫자
+                // const ratingNumber = document.createElement('span');
+                // ratingNumber.textContent = ratingValue;
+                // ratingNumber.style.fontSize = '14px';
+                // ratingNumber.style.marginLeft = '1px';
+                // ratingContainer.appendChild(ratingNumber);
+
+                descriptionContainer.appendChild(description);
+                descriptionContainer.appendChild(ratingContainer);
+
+                galleryItem.appendChild(img);
+                galleryItem.appendChild(descriptionContainer);
+                galleryDiv.appendChild(galleryItem);
+            });
+        }
+
+        window.onload = fetchGallery;
+    </script>
+</body>
+</html>

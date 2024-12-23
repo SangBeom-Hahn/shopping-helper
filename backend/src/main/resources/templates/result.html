@@ -29,6 +29,14 @@
             border-radius: 20px;
             cursor: pointer;
         }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 200px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
         .bold-34 {
             color: #7c6251;
             font-family: 'Poppins', sans-serif;
@@ -92,6 +100,20 @@
             background-color: #007BFF;
             color: white;
         }
+        .share-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 11%;
+        }
+        .share-button:hover {
+            background-color: #0056b3;
+        }
         #tooltip {
             display: none;
             position: absolute;
@@ -106,7 +128,7 @@
         }
         .review-container {
             display: none;
-            margin: 80px auto;
+            margin: 50px auto;
             padding: 20px;
             border: 1px solid #007BFF;
             border-radius: 5px;
@@ -165,6 +187,10 @@
         .review-container button:hover {
             background-color: #0056b3;
         }
+        body {
+            margin: 0px 10px;
+            font-family: 'Poppins', sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -188,6 +214,7 @@
         <a href="walmart.html" class="site-button">Walmart</a>
         <a href="ebay.html" class="site-button">eBay</a>
         <button class="site-button" onclick="handleNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">무작위사이트</button>
+        <button id="share-button" class="share-button" onclick="shareClothes()">갤러리에 공유하기</button>
     </div>
     <div id="tooltip">검색 결과로 이동합니다.</div>
     <div class="review-container" id="reviewContainer">
@@ -200,6 +227,30 @@
         <button onclick="saveReview()">보내기</button>
     </div>
     <script>
+
+        function shareClothes() {
+            const messageId = sessionStorage.getItem('messageId');
+            const url = `/api/clothes/${messageId}/share`;
+
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ shared: true }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('공유해주셔서 감사합니다😁');
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
         function showTooltip(event) {
             const tooltip = document.getElementById('tooltip');
             const button = event.target;
@@ -404,6 +455,14 @@
             if (isVisible === 'true') {
                 document.getElementById('reviewContainer').style.display = 'block';
             }
+
+            const button = document.getElementById('share-button');
+
+            if (isVisible === 'true') {
+                button.style.display = 'block';
+            } else {
+                button.style.display = 'none';
+            }
         }
 
         async function saveReview() {
@@ -413,7 +472,7 @@
             if (rating && review) {
                 const messageId = sessionStorage.getItem('messageId');
                 const url = `/api/clothes/${messageId}`;
-                const data = { rating: rating, review: review };
+                const data = {rating: rating, review: review};
 
                 try {
                     const response = await fetch(url, {
@@ -425,13 +484,6 @@
                     });
 
                     if (response.ok) {
-                        const reviewItem = document.createElement('li');
-                        reviewItem.textContent = `평점: ${rating}, 리뷰: ${review}`;
-                        document.getElementById('reviews').appendChild(reviewItem);
-
-                        document.getElementById('rating').value = '';
-                        document.getElementById('review').value = '';
-
                         alert('리뷰를 제공해주셔서 감사합니다.');
                     } else {
                         alert('리뷰 저장에 실패했습니다.');
