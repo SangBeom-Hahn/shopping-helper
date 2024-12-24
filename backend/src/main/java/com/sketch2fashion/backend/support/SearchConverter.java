@@ -3,7 +3,6 @@ package com.sketch2fashion.backend.support;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sketch2fashion.backend.exception.InferenceFailException;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.BufferedReader;

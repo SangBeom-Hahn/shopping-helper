@@ -1,7 +1,5 @@
 package com.sketch2fashion.backend.controller.dto;
 
-import com.sketch2fashion.backend.domain.message.ObjectType;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -13,9 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.sketch2fashion.backend.controller.dto.ValidateMessage.EMPTY_MESSAGE;
-import static com.sketch2fashion.backend.domain.message.ObjectType.HAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ClothesSaveRequestTest extends RequestTest {
 

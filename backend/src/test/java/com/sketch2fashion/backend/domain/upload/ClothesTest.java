@@ -1,15 +1,12 @@
 package com.sketch2fashion.backend.domain.upload;
 
 import com.sketch2fashion.backend.domain.message.Message;
-import com.sketch2fashion.backend.domain.message.ObjectType;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.sketch2fashion.backend.domain.message.ObjectType.*;
+import static com.sketch2fashion.backend.domain.message.ObjectType.T_SHIRTS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ClothesTest {
 

@@ -5,7 +5,7 @@ import com.sketch2fashion.backend.domain.message.ObjectType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class SearchTest {
 

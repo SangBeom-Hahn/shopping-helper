@@ -1,8 +1,6 @@
 package com.sketch2fashion.backend.config;
 
-import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
-import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;

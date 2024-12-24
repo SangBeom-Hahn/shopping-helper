@@ -2,10 +2,8 @@ package com.sketch2fashion.backend.domain.file;
 
 import com.sketch2fashion.backend.exception.InvalidFileFormatException;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Arrays;
-import java.util.List;
 
 @Getter
 public enum FileExtension {

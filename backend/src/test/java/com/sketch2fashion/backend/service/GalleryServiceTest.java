@@ -1,7 +1,6 @@
 package com.sketch2fashion.backend.service;
 
 import com.sketch2fashion.backend.domain.message.Message;
-import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
 import com.sketch2fashion.backend.domain.modelresult.Search;
 import com.sketch2fashion.backend.domain.upload.Clothes;
@@ -9,7 +8,6 @@ import com.sketch2fashion.backend.service.dto.GalleryListResponseDto;
 import com.sketch2fashion.backend.service.dto.GallerysResponseDto;
 import com.sketch2fashion.backend.service.dto.SearchResponseDto;
 import com.sketch2fashion.backend.service.dto.SearchsResponseDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,8 +15,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.sketch2fashion.backend.domain.message.ObjectType.T_SHIRTS;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class GalleryServiceTest extends ServiceTest {
 

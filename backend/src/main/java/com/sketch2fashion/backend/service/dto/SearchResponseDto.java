@@ -1,7 +1,6 @@
 package com.sketch2fashion.backend.service.dto;
 
 import com.sketch2fashion.backend.domain.modelresult.Search;
-import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

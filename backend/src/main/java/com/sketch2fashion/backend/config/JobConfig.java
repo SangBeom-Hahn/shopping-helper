@@ -5,8 +5,6 @@ import com.sketch2fashion.backend.service.ResultService;
 import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.support.ClothesModelHttpCaller;
 import com.sketch2fashion.backend.support.consume.ClothesJobConsumerListener;
-import com.sketch2fashion.backend.support.publish.Type;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -17,7 +15,6 @@ import org.springframework.data.redis.core.convert.MappingRedisConverter;
 import org.springframework.data.redis.core.convert.RedisConverter;
 import org.springframework.data.redis.core.mapping.RedisMappingContext;
 import org.springframework.data.redis.hash.ObjectHashMapper;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 
