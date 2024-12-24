@@ -4,6 +4,7 @@ package com.sketch2fashion.backend.controller;
 import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
 import com.sketch2fashion.backend.controller.dto.ClothesSharedRequest;
 import com.sketch2fashion.backend.controller.dto.ClothesUpdateRequest;
+import com.sketch2fashion.backend.domain.file.BasicSketch;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.service.ClothesService;
@@ -16,12 +17,19 @@ import com.sketch2fashion.backend.support.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
+
+import static com.sketch2fashion.backend.utils.SketchConstants.ATTACH_FILENAME;
+import static com.sketch2fashion.backend.utils.SketchConstants.BASIC_SKETCH_PATH;
 
 @RestController
 @RequestMapping("/api/clothes")
@@ -73,5 +81,23 @@ public class ClothesController {
     ) {
         resultService.updateShared(messageId, clothesSharedRequest.getShared());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/images/{imageId}")
+    public Resource downloadImage(@PathVariable("imageId") String imageId) throws IOException {
+        return new UrlResource(String.format(BASIC_SKETCH_PATH, imageId));
+    }
+
+    @GetMapping("/download/{imageId}")
+    public ResponseEntity<Resource> downloadAttach(@PathVariable("imageId") String imageId) throws IOException {
+        UrlResource urlResource = new UrlResource(String.format(BASIC_SKETCH_PATH, imageId));
+        String encodedFileName = UriUtils.encode(
+                BasicSketch.from(imageId).getName(),
+                StandardCharsets.UTF_8
+        );
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, String.format(ATTACH_FILENAME, encodedFileName))
+                .body(urlResource);
     }
 }

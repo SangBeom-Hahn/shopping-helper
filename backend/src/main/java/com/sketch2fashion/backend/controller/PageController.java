@@ -69,4 +69,9 @@ public class PageController {
     public String noFilter() {
         return "noFilter";
     }
+
+    @GetMapping("/basic")
+    public String basicSketch() {
+        return "basicSketch";
+    }
 }
