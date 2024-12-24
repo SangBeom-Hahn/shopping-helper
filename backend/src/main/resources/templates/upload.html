@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Helper</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .top-logo {
             background: white;
             height: 50px;
-            width: 200px;
+            width: 123px;
             border: none;
             border-radius: 20px;
             cursor: pointer;
@@ -33,21 +34,34 @@
         .gallery {
             background: white;
             height: 50px;
-            width: 200px;
+            width: 190px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .upload {
+            background: white;
+            height: 50px;
+            width: 160px;
             border: none;
             border-radius: 20px;
             cursor: pointer;
         }
         .bold-34 {
-            color: #7c6251;
+            color: #1496f4;
             font-family: 'Poppins', sans-serif;
             font-size: 20px;
             font-weight: bold;
+            letter-spacing: -1px;
         }
         .bold-20 {
-            color: #7c6251;
+            color: #000000;
             font-family: 'Poppins', sans-serif;
             font-size: 15px;
+            font-weight: bold;
+        }
+        .bold-20:hover {
+            color: #35C5F0;
         }
         .divider {
             height: 0.2px;
@@ -65,7 +79,7 @@
             padding-bottom: 35px;
         }
         .button {
-            background-color: #875D36;
+            background-color: #35C5F0;
             height: 60px;
             width: 70%;
             border: none;
@@ -86,7 +100,7 @@
         }
         .poppins-regular-24 {
             font-size: 24px;
-            color: #AD6B2D;
+            color: #35C5F0;
         }
         .color-upload-guide-bg {
             background-color: #e0ffff;
@@ -111,7 +125,7 @@
             font-family: 'Poppins', sans-serif;
         }
         .dropzone-area {
-            border: 3px dotted #AD6B2D;
+            border: 3px dotted #35C5F0;
             height: 100%;
             position: relative;
             display: flex;
@@ -150,6 +164,29 @@
             height: 200px;
             object-fit: contain;
         }
+        a {
+            color: black;
+        }
+        a:hover {
+            color: #35C5F0;
+        }
+        select {
+            appearance: none;
+            padding: 10px 40px 10px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
     </style>
 </head>
 <body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
@@ -181,8 +218,8 @@
 
             const objectType = document.getElementById('clothing-type').value;
             formData.append('objectType', objectType);
-            const refine = document.querySelector('input[name="refine-type"]:checked');
-            formData.append('refine', refine.value);
+            const refine = document.getElementById('refine-type').value;
+            formData.append('refine', refine);
 
             try {
                 let response = await fetch('/api/clothes/upload', {
@@ -245,12 +282,12 @@
     <div class="vh100-desktop-upload">
         <div class="main">
             <div class="v60">
-                <div class="poppins-regular-32 padding-h-30" style="margin-left: 80px;">찾고 싶은 디자인 이미지 업로드</div>
+                <div class="poppins-regular-32 padding-h-30" style="margin-left: 80px;">찾고 싶은 의류 스케치 업로드</div>
                 <div class="v80 padding-bottom-50">
                     <div class="stack" style="display: flex; justify-content: space-between;">
                         <div style="width: 50%; min-height: 550px;">
                             <div class="stack" style="display: flex; flex-direction: column; height: 100%;">
-                                <div style="height: 100%; border: 3px dotted #AD6B2D; position: relative;">
+                                <div style="height: 100%; border: 3px dotted #35C5F0; position: relative;">
                                     <div class="dropzone-area" style="height: 100%; position: relative;">
                                         <img id="imagePreview" alt="Image Preview" style="display: none;"/>
                                         <div class="dropzone-text" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px;">
@@ -269,49 +306,54 @@
                             </div>
                         </div>
                         <div class="poppins-regular-18" style="width: 50%; position: relative; margin-left: 16px;">
-                            <div class="poppins-regular-24">의류 디자인 가이드</div>
+                            <div class="poppins-regular-24" style="font-weight: bold">의류 디자인 가이드</div>
                             <div class="color-upload-guide-bg" style="margin: 30px 0;">
                                 <div class="padding-10" style="padding: 20px 10px;">
-                                    1. 검은색 펜으로 테두리를 그려주세요.
+                                    1. 스케치 <a th:href="|/api/basic|" style="font-weight: bold; font-size: 20px;">밑그림</a>을 준비해 주세요.
+                                    <br>
+                                    2. 검은색 펜으로 원하는 디자인을 그려주세요.
                                     <br/>
-                                    테두리가 끊김이 없을수록 완성도가 높아집니다.
+                                    디자인 요소의 테두리가 끊김이 없을수록 완성도가 높아집니다.
                                     <br/>
-                                    2. 디자인한 의류가 정중앙에 오도록 해주세요.
+                                    3. 디자인한 의류가 이미지 파일의 정중앙에 오도록 해주세요.
                                     <br/>
-                                    (한번에 한 의류만 검색할 수 있습니다.)
+                                    (한 번에 한 의류만 검색할 수 있습니다.)
                                     <br/><br/>
                                     검색 품질을 높이기 위해 꼭!
                                     <br/>
-                                    <a href="/api/guide" style="color: black; font-weight: bold; font-size: 20px;">상세 가이드</a>를 참고하여 디자인을 완성해주세요.
+                                    <a href="/api/guide" style="font-weight: bold; font-size: 20px;">상세 가이드</a>를 참고하여 디자인을 완성해 주세요.
                                 </div>
                             </div>
                             <div class="margin-wrapper">
-                                Shopping Helper는 <span class="poppins-bold-18">딥러닝</span>을 기반으로 이미지를 채색, 재구성하는 프로그램입니다.
+                                Helper's 쇼핑은 <span class="poppins-bold-18">딥러닝</span>을 기반으로 이미지를 채색, 실사화하는 프로그램입니다.
                                 <br/><br/>
                                 유저의 데이터에 따라 <span class="poppins-bold-18">최소 5초 ~ 최대 1분</span> 걸릴 수 있습니다.
-                                <br/><br/>
+                                <br/>
                                 조금만 기다려주세요.
+                                <br/><br/>
                             </div>
-                            <div style="margin: 20px auto;">
-                                <label for="clothing-type">의류 선택:</label>
-                                <select id="clothing-type">
+                            <div style="position: relative; display: inline-block;">
+                                <label for="clothing-type" style="font-weight: bold; margin-right: 10px;">카테고리 선택 :</label>
+                                <select id="clothing-type" style="padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; appearance: none; background-color: white; cursor: pointer;">
                                     <option value="T_SHIRTS">티셔츠</option>
                                     <option value="PANTS">바지</option>
                                     <option value="SKIRT">치마</option>
                                     <option value="HAT">모자</option>
                                 </select>
+                                <i class="fas fa-chevron-down" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                             </div>
-                            <div style="margin: 20px auto;">
-                                <label for="refine-type">채색 결과 정제 여부:</label>
-                                <input type="radio" id="true" name="refine-type" value="true">
-                                <label for="true">TRUE</label>
-                                <input type="radio" id="false" name="refine-type" value="false">
-                                <label for="false">FALSE</label>
+                            <div style="position: relative; display: inline-block;">
+                                <label for="refine-type" style="font-weight: bold; margin-right: 10px;">채색 결과 정제 :</label>
+                                <select id="refine-type" style="padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; appearance: none; background-color: white; cursor: pointer;">
+                                    <option value="true">TRUE</option>
+                                    <option value="false">FALSE</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
                             </div>
                             <button class="button" style="margin: 80px auto auto;" onclick="uploadImage()">
-                                <div class="poppins-bold-20">이미지 검색하기</div>
+                                <div class="poppins-bold-20">유사 상품 검색하기</div>
                             </button>
-                            <div id="loading">검색 중 입니다~~ 잠시만 기다려주세욤😁</div>
+                            <div id="loading">검색 중 입니다~~ 잠시만 기다려주세요😁</div>
                         </div>
                     </div>
                 </div>
