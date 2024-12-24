@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.exception;
 
-import com.google.api.gax.rpc.HeaderProvider;
 import org.springframework.http.HttpStatus;
 
 public class InferenceFailException extends HelperException {

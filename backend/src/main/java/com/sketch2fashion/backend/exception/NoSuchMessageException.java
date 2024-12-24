@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.exception;
 
-import com.google.api.Http;
 import org.springframework.http.HttpStatus;
 
 public class NoSuchMessageException extends HelperException {

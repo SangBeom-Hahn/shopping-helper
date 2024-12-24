@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.service;
 
-import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
 import com.sketch2fashion.backend.controller.dto.ClothesUpdateRequest;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
@@ -8,11 +7,9 @@ import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
 import com.sketch2fashion.backend.domain.modelresult.Search;
 import com.sketch2fashion.backend.domain.upload.Clothes;
 import com.sketch2fashion.backend.exception.DuplicateResultException;
-import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.consume.dto.InferenceListResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,13 +17,13 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ResultServiceTest extends ServiceTest {

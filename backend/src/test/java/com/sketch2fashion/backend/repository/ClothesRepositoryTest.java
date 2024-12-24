@@ -3,16 +3,13 @@ package com.sketch2fashion.backend.repository;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.upload.Clothes;
-import com.sketch2fashion.backend.domain.upload.Status;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.sketch2fashion.backend.domain.upload.Status.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.sketch2fashion.backend.domain.upload.Status.SUCCESS;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ClothesRepositoryTest extends RepositoryTest {
 

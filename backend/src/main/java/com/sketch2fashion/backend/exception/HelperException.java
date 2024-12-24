@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.exception;
 
-import jakarta.persistence.GeneratedValue;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

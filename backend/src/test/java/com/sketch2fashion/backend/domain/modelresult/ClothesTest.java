@@ -2,16 +2,14 @@ package com.sketch2fashion.backend.domain.modelresult;
 
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
-import com.sketch2fashion.backend.service.dto.MessageSaveResponseDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.sketch2fashion.backend.domain.modelresult.Rating.FIRST;
-import static com.sketch2fashion.backend.domain.modelresult.Status.*;
-import static org.assertj.core.api.Assertions.*;
+import static com.sketch2fashion.backend.domain.modelresult.Status.WAIT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class ClothesTest {
 

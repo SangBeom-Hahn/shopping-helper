@@ -4,13 +4,10 @@
 <div th:fragment="header" style="margin: 0 80px;">
     <nav class="nav-top">
         <div class="nav-wrapper">
-            <span class="bold-34">
-                <img th:src="@{/img/logo.png}" alt="logo" style="height: 40px; vertical-align: middle;">
-            </span>
-            <button class="top-logo" onclick="location.href='/'">
-                <span class="bold-34">Shopping Helper</span>
+            <img th:src="@{/img/logo.png}" alt="logo" style="height: 40px; vertical-align: middle;">
+            <button class="top-logo" onclick="location.href='/'" style="padding-left: 0">
+                <span class="bold-34">Hepler's 쇼핑</span>
             </button>
-
             <button class="top" onclick="location.href='/'">
                 <span class="bold-20">서비스 안내</span>
             </button>
@@ -19,6 +16,9 @@
             </button>
             <button class="gallery" onclick="location.href='/api/gallerys'">
                 <span class="bold-20">다른 사람 결과 구경하기</span>
+            </button>
+            <button class="upload" onclick="location.href='/api/upload'">
+                <span class="bold-20">원하는 상품 검색하기</span>
             </button>
         </div>
     </nav>

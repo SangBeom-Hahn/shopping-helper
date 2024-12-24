@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
-import static com.sketch2fashion.backend.controller.dto.ValidateMessage.*;
+import static com.sketch2fashion.backend.controller.dto.ValidateMessage.EMPTY_MESSAGE;
 
 @Getter
 @Setter

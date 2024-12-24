@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.support;
 
-import com.sketch2fashion.backend.domain.file.FileExtension;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.exception.AbsentFileException;
 import org.assertj.core.api.Assertions;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static com.sketch2fashion.backend.domain.file.FileExtension.JPEG;
-import static org.junit.jupiter.api.Assertions.*;
 
 class FileConverterTest {
 

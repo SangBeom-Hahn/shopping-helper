@@ -3,7 +3,6 @@ package com.sketch2fashion.backend.repository;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
-import com.sketch2fashion.backend.domain.modelresult.Rating;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static com.sketch2fashion.backend.domain.modelresult.Rating.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
