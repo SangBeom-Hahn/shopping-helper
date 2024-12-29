@@ -11,6 +11,7 @@ from keras.models import load_model
 class Tshirts_GAN(Base_GAN):
     
     def __init__(self) -> None:
+        super().__init__()
         self.model = self._load_model()
     
     def _load_model(self):

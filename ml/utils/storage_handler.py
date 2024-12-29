@@ -4,13 +4,14 @@ import mysql
 from google.cloud import storage
 from google.oauth2 import service_account
 from mysql.connector import Error
+from typing import Optional
 from .constants import *
 
 KEY_PATH = ""
 credentials = service_account.Credentials.from_service_account_file(KEY_PATH)
 
 class StorageHandler():
-    def download_img(self, file_name):
+    def download_img(self, file_name: str) -> None:
         try:
             storage_client = storage.Client(credentials = credentials, project = credentials.project_id)
             bucket = storage_client.bucket(BUCKET_NAME)
@@ -19,7 +20,7 @@ class StorageHandler():
         except GoogleCloudError as e:
             print(e)
         
-    def upload_img(self, src, dest):
+    def upload_img(self, src: str, dest: str) -> None:
         try:
             storage_client = storage.Client(credentials = credentials, project = credentials.project_id)
             bucket = storage_client.bucket(BUCKET_NAME)
@@ -29,7 +30,7 @@ class StorageHandler():
         except GoogleCloudError as e:
             print(e)
             
-    def changeClothesResultStatus(self, colored_file_path, status, status_message, message_id):
+    def changeClothesResultStatus(self, colored_file_path: str, status: str, status_message: str, message_id: int) -> None:
         connection = None
         try:
             connection = mysql.connector.connect(

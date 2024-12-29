@@ -1,6 +1,7 @@
 import requests
 from .search_converter import SearchConverter
 from .enum import Site
+from typing import Dict, List, Any, Union
 
 
 BASE_URI = "https://api.bing.microsoft.com/v7.0/images/visualsearch"
@@ -11,7 +12,7 @@ KNOWLEDGE_REQUEST_KEY = 'knowledgeRequest'
 
 class ImageSearcher():
     @staticmethod
-    def search(image_path):
+    def search(image_path: str) -> Dict[str, Union[List[Any], Dict[str, int]]]:
         search_results = []
         result = {}
         
@@ -40,7 +41,7 @@ class ImageSearcher():
         return result
 
     @staticmethod
-    def _convert_response(search_results, result, site, response):
+    def _convert_response(search_results: List[Any], result: Dict[str, int], site: str, response: Dict[str, Any]) -> None:
         search_result = SearchConverter.convert_search_result(response, site)
         result[site] = len(search_result)
         search_results.extend(search_result)
