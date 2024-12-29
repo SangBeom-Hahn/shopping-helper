@@ -40,7 +40,6 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
             CloseableHttpResponse response = inferenceProcess(modelPath, messageResponseDto);
             StatusCode statusCode = StatusCode.from(response.getStatusLine().getStatusCode());
 
-            // TODO: 추론 서버 예외처리
             if(statusCode.isOk()) {
                 InferencesResponse inferenceResponse = SearchConverter.convertResponse(response);
                 resultService.saveResult(messageResponseDto.getId(), inferenceResponse);

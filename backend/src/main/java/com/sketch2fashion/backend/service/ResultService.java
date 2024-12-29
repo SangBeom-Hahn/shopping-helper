@@ -20,6 +20,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.sketch2fashion.backend.utils.SketchConstants.*;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,9 +35,9 @@ public class ResultService {
     private final SignedUrlBuilder signedUrlBuilder;
 
     @Cacheable(
-            value = "RESULT_CACHE",
+            value = SEARCH_RESULT_CACHE,
             key = "#messageId",
-            cacheManager = "cacheManager"
+            cacheManager = CACHE_MANAGER_NAME
     )
     public ResultResponseDto saveResult(Long messageId, InferencesResponse inferencesResponse) {
         Message message = messageRepository.findById(messageId)
@@ -55,7 +57,7 @@ public class ResultService {
     @Transactional(readOnly = true)
     public ResultResponseDto findResult(Long messageId) {
         return redisTemplate.opsForValue()
-                .get("RESULT_CACHE::" + messageId);
+                .get(KEY_PREFIX + messageId);
     }
 
     public void handlePersistEntity(Long messageId) {
@@ -86,7 +88,7 @@ public class ResultService {
     }
 
     private void cleanCacheProcess(Long messageId) {
-        redisTemplate.delete("RESULT_CACHE::" + messageId);
+        redisTemplate.delete(KEY_PREFIX + messageId);
     }
 
     public void updateResult(Long id, Integer rating, String review) {

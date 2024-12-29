@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import static com.sketch2fashion.backend.utils.SketchConstants.PATH;
+import static com.sketch2fashion.backend.utils.SketchConstants.STORE_PATH_FORMAT;
+
 @Component
 public class FileUploader {
 
@@ -34,7 +37,7 @@ public class FileUploader {
             String contentType = fileMetaData.getContentType();
             String extension = fileMetaData.getExtension()
                     .getValues();
-            String storePath = "ztyle/upload/" + uuid + extension;
+            String storePath = String.format(STORE_PATH_FORMAT, PATH, uuid, extension);
 
             BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, storePath)
                     .setContentType(contentType)
