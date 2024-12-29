@@ -8,7 +8,7 @@ public class NoSuchMessageException extends HelperException {
         super(
                 String.format("존재하지 않는 메세지 id 입니다. id = {%d}", id),
                 "존재하지 않는 메세지 id 입니다.",
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.NOT_FOUND,
                 "4001"
         );
     }

@@ -8,7 +8,7 @@ public class NoSuchTypeException extends HelperException {
         super(
                 String.format("존재하지 않는 TYPE 입니다. type = {%s}", type),
                 "존재하지 않는 TYPE 입니다.",
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.NOT_FOUND,
                 "4005"
         );
     }

@@ -8,7 +8,7 @@ public class NoSuchClothesException extends HelperException {
         super(
                 String.format("존재하지 않는 메세지로 요청한 의류 정보입니다. id = {%d}", id),
                 "존재하지 않는 메세지로 요청한 의류 정보입니다.",
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.NOT_FOUND,
                 "4002"
         );
     }
