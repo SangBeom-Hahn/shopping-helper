@@ -14,7 +14,7 @@ public class SearchsResponseDto {
 
     private List<SearchResponseDto> searchResponseDtos;
 
-    public static SearchsResponseDto from(List<SearchResponseDto> searchResponseDtos) {
+    public static SearchsResponseDto from(final List<SearchResponseDto> searchResponseDtos) {
         return new SearchsResponseDto(searchResponseDtos);
     }
 }

@@ -14,7 +14,7 @@ public class GallerysResponseDto {
 
     private List<GalleryListResponseDto> galleryListResponseDtos;
 
-    public static GallerysResponseDto from(List<GalleryListResponseDto> galleryListResponseDtos) {
+    public static GallerysResponseDto from(final List<GalleryListResponseDto> galleryListResponseDtos) {
         return new GallerysResponseDto(galleryListResponseDtos);
     }
 }

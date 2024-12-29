@@ -9,11 +9,11 @@ import java.io.IOException;
 
 public class FileConverter {
 
-    public static FileMetaData convertImage(MultipartFile image) {
+    public static FileMetaData convertImage(final MultipartFile image) {
         validateImageExist(image);
 
         try {
-            String originalFilename = image.getOriginalFilename();
+            final String originalFilename = image.getOriginalFilename();
 
             return new FileMetaData(
                     image.getInputStream(),
@@ -26,7 +26,7 @@ public class FileConverter {
         }
     }
 
-    private static void validateImageExist(MultipartFile image) {
+    private static void validateImageExist(final MultipartFile image) {
         if(image == null || image.isEmpty()) {
             throw new AbsentFileException();
         }

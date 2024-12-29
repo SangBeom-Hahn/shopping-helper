@@ -3,18 +3,19 @@ package com.sketch2fashion.backend.support;
 import com.sketch2fashion.backend.domain.message.ObjectType;
 
 import static com.sketch2fashion.backend.domain.message.ObjectType.*;
+import static com.sketch2fashion.backend.utils.SketchConstants.*;
 
 public class ModelSearcher {
 
-    public static String searchModel(ObjectType objectType) {
+    public static String searchModel(final ObjectType objectType) {
         if(isTshirts(objectType)) {
-            return "http://127.0.0.1:5000";
+            return TSHIRTS_WORKER_URI;
         } else if (isPants(objectType)) {
-            return "http://127.0.0.1:5001";
+            return PANTS_WORKER_URI;
         } else if (isHat(objectType)) {
-            return "http://127.0.0.1:5002";
+            return HAT_WORKER_URI;
         } else {
-            return "http://127.0.0.1:5003";
+            return SKIRT_WORKER_URI;
         }
     }
 }

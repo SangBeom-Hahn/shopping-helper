@@ -17,7 +17,7 @@ public enum StatusCode {
         this.value = value;
     }
 
-    public static StatusCode from(int value) {
+    public static StatusCode from(final int value) {
         return Arrays.stream(values())
                 .filter(statusCode -> statusCode.value == value)
                 .findFirst()

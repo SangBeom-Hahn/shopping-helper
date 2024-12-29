@@ -1,8 +1,9 @@
 from .constants import *
+from typing import Any, Dict, List
 
 class SearchConverter():
     @staticmethod
-    def convert_search_result(response, site):
+    def convert_search_result(response: Dict[str, Any], site: str) -> List[Dict[str, Any]]:
         try:
             
             search_result = response[BING_API_TAGS_KEY][0][BING_API_ACTIONS_KEY][2][BING_API_DATA_KEY][BING_API_VALUE_KEY]

@@ -12,7 +12,7 @@ public class MessageSaveResponseDto {
 
     private Long id;
 
-    public static MessageSaveResponseDto from(Long id) {
+    public static MessageSaveResponseDto from(final Long id) {
         return new MessageSaveResponseDto(id);
     }
 }

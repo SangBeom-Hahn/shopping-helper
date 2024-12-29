@@ -4,11 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public class NoSuchTypeException extends HelperException {
 
-    public NoSuchTypeException(String type) {
+    public NoSuchTypeException(final String type) {
         super(
                 String.format("존재하지 않는 TYPE 입니다. type = {%s}", type),
                 "존재하지 않는 TYPE 입니다.",
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.NOT_FOUND,
                 "4005"
         );
     }

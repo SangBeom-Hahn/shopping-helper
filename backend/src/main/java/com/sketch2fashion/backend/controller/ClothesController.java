@@ -44,15 +44,15 @@ public class ClothesController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ClothesSaveResponseDto> upload(@ModelAttribute @Validated ClothesSaveRequest clothesSaveRequest) {
 
-        FileMetaData fileMetaData = FileConverter.convertImage(clothesSaveRequest.getImage());
-        String storeFilePath = fileUploader.upload(fileMetaData);
-        Long saveMessageId = messageService.createMessage(
+        final FileMetaData fileMetaData = FileConverter.convertImage(clothesSaveRequest.getImage());
+        final String storeFilePath = fileUploader.upload(fileMetaData);
+        final Long saveMessageId = messageService.createMessage(
                 ObjectType.from(clothesSaveRequest.getObjectType()),
                 storeFilePath,
                 clothesSaveRequest.getRefine()
         ).getId();
 
-        ClothesSaveResponseDto clothesSaveResponseDto =
+        final ClothesSaveResponseDto clothesSaveResponseDto =
                 clothesService.createClothes(saveMessageId, storeFilePath, fileMetaData.getOriginalFileName());
 
         return ResponseEntity
@@ -90,7 +90,7 @@ public class ClothesController {
 
     @GetMapping("/download/{imageId}")
     public ResponseEntity<Resource> downloadAttach(@PathVariable("imageId") String imageId) throws IOException {
-        UrlResource urlResource = new UrlResource(String.format(BASIC_SKETCH_PATH, imageId));
+        final UrlResource urlResource = new UrlResource(String.format(BASIC_SKETCH_PATH, imageId));
         String encodedFileName = UriUtils.encode(
                 BasicSketch.from(imageId).getName(),
                 StandardCharsets.UTF_8

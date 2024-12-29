@@ -28,14 +28,14 @@ public class InferencesResponse {
     private List<InferenceListResponse> result;
 
     public static InferencesResponse of(
-            int farfetch,
-            int amazon,
-            int pinterest,
-            int etsy,
-            int walmart,
-            int ebay,
-            int noFilter,
-            List<InferenceListResponse> result
+            final int farfetch,
+            final int amazon,
+            final int pinterest,
+            final int etsy,
+            final int walmart,
+            final int ebay,
+            final int noFilter,
+            final List<InferenceListResponse> result
     ) {
         return new InferencesResponse(
                 farfetch,

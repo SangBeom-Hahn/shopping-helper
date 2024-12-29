@@ -25,11 +25,11 @@ public class SignedUrlBuilder {
         this.bucketName = bucketName;
     }
 
-    public String generateSignedUrl(String storeFilePath) {
-        BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(bucketName, storeFilePath))
+    public String generateSignedUrl(final String storeFilePath) {
+        final BlobInfo blobInfo = BlobInfo.newBuilder(BlobId.of(bucketName, storeFilePath))
                 .build();
 
-        URL url = storage.signUrl(
+        final URL url = storage.signUrl(
                 blobInfo,
                 5,
                 TimeUnit.MINUTES,

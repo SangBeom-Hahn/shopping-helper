@@ -1,6 +1,6 @@
 import json
 
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 from exception import *
 from model_launcher import *
 from utils import *
@@ -23,10 +23,10 @@ class TshirtsWorker(BaseHTTPRequestHandler):
         except Exception as e:
             self._send_response(Status.BAD.value, {ERROR: str(e)})
 
-    def _inference_process(self, input_data, message_id):
+    def _inference_process(self, input_data: str, message_id: str) -> str:
         return model.inference(input_data, message_id)
 
-    def _get_input_data(self) -> str:
+    def _get_input_data(self) -> Tuple[str, str]:
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         input_data = json.loads(post_data)
@@ -39,7 +39,7 @@ class TshirtsWorker(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(response.encode(UTF8))
 
-def run(server_class=HTTPServer, handler_class=TshirtsWorker, port=5000):
+def run(server_class=HTTPServer, handler_class=TshirtsWorker, port: int = 5000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)
     print(f'추론 요청을 대기중입니다. port = {port}') 

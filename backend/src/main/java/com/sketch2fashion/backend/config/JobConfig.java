@@ -27,7 +27,7 @@ public class JobConfig {
 
     @Bean
     RedisMappingContext redisMappingContext() {
-        RedisMappingContext ctx = new RedisMappingContext();
+        final RedisMappingContext ctx = new RedisMappingContext();
         ctx.setInitialEntitySet(Collections.singleton(MessageResponseDto.class));
         return ctx;
     }
@@ -50,7 +50,7 @@ public class JobConfig {
             ObjectMapper objectMapper,
             ResultService resultService
     ) {
-        StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, MessageResponseDto>> options =
+        final StreamMessageListenerContainer.StreamMessageListenerContainerOptions<String, ObjectRecord<String, MessageResponseDto>> options =
                 StreamMessageListenerContainer.StreamMessageListenerContainerOptions
                 .builder()
                 .batchSize(1)
@@ -61,10 +61,10 @@ public class JobConfig {
                 .targetType(MessageResponseDto.class)
                 .build();
 
-        StreamMessageListenerContainer<String, ObjectRecord<String, MessageResponseDto>> clothesMessageListenerContainer =
+        final StreamMessageListenerContainer<String, ObjectRecord<String, MessageResponseDto>> clothesMessageListenerContainer =
                 StreamMessageListenerContainer.create(redisConnectionFactory, options);
 
-        StreamMessageListenerContainer.StreamReadRequest<String> streamReadRequest =
+        final StreamMessageListenerContainer.StreamReadRequest<String> streamReadRequest =
                 StreamMessageListenerContainer.StreamReadRequest
                         .builder(StreamOffset.create(CLOTHES.toString(), ReadOffset.lastConsumed()))
                         .build();

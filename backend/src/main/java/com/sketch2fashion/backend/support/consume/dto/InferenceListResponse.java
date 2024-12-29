@@ -22,11 +22,11 @@ public class InferenceListResponse {
     private String site;
 
     public static InferenceListResponse of(
-            String thumbnailUrl,
-            String webSearchUrl,
-            String hostPageUrl,
-            String name,
-            String site
+            final String thumbnailUrl,
+            final String webSearchUrl,
+            final String hostPageUrl,
+            final String name,
+            final String site
     ) {
         return new InferenceListResponse(thumbnailUrl, webSearchUrl, hostPageUrl, site, name);
     }

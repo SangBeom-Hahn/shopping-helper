@@ -15,7 +15,7 @@ public class InferenceRequest {
 
     private String storeFilePath;
 
-    public static InferenceRequest from(MessageResponseDto messageResponseDto) {
+    public static InferenceRequest from(final MessageResponseDto messageResponseDto) {
         return new InferenceRequest(
                 messageResponseDto.getId(),
                 messageResponseDto.getStoreFilePath()

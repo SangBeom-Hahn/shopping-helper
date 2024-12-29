@@ -49,15 +49,15 @@ public class ClothesResult extends BaseEntity {
         this.shared = false;
     }
 
-    public void changeRate(int rating) {
+    public void changeRate(final int rating) {
         this.rating = rating;
     }
 
-    public void changeReview(String review) {
+    public void changeReview(final String review) {
         this.review = review;
     }
 
-    public void changeShared(Boolean shared) {
+    public void changeShared(final Boolean shared) {
         this.shared = shared;
     }
 }

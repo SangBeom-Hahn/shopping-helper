@@ -19,7 +19,7 @@ public class GalleryListResponseDto {
 
     private int rating;
 
-    public static GalleryListResponseDto of(ClothesResult clothesResult, String storeFilePath, String uploadFileName) {
+    public static GalleryListResponseDto of(final ClothesResult clothesResult, final String storeFilePath, final String uploadFileName) {
         return new GalleryListResponseDto(
                 clothesResult.getId(),
                 storeFilePath,

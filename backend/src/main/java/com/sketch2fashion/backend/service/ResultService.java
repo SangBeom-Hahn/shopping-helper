@@ -20,6 +20,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.sketch2fashion.backend.utils.SketchConstants.*;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -33,16 +35,16 @@ public class ResultService {
     private final SignedUrlBuilder signedUrlBuilder;
 
     @Cacheable(
-            value = "RESULT_CACHE",
+            value = SEARCH_RESULT_CACHE,
             key = "#messageId",
-            cacheManager = "cacheManager"
+            cacheManager = CACHE_MANAGER_NAME
     )
-    public ResultResponseDto saveResult(Long messageId, InferencesResponse inferencesResponse) {
-        Message message = messageRepository.findById(messageId)
+    public ResultResponseDto saveResult(final Long messageId, final InferencesResponse inferencesResponse) {
+        final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NoSuchMessageException(messageId));
-        Clothes clothes = clothesRepository.findByMessage(message)
+        final Clothes clothes = clothesRepository.findByMessage(message)
                 .orElseThrow(() -> new NoSuchClothesException(messageId));
-        ClothesResult clothesResult = resultRepository.findByMessage(message)
+        final ClothesResult clothesResult = resultRepository.findByMessage(message)
                 .orElseThrow(() -> new NoSuchMessageException(messageId));
 
         return ResultResponseDto.of(
@@ -53,27 +55,27 @@ public class ResultService {
     }
 
     @Transactional(readOnly = true)
-    public ResultResponseDto findResult(Long messageId) {
+    public ResultResponseDto findResult(final Long messageId) {
         return redisTemplate.opsForValue()
-                .get("RESULT_CACHE::" + messageId);
+                .get(KEY_PREFIX + messageId);
     }
 
-    public void handlePersistEntity(Long messageId) {
+    public void handlePersistEntity(final Long messageId) {
         storeProcess(messageId);
         cleanCacheProcess(messageId);
     }
 
-    private void storeProcess(Long messageId) {
-        Message message = messageRepository.findById(messageId)
+    private void storeProcess(final Long messageId) {
+        final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NoSuchMessageException(messageId));
-        ClothesResult clothesResult = resultRepository.findByMessage(message)
+        final ClothesResult clothesResult = resultRepository.findByMessage(message)
                 .orElseThrow(() -> new NoSuchClothesException(messageId));
         validateDuplicateResult(clothesResult);
 
         findResult(messageId).getInferencesResponse()
                 .getResult()
                 .forEach(findResponse -> {
-                    Search search = new Search(
+                    final Search search = new Search(
                             findResponse.getThumbnailUrl(),
                             findResponse.getWebSearchUrl(),
                             findResponse.getHostPageUrl(),
@@ -85,26 +87,26 @@ public class ResultService {
                 });
     }
 
-    private void cleanCacheProcess(Long messageId) {
-        redisTemplate.delete("RESULT_CACHE::" + messageId);
+    private void cleanCacheProcess(final Long messageId) {
+        redisTemplate.delete(KEY_PREFIX + messageId);
     }
 
-    public void updateResult(Long id, Integer rating, String review) {
-        ClothesResult clothesResult = resultRepository.findById(id)
+    public void updateResult(final Long id, final Integer rating, final String review) {
+        final ClothesResult clothesResult = resultRepository.findById(id)
                 .orElseThrow(() -> new NoSuchClothesException(id));
 
         clothesResult.changeReview(review);
         clothesResult.changeRate(rating);
     }
 
-    public void updateShared(Long id, Boolean shared) {
-        ClothesResult clothesResult = resultRepository.findById(id)
+    public void updateShared(final Long id, final Boolean shared) {
+        final ClothesResult clothesResult = resultRepository.findById(id)
                 .orElseThrow(() -> new NoSuchClothesException(id));
 
         clothesResult.changeShared(shared);
     }
 
-    private void validateDuplicateResult(ClothesResult clothesResult) {
+    private void validateDuplicateResult(final ClothesResult clothesResult) {
         if(searchRepository.existsByClothes(clothesResult)) {
             throw new DuplicateResultException(clothesResult.getId());
         }

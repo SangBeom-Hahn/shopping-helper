@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface ResultRepository extends JpaRepository<ClothesResult, Long> {
 
-    Optional<ClothesResult> findByMessage(Message message);
+    Optional<ClothesResult> findByMessage(final Message message);
 
     @Query("select AVG(cr.rating) from clothes_model_result cr")
     Long averageOfRating();
 
-    List<ClothesResult> findAllByShared(Boolean shared);
+    List<ClothesResult> findAllByShared(final Boolean shared);
 }

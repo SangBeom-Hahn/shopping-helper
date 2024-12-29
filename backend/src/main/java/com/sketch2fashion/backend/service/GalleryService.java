@@ -31,16 +31,16 @@ public class GalleryService {
 
     @Transactional(readOnly = true)
     public GallerysResponseDto findAllGallery() {
-        List<GalleryListResponseDto> galleryResponseDtos = resultRepository.findAllByShared(true)
+        final List<GalleryListResponseDto> galleryResponseDtos = resultRepository.findAllByShared(true)
                 .stream()
                 .map(this::convertGalleryList)
                 .collect(Collectors.toList());
         return GallerysResponseDto.from(galleryResponseDtos);
     }
 
-    private GalleryListResponseDto convertGalleryList(ClothesResult clothesResult) {
-        Message message = clothesResult.getMessage();
-        Clothes clothes = clothesRepository.findByMessage(message)
+    private GalleryListResponseDto convertGalleryList(final ClothesResult clothesResult) {
+        final Message message = clothesResult.getMessage();
+        final Clothes clothes = clothesRepository.findByMessage(message)
                 .orElseThrow(() -> new NoSuchClothesException(clothesResult.getId()));
 
         return GalleryListResponseDto.of(
@@ -51,11 +51,11 @@ public class GalleryService {
     }
 
     @Transactional(readOnly = true)
-    public SearchsResponseDto findAllSearch(Long id) {
-        ClothesResult clothesResult = resultRepository.findById(id)
+    public SearchsResponseDto findAllSearch(final Long id) {
+        final ClothesResult clothesResult = resultRepository.findById(id)
                 .orElseThrow(() -> new NoSuchClothesException(id));
 
-        List<SearchResponseDto> searchResponseDtos = searchRepository.findAllByClothes(clothesResult)
+        final List<SearchResponseDto> searchResponseDtos = searchRepository.findAllByClothes(clothesResult)
                 .stream()
                 .map(SearchResponseDto::from)
                 .collect(Collectors.toList());

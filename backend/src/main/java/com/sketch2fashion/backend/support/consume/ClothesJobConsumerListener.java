@@ -31,18 +31,17 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
     private final ResultService resultService;
 
     @Override
-    public void onMessage(ObjectRecord<String, MessageResponseDto> message) {
+    public void onMessage(final ObjectRecord<String, MessageResponseDto> message) {
         try {
-            MessageResponseDto messageResponseDto = message.getValue();
-            String modelPath = ModelSearcher.searchModel(messageResponseDto.getObjectType());
+            final MessageResponseDto messageResponseDto = message.getValue();
+            final String modelPath = ModelSearcher.searchModel(messageResponseDto.getObjectType());
             validateUrlS(modelPath);
 
-            CloseableHttpResponse response = inferenceProcess(modelPath, messageResponseDto);
-            StatusCode statusCode = StatusCode.from(response.getStatusLine().getStatusCode());
+            final CloseableHttpResponse response = inferenceProcess(modelPath, messageResponseDto);
+            final StatusCode statusCode = StatusCode.from(response.getStatusLine().getStatusCode());
 
-            // TODO: 추론 서버 예외처리
             if(statusCode.isOk()) {
-                InferencesResponse inferenceResponse = SearchConverter.convertResponse(response);
+                final InferencesResponse inferenceResponse = SearchConverter.convertResponse(response);
                 resultService.saveResult(messageResponseDto.getId(), inferenceResponse);
             } else {
                 throw new InferenceFailException();
@@ -55,8 +54,8 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
 
     private void validateUrlS(final String url) {
         try {
-            URL dest = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) dest.openConnection();
+            final URL dest = new URL(url);
+            final HttpURLConnection connection = (HttpURLConnection) dest.openConnection();
             connection.setUseCaches(false);
             connection.setConnectTimeout(1000);
             connection.setReadTimeout(1000);
@@ -73,8 +72,8 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
         return HttpStatus.OK.value() != responseStatus;
     }
 
-    private CloseableHttpResponse inferenceProcess(String modelPath, MessageResponseDto messageResponseDto) throws JsonProcessingException {
-        InferenceRequest requestBody = InferenceRequest.from(messageResponseDto);
+    private CloseableHttpResponse inferenceProcess(final String modelPath, final MessageResponseDto messageResponseDto) throws JsonProcessingException {
+        final InferenceRequest requestBody = InferenceRequest.from(messageResponseDto);
         return clothesModelHttpCaller.callModel(
                 modelPath,
                 objectMapper.writeValueAsString(requestBody)
