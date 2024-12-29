@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ValidImageExistsValidator implements ConstraintValidator<ValidImageExists, MultipartFile> {
 
     @Override
-    public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
+    public boolean isValid(final MultipartFile value, final ConstraintValidatorContext context) {
         return value != null && !value.isEmpty();
     }
 }

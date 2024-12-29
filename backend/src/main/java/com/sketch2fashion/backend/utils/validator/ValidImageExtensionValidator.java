@@ -12,7 +12,7 @@ public class ValidImageExtensionValidator implements ConstraintValidator<ValidIm
     private final List<String> validExtensions = List.of(".jpeg", ".JPEG", ".jpg", ".JPG", ".png", ".PNG", ".heic", ".HEIC");
 
     @Override
-    public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
+    public boolean isValid(final MultipartFile value, final ConstraintValidatorContext context) {
         if (value == null || value.isEmpty()) {
             return true;
         }

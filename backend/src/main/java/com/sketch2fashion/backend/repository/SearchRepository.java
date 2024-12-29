@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface SearchRepository extends JpaRepository<Search, Long> {
 
-    List<Search> findAllByClothes(ClothesResult clothes);
+    List<Search> findAllByClothes(final ClothesResult clothes);
 
-    Boolean existsByClothes(ClothesResult clothes);
+    Boolean existsByClothes(final ClothesResult clothes);
 }

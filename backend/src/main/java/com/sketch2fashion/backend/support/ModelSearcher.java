@@ -7,7 +7,7 @@ import static com.sketch2fashion.backend.utils.SketchConstants.*;
 
 public class ModelSearcher {
 
-    public static String searchModel(ObjectType objectType) {
+    public static String searchModel(final ObjectType objectType) {
         if(isTshirts(objectType)) {
             return TSHIRTS_WORKER_URI;
         } else if (isPants(objectType)) {

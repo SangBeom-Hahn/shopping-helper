@@ -20,7 +20,7 @@ public class MessageResponseDto {
 
     private Boolean refine;
 
-    public static MessageResponseDto from(Message message) {
+    public static MessageResponseDto from(final Message message) {
         return new MessageResponseDto(
                 message.getId(),
                 message.getObjectType(),

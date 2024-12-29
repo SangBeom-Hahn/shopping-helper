@@ -18,22 +18,22 @@ public enum ObjectType {
         this.value = value;
     }
 
-    public static ObjectType from(String objectType) {
+    public static ObjectType from(final String objectType) {
         return Arrays.stream(values())
                 .filter(type -> type.value.equals(objectType))
                 .findFirst()
                 .orElseThrow(() -> new NoSuchTypeException(objectType));
     }
 
-    public static boolean isTshirts(ObjectType objectType) {
+    public static boolean isTshirts(final ObjectType objectType) {
         return objectType == ObjectType.T_SHIRTS;
     }
 
-    public static boolean isPants(ObjectType objectType) {
+    public static boolean isPants(final ObjectType objectType) {
         return objectType == ObjectType.PANTS;
     }
 
-    public static boolean isHat(ObjectType objectType) {
+    public static boolean isHat(final ObjectType objectType) {
         return objectType == ObjectType.HAT;
     }
 

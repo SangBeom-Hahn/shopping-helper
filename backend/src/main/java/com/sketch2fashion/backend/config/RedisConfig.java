@@ -40,7 +40,7 @@ public class RedisConfig {
             RedisConnectionFactory redisConnectionFactory,
             Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
     ) {
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+        final RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer));
@@ -56,7 +56,7 @@ public class RedisConfig {
             RedisConnectionFactory redisConnectionFactory,
             Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
     ) {
-        RedisTemplate<String, ResultResponseDto> redisTemplate = new RedisTemplate<>();
+        final RedisTemplate<String, ResultResponseDto> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
@@ -66,7 +66,7 @@ public class RedisConfig {
 
     @Bean
     public RedisTemplate<String, Object> streamRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());

@@ -21,8 +21,8 @@ public class StorageConfig {
 
     @Bean
     public Storage storage() throws IOException {
-        ClassPathResource resource = new ClassPathResource(credentials);
-        GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
+        final ClassPathResource resource = new ClassPathResource(credentials);
+        final GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
 
         return StorageOptions.newBuilder()
                 .setProjectId(projectId)

@@ -19,7 +19,7 @@ public class ClothesResponseDto {
 
     private String storeFilePath;
 
-    public static ClothesResponseDto from(Clothes clothes) {
+    public static ClothesResponseDto from(final Clothes clothes) {
         return new ClothesResponseDto(
                 clothes.getId(),
                 clothes.getMessageId(),

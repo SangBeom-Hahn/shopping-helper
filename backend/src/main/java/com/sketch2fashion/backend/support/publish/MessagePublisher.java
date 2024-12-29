@@ -18,8 +18,8 @@ public class MessagePublisher {
     private final RedisTemplate<String, Object> streamRedisTemplate;
 
     @Async
-    public void sendModelMessage(MessageResponseDto message) {
-        ObjectRecord<String, MessageResponseDto> record = StreamRecords.newRecord()
+    public void sendModelMessage(final MessageResponseDto message) {
+        final ObjectRecord<String, MessageResponseDto> record = StreamRecords.newRecord()
                 .in(CLOTHES.toString())
                 .ofObject(message)
                 .withId(RecordId.autoGenerate());

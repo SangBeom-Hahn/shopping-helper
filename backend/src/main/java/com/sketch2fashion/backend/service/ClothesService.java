@@ -23,21 +23,21 @@ public class ClothesService {
     private final MessageRepository messageRepository;
     private final ResultRepository resultRepository;
 
-    public ClothesSaveResponseDto createClothes(Long messageId, String storeFilePath, String uploadFileName) {
-        Message message = messageRepository.findById(messageId)
+    public ClothesSaveResponseDto createClothes(final Long messageId, final String storeFilePath, final String uploadFileName) {
+        final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NoSuchMessageException(messageId));
-        Clothes clothes = new Clothes(message, uploadFileName, storeFilePath);
-        ClothesResult clothesResult = new ClothesResult(message);
+        final Clothes clothes = new Clothes(message, uploadFileName, storeFilePath);
+        final ClothesResult clothesResult = new ClothesResult(message);
 
         clothesRepository.save(clothes);
         resultRepository.save(clothesResult);
         return ClothesSaveResponseDto.from(messageId);
     }
 
-    public ClothesResponseDto findClothes(Long messageId) {
-        Message message = messageRepository.findById(messageId)
+    public ClothesResponseDto findClothes(final Long messageId) {
+        final Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NoSuchMessageException(messageId));
-        Clothes clothes = clothesRepository.findByMessage(message)
+        final Clothes clothes = clothesRepository.findByMessage(message)
                 .orElseThrow(() -> new NoSuchClothesException(message.getId()));
 
         return ClothesResponseDto.from(clothes);

@@ -26,20 +26,20 @@ public class FileUploader {
         this.storage = storage;
     }
 
-    public String upload(FileMetaData fileMetaData) {
+    public String upload(final FileMetaData fileMetaData) {
         validateExistImage(fileMetaData);
         return sendImageToStorage(fileMetaData);
     }
 
-    private String sendImageToStorage(FileMetaData fileMetaData) {
-        try (InputStream file = fileMetaData.getRawFile()) {
-            String uuid = UUID.randomUUID().toString();
-            String contentType = fileMetaData.getContentType();
-            String extension = fileMetaData.getExtension()
+    private String sendImageToStorage(final FileMetaData fileMetaData) {
+        try (final InputStream file = fileMetaData.getRawFile()) {
+            final String uuid = UUID.randomUUID().toString();
+            final String contentType = fileMetaData.getContentType();
+            final String extension = fileMetaData.getExtension()
                     .getValues();
-            String storePath = String.format(STORE_PATH_FORMAT, PATH, uuid, extension);
+            final String storePath = String.format(STORE_PATH_FORMAT, PATH, uuid, extension);
 
-            BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, storePath)
+            final BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, storePath)
                     .setContentType(contentType)
                     .build();
 
@@ -50,7 +50,7 @@ public class FileUploader {
         }
     }
 
-    private void validateExistImage(FileMetaData fileMetaData) {
+    private void validateExistImage(final FileMetaData fileMetaData) {
         if(fileMetaData == null) {
             throw new AbsentFileException();
         }

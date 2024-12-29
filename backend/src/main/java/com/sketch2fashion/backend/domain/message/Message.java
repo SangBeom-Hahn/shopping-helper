@@ -26,7 +26,7 @@ public class Message extends BaseEntity {
     @Column(name = "refine", nullable = false)
     private Boolean refine;
 
-    public Message(ObjectType objectType, String storeFilePath, Boolean refine) {
+    public Message(final ObjectType objectType, final String storeFilePath, final Boolean refine) {
         this.objectType = objectType;
         this.storeFilePath = storeFilePath;
         this.refine = refine;

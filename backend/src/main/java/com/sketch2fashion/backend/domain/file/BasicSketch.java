@@ -22,7 +22,7 @@ public enum BasicSketch {
         this.name = name;
     }
 
-    public static BasicSketch from(String type) {
+    public static BasicSketch from(final String type) {
         return Arrays.stream(values())
                 .filter(basic -> basic.type.equals(type))
                 .findFirst()

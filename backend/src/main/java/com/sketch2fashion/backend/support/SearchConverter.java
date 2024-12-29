@@ -14,9 +14,9 @@ public class SearchConverter {
     public static InferencesResponse convertResponse(final CloseableHttpResponse response) {
         validateResponse(response);
 
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
+        try (final BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
             String inputLine;
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             while ((inputLine = in.readLine()) != null) {
                 sb.append(inputLine);
             }

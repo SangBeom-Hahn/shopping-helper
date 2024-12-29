@@ -20,17 +20,17 @@ public class MessageService {
     private final MessagePublisher messagePublisher;
     private final MessageRepository messageRepository;
 
-    public MessageSaveResponseDto createMessage(ObjectType objectType, String storeFilePath, Boolean refine) {
-        Message message = new Message(objectType, storeFilePath, refine);
-        Long saveId = messageRepository.save(message)
+    public MessageSaveResponseDto createMessage(final ObjectType objectType, final String storeFilePath, final Boolean refine) {
+        final Message message = new Message(objectType, storeFilePath, refine);
+        final Long saveId = messageRepository.save(message)
                 .getId();
 
         this.messagePublisher.sendModelMessage(findMessage(saveId));
         return MessageSaveResponseDto.from(saveId);
     }
 
-    public MessageResponseDto findMessage(Long id) {
-        Message findMessage = messageRepository.findById(id)
+    public MessageResponseDto findMessage(final Long id) {
+        final Message findMessage = messageRepository.findById(id)
                 .orElseThrow(() -> new NoSuchMessageException(id));
 
         return MessageResponseDto.from(findMessage);

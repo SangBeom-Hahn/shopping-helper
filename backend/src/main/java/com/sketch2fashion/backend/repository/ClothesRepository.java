@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ClothesRepository extends JpaRepository<Clothes, Long> {
 
-    Optional<Clothes> findByMessage(Message message);
+    Optional<Clothes> findByMessage(final Message message);
 }

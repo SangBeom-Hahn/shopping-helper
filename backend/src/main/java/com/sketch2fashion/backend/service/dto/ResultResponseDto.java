@@ -18,9 +18,9 @@ public class ResultResponseDto {
     private String resultFilePath;
 
     public static ResultResponseDto of(
-            InferencesResponse inferencesResponse,
-            String uploadFilePath,
-            String resultFilePath
+            final InferencesResponse inferencesResponse,
+            final String uploadFilePath,
+            final String resultFilePath
     ) {
         return new ResultResponseDto(inferencesResponse, uploadFilePath, resultFilePath);
     }

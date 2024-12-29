@@ -12,7 +12,7 @@ public class ClothesSaveResponseDto {
 
     private Long id;
 
-    public static ClothesSaveResponseDto from(Long id) {
+    public static ClothesSaveResponseDto from(final Long id) {
         return new ClothesSaveResponseDto(id);
     }
 }

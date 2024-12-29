@@ -19,7 +19,7 @@ public class SearchResponseDto {
 
     private String name;
 
-    public static SearchResponseDto from(Search search) {
+    public static SearchResponseDto from(final Search search) {
         return new SearchResponseDto(
                 search.getThumbnailUrl(),
                 search.getWebSearchUrl(),

@@ -7,6 +7,7 @@ public abstract class SketchConstants {
     public static final String STORE_PATH_FORMAT = "%s%s%s";
     public static final String BASIC_SKETCH_PATH = "classpath:static/basic/%s.png";
     public static final String ATTACH_FILENAME = "attachment; filename=%s";
+    public static final String IDX_STAND = ".";
 
     // MESSAGE
     public static final String QUEUE_PUBLISH_THREAD_NAME = "QueuePublish-";
