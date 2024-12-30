@@ -1,0 +1,13 @@
+FROM python:3.10
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+RUN pip install --upgrade pip
+RUN apt-get update -y && apt-get -y install libgl1-mesa-glx libglib2.0-0
+
+CMD ["python", "skirt_worker.py"]
