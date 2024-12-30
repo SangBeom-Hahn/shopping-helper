@@ -5,12 +5,12 @@
 
 ## 🗂️ Index
 
-- [🌈 데모](#-데모)<br>
+- [🌈 데모](#-demo)<br>
 - [🛠 사용 기술](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-05/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)<br>
 - [🏛️ 전체 서비스 아키텍처](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-05/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)<br>
 - [💡 Get Started](#-get-started)<br>
 
-## 🌈 데모
+## 🌈 Demo
 
 | 검색 가이드 |
 | --- |
