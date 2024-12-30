@@ -25,3 +25,6 @@ spring:
     data:
       host: ${SOURCE_REDIS_URL}
       port: ${SOURCE_REDIS_PORT}
+
+logging:
+  config: classpath:log4j2.yml
