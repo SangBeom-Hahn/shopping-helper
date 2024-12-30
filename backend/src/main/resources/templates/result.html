@@ -226,7 +226,7 @@
         <button class="site-button" onclick="handleEtsy()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Etsy</button>
         <a href="walmart.html" class="site-button">Walmart</a>
         <a href="ebay.html" class="site-button">eBay</a>
-        <button class="site-button" onclick="handleNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">무작위사이트</button>
+        <button class="site-button" onclick="handleNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Microsoft Bing</button>
         <button id="share-button" class="share-button" onclick="shareClothes()">갤러리에 공유하기</button>
     </div>
     <div id="tooltip">검색 결과로 이동합니다.</div>
@@ -279,13 +279,13 @@
                 searchResultsCount = historyData.inferencesResponse.pinterest;
             } else if (siteName === "Etsy") {
                 searchResultsCount = historyData.inferencesResponse.etsy;
-            } else if (siteName === "무작위사이트") {
+            } else if (siteName === "Microsoft Bing") {
                 searchResultsCount = historyData.inferencesResponse.noFilter;
             }
 
             const siteInfo = {
                 Farfetch: {
-                    description: "Farfetch는 다양한 패션 브랜드의 제품을 제공합니다.",
+                    description: "Farfetch는 다양한 패션 명품 브랜드의 제품을 제공합니다.",
                     searchResults: `검색 결과: <span style="color: #66FF66;">${searchResultsCount}개</span>`
                 },
                 Pinterest: {
@@ -300,8 +300,8 @@
                     description: "Etsy는 핸드메이드 및 빈티지 제품 등을 판매합니다.",
                     searchResults: `검색 결과: <span style="color: #FF99FF;">${searchResultsCount}개</span>`
                 },
-                무작위사이트: {
-                    description: "세계 각국의 여러 사이트를 무작위로 검색합니다.",
+                'Microsoft Bing': {
+                    description: "Microsoft Bing에서 한국을 포함한, 세계 각국의 검색 결과를 제공합니다.",
                     searchResults: `검색 결과: <span style="color: #99FFFF;">${searchResultsCount}개</span>`
                 },
             };
