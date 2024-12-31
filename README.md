@@ -6,9 +6,9 @@
 ## 🗂️ Index
 
 - [🌈 데모](#-demo)<br>
-- [🛠 사용 기술](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-05/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)<br>
-- [🏛️ 전체 서비스 아키텍처](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-05/blob/main/README.md#-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)<br>
-- [💡 Get Started](#-get-started)<br>
+- [🛠 사용 기술](#-skills)<br>
+- [🏛️ 전체 서비스 아키텍처](#-project-structure)<br>
+- [💡 실행 방식](#-get-started)<br>
 
 ## 🌈 Demo
 
@@ -50,6 +50,14 @@
 
 ## 🛠 Skills
 
+## 백엔드
+![pipe](./asset/기술1.PNG)
+
+## 인프라
+![pipe](./asset/기술2.PNG)
+
+## 추론 서버 & 검색 API
+![pipe](./asset/기술3.PNG)
 
 ## 🏛️ Project Structure
 
@@ -57,13 +65,13 @@
 ![pipe](./asset/pipeline.JPG)
 
 ## 2. 파일 업로드/요청 흐름도
-![pipe](./asset/pipeline.JPG)
+![pipe](./asset/)
 
 ## 3. 분산 환경 메시지 큐
-![pipe](./asset/pipeline.JPG)
+![pipe](./asset/)
 
 ## 4. 전체 서비스 아키텍쳐
-![pipe](./asset/structure.JPG)
+![pipe](./asset/)
 
 
 ## 💡 Get Started
