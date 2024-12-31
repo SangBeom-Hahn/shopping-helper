@@ -57,7 +57,7 @@
 ![pipe](./asset/기술2.PNG)
 
 ## 추론 서버 & 검색 API
-![pipe](./asset/기술.PNG)
+![pipe](./asset/기술5.PNG)
 
 ## 🏛️ Project Structure
 
