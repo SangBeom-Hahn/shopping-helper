@@ -35,11 +35,10 @@
 |<img src = "https://github.com/user-attachments/assets/9436c1d3-670f-405f-bef9-30480684cd67">|
 | 검색하고 싶은 디자인 스케치 업로드 |
 
-<!--
-|<img src = "https://github.com/SangBeom-Hahn/Sketch2Fashion/assets/90328527/1a37c5df-612a-46fc-982a-00e557ad590e">|
+| 검색 프로세스 4 - 검색 결과 조회 |
 | --- |
-| 검색 프로세스 4 - 이미지 검색 결과 확인 |
--->
+|<img src = "https://github.com/user-attachments/assets/c4119683-5f6a-4a66-90cc-52c9def61251">|
+| 6개의 쇼핑몰과 Bing 검색 엔진 검색 결과 조회 |
 
 | 검색 및 채색 갤러리 |
 | --- |
