@@ -25,7 +25,7 @@ class ImageSearcher():
                 else:
                     files = {
                         IMAGE_REQUEST_KEY: image_file,
-                        KNOWLEDGE_REQUEST_KEY: (None, f'{{KNOWLEDGE_REQUEST_KEY:{{"filters":{{"site":"www.{site.value}.com"}}}}}}')
+                        KNOWLEDGE_REQUEST_KEY: (None, f'{{"knowledgeRequest":{{"filters":{{"site":"www.{site.value}.com"}}}}}}')
                     }
 
                 try:
