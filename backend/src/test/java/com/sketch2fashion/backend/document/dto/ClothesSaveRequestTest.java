@@ -1,5 +1,6 @@
-package com.sketch2fashion.backend.controller.dto;
+package com.sketch2fashion.backend.document.dto;
 
+import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -49,10 +50,5 @@ class ClothesSaveRequestTest extends RequestTest {
 
         // then
         assertThat(isEmpty(clothesSaveRequest)).isTrue();
-    }
-
-    private boolean isEmpty(ClothesSaveRequest clothesSaveRequest) {
-        return getConstraintViolation(clothesSaveRequest).stream()
-                .anyMatch(violation -> violation.getMessage().equals(EMPTY_MESSAGE));
     }
 }
