@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
         GalleryController.class,
         ClothesController.class
 })
-public abstract class TestSupport {
+public abstract class ControllerTest {
 
     @Autowired
     protected MockMvc mockMvc;

@@ -1,26 +1,16 @@
 package com.sketch2fashion.backend.document;
 
 import com.sketch2fashion.backend.controller.GalleryController;
-import com.sketch2fashion.backend.service.GalleryService;
 import com.sketch2fashion.backend.service.dto.GalleryListResponseDto;
 import com.sketch2fashion.backend.service.dto.GallerysResponseDto;
 import com.sketch2fashion.backend.service.dto.SearchResponseDto;
 import com.sketch2fashion.backend.service.dto.SearchsResponseDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.test.web.servlet.result.ModelResultMatchers;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -29,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = GalleryController.class)
-class GalleryControllerTest extends TestSupport{
+class GalleryControllerTest extends ControllerTest {
 
     @Test
     @DisplayName("GET 요청을 보내면 200 OK로 응답한다.")
@@ -58,7 +48,7 @@ class GalleryControllerTest extends TestSupport{
 
         // when // then
         mockMvc.perform(
-                        get("/api/gallery/" + expectedId)
+                        get("/api/gallery/{resultId}", expectedId)
                 )
                 .andDo(print())
                 .andExpect(status().isOk());
