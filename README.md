@@ -52,7 +52,7 @@
 ## 🛠 Skills
 
 ## 백엔드
-![pipe](./asset/기술1.PNG)
+![pipe](./asset/기술1-1.PNG)
 
 ## 인프라
 ![pipe](./asset/기술2.PNG)
