@@ -1,11 +1,10 @@
 package com.sketch2fashion.backend.acceptance;
 
-import com.sketch2fashion.backend.repository.MessageRepository;
-import com.sketch2fashion.backend.repository.ResultRepository;
-import com.sketch2fashion.backend.service.MessageService;
+import com.sketch2fashion.backend.config.DatabaseCleaner;
 import com.sketch2fashion.backend.service.ResultService;
-import com.sketch2fashion.backend.service.dto.ResultResponseDto;
-import com.sketch2fashion.backend.support.FileUploader;
+import com.sketch2fashion.backend.support.SignedUrlBuilder;
+import com.sketch2fashion.backend.support.UuidHolder;
+import com.sketch2fashion.backend.support.upload.FileUploader;
 import com.sketch2fashion.backend.support.publish.MessagePublisher;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +13,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.client.RestTemplate;
 
 @AutoConfigureTestDatabase
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -30,17 +27,21 @@ public abstract class AcceptanceTest {
     @MockBean
     protected MessagePublisher fakePublisher;
 
-    @Autowired
-    protected RedisTemplate<String, ResultResponseDto> redisTemplate;
+    @MockBean
+    protected SignedUrlBuilder signedUrlBuilder;
 
     @Autowired
-    protected MessageRepository messageRepository;
+    protected ResultService resultService;
 
     @Autowired
-    protected ResultRepository resultRepository;
+    protected UuidHolder testUuidHolder;
+
+    @Autowired
+    protected DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
+        databaseCleaner.execute();
     }
 }

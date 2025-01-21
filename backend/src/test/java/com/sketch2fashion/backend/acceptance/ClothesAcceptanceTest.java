@@ -25,14 +25,18 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
+import static com.sketch2fashion.backend.acceptance.AcceptanceFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 
@@ -42,23 +46,14 @@ class ClothesAcceptanceTest extends AcceptanceTest {
     @DisplayName("이미지 단건 업로드를 수행한다.")
     void upload() throws IOException {
         // given
-        String originalFileName = "test.jpeg";
-        InputStream fileInputStream = new FileInputStream("src/test/resources/" + originalFileName);
-        MockMultipartFile image = new MockMultipartFile(
-                "image",
-                originalFileName,
-                "image/jpeg",
-                fileInputStream
-        );
         given(fakeUploader.upload(any(FileMetaData.class)))
-                        .willReturn("PATH");
+                .willReturn(testUuidHolder.createUuid());
         willDoNothing().given(fakePublisher)
                 .sendModelMessage(any(MessageResponseDto.class));
-
-        ClothesSaveRequest clothesSaveRequest = new ClothesSaveRequest("HAT", false, image);
+        ClothesSaveRequest clothesSaveRequest = createClothesSaveRequest();
 
         // when
-        ExtractableResponse<Response> response = upload(clothesSaveRequest);
+        ExtractableResponse<Response> response = 업로드(clothesSaveRequest);
         ClothesSaveResponseDto clothesSaveResponseDto = response.as(ClothesSaveResponseDto.class);
 
         // then
@@ -68,19 +63,19 @@ class ClothesAcceptanceTest extends AcceptanceTest {
         );
     }
 
-    /** TODO: 이제는 서비스나 레포를 쓰는게 아니라 컨트롤러를 여러개 써서 테스트를 작성해야 한다.
-     * 업로드를 하고 (API 호출)
-     * 리스너에서 resultService.saveResult로 결과를 큐에 저장하고
-     * findInfer API 호출
-     */
-
     @Test
     @DisplayName("추론 결과를 조회한다.")
-    void findInferenceResult() {
+    void findInferenceResult() throws IOException {
         // given
-        Long messageId = 1L;
-        String uploadFilePath = "uploadFilePath";
-        String resultFilePath = "resultFilePath";
+        String uuid = testUuidHolder.createUuid();
+        given(fakeUploader.upload(any(FileMetaData.class)))
+                .willReturn(uuid);
+        willDoNothing().given(fakePublisher)
+                .sendModelMessage(any(MessageResponseDto.class));
+        ClothesSaveRequest clothesSaveRequest = createClothesSaveRequest();
+        Long saveId = 업로드(clothesSaveRequest).as(ClothesSaveResponseDto.class)
+                .getId();
+
         List<InferenceListResponse> inferenceListResponses = List.of(
                 InferenceListResponse.of("URL", "URL", "URL", "name", "site"),
                 InferenceListResponse.of("URL", "URL", "URL", "name", "site"),
@@ -89,36 +84,42 @@ class ClothesAcceptanceTest extends AcceptanceTest {
         );
         InferencesResponse inferencesResponse =
                 InferencesResponse.of(0, 0, 0, 0, 0, 0, 0, inferenceListResponses);
-        ResultResponseDto result = ResultResponseDto.of(inferencesResponse, uploadFilePath, resultFilePath);
-        redisTemplate.opsForValue()
-                .set("RESULT_CACHE::" + messageId, result);
+
+        given(signedUrlBuilder.generateSignedUrl(any()))
+                .willReturn(uuid);
+        resultService.saveResult(saveId, inferencesResponse);
+        ResultResponseDto expected =
+                ResultResponseDto.of(inferencesResponse, uuid, uuid);
 
         // when
-        ExtractableResponse<Response> response = findInferenceResult(messageId);
+        ExtractableResponse<Response> response = AcceptanceFixture.추론_결과_조회(saveId);
         ResultResponseDto actual = response.as(ResultResponseDto.class);
 
         // then
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
                 () -> assertThat(actual).usingRecursiveComparison()
-                        .isEqualTo(result)
+                        .isEqualTo(expected)
         );
     }
 
     @Test
     @DisplayName("검색 결과 평점을 부여한다.")
-    void updateRate() {
+    void updateRate() throws IOException {
         // given
-        Long messageId = 1L;
+        given(fakeUploader.upload(any(FileMetaData.class)))
+                .willReturn(testUuidHolder.createUuid());
+        willDoNothing().given(fakePublisher)
+                .sendModelMessage(any(MessageResponseDto.class));
+        ClothesSaveRequest clothesSaveRequest = createClothesSaveRequest();
+
+        Long messageId = 업로드(clothesSaveRequest).as(ClothesSaveResponseDto.class)
+                .getId();
+
         ClothesUpdateRequest clothesUpdateRequest = new ClothesUpdateRequest(5, "REVIEW");
 
-        Message message = new Message(ObjectType.T_SHIRTS, "PATH", false);
-        messageRepository.save(message);
-        ClothesResult clothesResult = new ClothesResult(message);
-        resultRepository.save(clothesResult);
-
         // when
-        ExtractableResponse<Response> response = updateRate(messageId, clothesUpdateRequest);
+        ExtractableResponse<Response> response = 평점_부여(messageId, clothesUpdateRequest);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
@@ -126,63 +127,23 @@ class ClothesAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("추론 결과를 갤러리에 공유한다.")
-    void share() {
+    void share() throws IOException {
         // given
-        Long messageId = 1L;
+        given(fakeUploader.upload(any(FileMetaData.class)))
+                .willReturn(testUuidHolder.createUuid());
+        willDoNothing().given(fakePublisher)
+                .sendModelMessage(any(MessageResponseDto.class));
+        ClothesSaveRequest clothesSaveRequest = createClothesSaveRequest();
+
+        Long messageId = 업로드(clothesSaveRequest).as(ClothesSaveResponseDto.class)
+                .getId();
+
         ClothesSharedRequest clothesSharedRequest = new ClothesSharedRequest(true);
-        Message message = new Message(ObjectType.T_SHIRTS, "PATH", false);
-        messageRepository.save(message);
-        ClothesResult clothesResult = new ClothesResult(message);
-        resultRepository.save(clothesResult);
 
         // when
-        ExtractableResponse<Response> response = share(messageId, clothesSharedRequest);
+        ExtractableResponse<Response> response = 추론_결과_공유(messageId, clothesSharedRequest);
 
         // then
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
-    }
-
-    private ExtractableResponse<Response> upload(ClothesSaveRequest clothesSaveRequest) throws IOException {
-        MultipartFile image = clothesSaveRequest.getImage();
-
-        return RestAssured
-                .given()
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .multiPart("image",
-                        image.getOriginalFilename(),
-                        image.getInputStream(),
-                        image.getContentType()
-                )
-                .param("objectType", clothesSaveRequest.getObjectType())
-                .param("refine", clothesSaveRequest.getRefine())
-                .when().post("/api/clothes/upload")
-                .then().log().all().extract();
-    }
-
-    private ExtractableResponse<Response> findInferenceResult(Long messageId) {
-        return RestAssured
-                .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .when().get("/api/clothes/" + messageId)
-                .then().log().all().extract();
-
-    }
-
-    private ExtractableResponse<Response> updateRate(Long messageId, ClothesUpdateRequest clothesUpdateRequest) {
-        return RestAssured
-                .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(clothesUpdateRequest)
-                .put("/api/clothes/" + messageId)
-                .then().log().all().extract();
-    }
-
-    private ExtractableResponse<Response> share(Long messageId, ClothesSharedRequest clothesSharedRequest) {
-        return RestAssured
-                .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(clothesSharedRequest)
-                .put("/api/clothes/" + messageId + "/share")
-                .then().log().all().extract();
     }
 }

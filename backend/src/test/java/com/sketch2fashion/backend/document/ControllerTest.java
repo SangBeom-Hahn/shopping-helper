@@ -7,7 +7,7 @@ import com.sketch2fashion.backend.service.ClothesService;
 import com.sketch2fashion.backend.service.GalleryService;
 import com.sketch2fashion.backend.service.MessageService;
 import com.sketch2fashion.backend.service.ResultService;
-import com.sketch2fashion.backend.support.FileUploader;
+import com.sketch2fashion.backend.support.upload.FileUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

@@ -5,7 +5,7 @@ import com.sketch2fashion.backend.repository.MessageRepository;
 import com.sketch2fashion.backend.repository.ResultRepository;
 import com.sketch2fashion.backend.repository.SearchRepository;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
-import com.sketch2fashion.backend.support.FileUploader;
+import com.sketch2fashion.backend.support.upload.FileUploader;
 import com.sketch2fashion.backend.support.SignedUrlBuilder;
 import com.sketch2fashion.backend.support.publish.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;

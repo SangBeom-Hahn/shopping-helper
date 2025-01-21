@@ -13,7 +13,7 @@ import com.sketch2fashion.backend.service.ResultService;
 import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.FileConverter;
-import com.sketch2fashion.backend.support.FileUploader;
+import com.sketch2fashion.backend.support.upload.FileUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
