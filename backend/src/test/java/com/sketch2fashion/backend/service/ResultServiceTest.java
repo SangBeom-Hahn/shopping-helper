@@ -7,12 +7,14 @@ import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
 import com.sketch2fashion.backend.domain.modelresult.Search;
 import com.sketch2fashion.backend.domain.upload.Clothes;
 import com.sketch2fashion.backend.exception.DuplicateResultException;
+import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.consume.dto.InferenceListResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
@@ -38,6 +40,8 @@ class ResultServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
+        databaseCleaner.execute();
+
         message = new Message(ObjectType.SKIRT, "path", false);
         message1 = new Message(ObjectType.SKIRT, "path", false);
         message2 = new Message(ObjectType.SKIRT, "path", false);
@@ -71,7 +75,7 @@ class ResultServiceTest extends ServiceTest {
 
         // when
         redisTemplate.opsForValue()
-                .set("RESULT_CACHE::" + message.getId(), resultResponseDto);
+                .set("SEARCH_RESULT_CACHE::" + message.getId(), resultResponseDto);
         InferencesResponse findInferencesResponse = resultService.findResult(message.getId())
                 .getInferencesResponse();
 
@@ -86,7 +90,7 @@ class ResultServiceTest extends ServiceTest {
         // given
         ResultResponseDto resultResponseDto = createResultResponseDto();
         redisTemplate.opsForValue()
-                .set("RESULT_CACHE::" + message1.getId(), resultResponseDto);
+                .set("SEARCH_RESULT_CACHE::" + message1.getId(), resultResponseDto);
 
         // when
         resultService.handlePersistEntity(message1.getId());

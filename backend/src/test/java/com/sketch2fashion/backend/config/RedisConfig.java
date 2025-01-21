@@ -5,14 +5,19 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.cache.RedisCacheConfiguration;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.embedded.RedisServer;
 
+@EnableCaching
 @TestConfiguration
 public class RedisConfig {
 
@@ -32,6 +37,22 @@ public class RedisConfig {
     @Bean
     public Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer() {
         return new Jackson2JsonRedisSerializer<>(ResultResponseDto.class);
+    }
+
+    @Bean
+    public RedisCacheManager cacheManager(
+            RedisConnectionFactory redisConnectionFactory,
+            Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
+    ) {
+        final RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+                .disableCachingNullValues()
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer));
+
+        return RedisCacheManager.RedisCacheManagerBuilder
+                .fromConnectionFactory(redisConnectionFactory)
+                .cacheDefaults(configuration)
+                .build();
     }
 
     @Bean

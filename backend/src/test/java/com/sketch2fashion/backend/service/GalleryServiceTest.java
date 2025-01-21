@@ -35,6 +35,8 @@ class GalleryServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
+        databaseCleaner.execute();
+
         message = new Message(T_SHIRTS, "path", false);
         message1 = new Message(T_SHIRTS, "path", false);
         message2 = new Message(T_SHIRTS, "path", false);
