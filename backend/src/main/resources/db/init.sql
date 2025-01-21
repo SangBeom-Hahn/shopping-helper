@@ -5,7 +5,7 @@ drop table if exists message;
 
 create table clothes_model_result
 (
-    result_id bigint not null auto_increment,
+    clothes_model_result_id bigint not null auto_increment,
     rating int,
     shared boolean not null,
     created_date datetime(6) not null,
@@ -15,12 +15,12 @@ create table clothes_model_result
     store_file_path varchar(255),
     review varchar(2000),
     status enum ('ERROR','FINISH','WAIT') not null,
-    primary key (result_id)
+    primary key (clothes_model_result_id)
 );
 
 create table clothes_upload_file
 (
-    upload_id bigint not null auto_increment,
+    clothes_upload_file_id bigint not null auto_increment,
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,
     message_id bigint not null unique,
@@ -28,7 +28,7 @@ create table clothes_upload_file
     store_file_path varchar(255) not null,
     status enum ('SUCCESS','FAIL') not null,
     status_message varchar(50) not null,
-    primary key (upload_id)
+    primary key (clothes_upload_file_id)
 );
 
 create table message
@@ -69,4 +69,4 @@ alter table clothes_upload_file
 alter table search
     add constraint fk_search_result
         foreign key (result_id)
-            references clothes_model_result (result_id);
+            references clothes_model_result (clothes_model_result_id);
