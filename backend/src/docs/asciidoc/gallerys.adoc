@@ -1,0 +1,8 @@
+[[갤러리]]
+== 갤러리
+
+=== 조회
+operation::gallery-controller-test/find-gallery[snippets='http-request,http-response']
+
+=== 검색 결과 조회
+operation::gallery-controller-test/find-searchs[snippets='http-request,http-response']

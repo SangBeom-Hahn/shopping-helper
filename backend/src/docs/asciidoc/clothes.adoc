@@ -1,0 +1,11 @@
+[[의류]]
+== 의류
+
+=== 디자인 이미지 업로드
+operation::clothes-controller-test/upload[snippets='http-request,http-response']
+
+=== 추론 결과 조회
+operation::clothes-controller-test/find-inference-result[snippets='http-request,http-response']
+
+=== 추론 결과 평가
+operation::clothes-controller-test/update-rate[snippets='http-request,http-response']

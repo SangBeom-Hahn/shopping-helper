@@ -53,8 +53,9 @@ class ClothesControllerTest extends ControllerTest {
                             .param("refine", "false")
                             .contentType(MULTIPART_FORM_DATA)
                 )
-                .andDo(print())
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(restDocs.document())
+                ;
     }
 
     @Test
@@ -71,8 +72,9 @@ class ClothesControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/clothes/{messageId}", expectedId)
                 )
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(restDocs.document())
+                ;
     }
 
     @Test
@@ -90,7 +92,8 @@ class ClothesControllerTest extends ControllerTest {
                                 .content(objectMapper.writeValueAsString(clothesUpdateRequest))
                                 .contentType(APPLICATION_JSON)
                 )
-                .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(restDocs.document())
+                ;
     }
 }

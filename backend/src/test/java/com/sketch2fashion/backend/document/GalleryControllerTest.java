@@ -33,8 +33,9 @@ class GalleryControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/gallery")
                 )
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(restDocs.document())
+                ;
     }
 
     @Test
@@ -50,7 +51,8 @@ class GalleryControllerTest extends ControllerTest {
         mockMvc.perform(
                         get("/api/gallery/{resultId}", expectedId)
                 )
-                .andDo(print())
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(restDocs.document())
+                ;
     }
 }
