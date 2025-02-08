@@ -2,7 +2,7 @@ name: ci
 on:
   pull_request:
     types: [opened, synchronize]
-    branches: [develop, main]
+    branches: [develop, main, feature/28-ci-process]
     paths:
     - ['backend/**', '.github/**']
 
