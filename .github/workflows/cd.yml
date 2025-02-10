@@ -76,3 +76,6 @@ jobs:
           push: true
           platforms: linux/arm64
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
+
+    - name: cd 테스트 스텝
+      run: echo cd test
