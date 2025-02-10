@@ -53,4 +53,4 @@ jobs:
         report_paths: backend/build/test-results/test/TEST-*.xml
 
     - name: ci 테스트를 수행한다
-      run: echo ci test2
+      run: echo ci test3
