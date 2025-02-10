@@ -9,7 +9,11 @@ on:
 
 defaults:
   run:
-    working-directory: backend    
+    working-directory: backend  
+
+permissions:
+  checks: write
+  pull-requests: write
 
 jobs:
   build-and-test:
@@ -37,7 +41,7 @@ jobs:
     - name: gradlew 실행 권한을 부여한다
       run: chmod +x gradlew
 
-    - name: gradle을 빌드한다
+    - name: gradle 빌드 테스트를 한다
       run: ./gradlew build
 
     - name: 테스트 코드 실행 결과 리포트를 작성한다
@@ -46,7 +50,7 @@ jobs:
       with:
         files: backend/build/test-results/test/TEST-*.xml    
 
-    - name: 테스트가 실패한 PR 코멘트를 등록한다
+    - name: 실패한 테스트를 PR 코멘트로 등록한다
       uses: mikepenz/action-junit-report@v5
       if: always()
       with:
