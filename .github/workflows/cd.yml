@@ -104,4 +104,4 @@ jobs:
           sudo docker image prune -a -f
     
     - name: cd test
-      run: echo cd test
+      run: echo cd test1
