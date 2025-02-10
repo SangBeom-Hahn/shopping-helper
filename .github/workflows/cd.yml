@@ -7,17 +7,12 @@ on:
     - 'backend/**'
     - '.github/**'
 
-defaults:
-  run:
-    working-directory: backend
-
 jobs:
   set-environment:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.set-env.outputs.environment }}
-
     steps:
     - name: 배포 환경을 설정한다
       id: set-env
@@ -33,6 +28,9 @@ jobs:
 
   docker-build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
     needs: [set-environment]
     strategy:
       matrix:
