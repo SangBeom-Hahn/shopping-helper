@@ -2,7 +2,7 @@ name: cd
 on:
   pull_request:
     types: [closed]
-    branches: [develop, main]
+    branches: [develop, main, feature/31-cd-process]
     paths:
     - 'backend/**'
     - '.github/**'
