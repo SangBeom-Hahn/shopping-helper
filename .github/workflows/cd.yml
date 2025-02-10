@@ -102,3 +102,6 @@ jobs:
           sudo docker-compose up -d   
 
           sudo docker image prune -a -f
+    
+    - name: cd test
+      run: echo cd test
