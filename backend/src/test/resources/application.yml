@@ -11,3 +11,10 @@ spring:
     data:
       host: localhost
       port: 16379
+
+worker:
+  uri:
+    tshirts-server: "http://127.0.0.1:5000"
+    pants-server: "http://127.0.0.1:5001"
+    hat-server: "http://127.0.0.1:5002"
+    skirt-server: "http://127.0.0.1:5003"
