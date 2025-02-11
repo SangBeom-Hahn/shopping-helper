@@ -7,4 +7,4 @@ COPY ./backend/build/libs/backend-0.0.1-SNAPSHOT.jar /app/app.jar
 COPY ./backend/credentials.json /app/server/resources/credentials.json
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILE}", "-jar", "/app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${SPRING_PROFILE}", "-jar", "app.jar"]
