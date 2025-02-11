@@ -80,10 +80,12 @@ jobs:
           platforms: linux/amd64
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
 
-    - name: uses tmate
+    - name: Setup tmate session
       if: always()
       uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 10          
+      timeout-minutes: 10
+      with:
+        limit-access-to-actor: true
 
   deploy:
     runs-on: ubuntu-latest
