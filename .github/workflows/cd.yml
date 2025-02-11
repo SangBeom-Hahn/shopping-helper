@@ -57,7 +57,7 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: GCP 키 파일을 설정한다
-      run: echo "${{ secrets.GCS_CREDENTIALS }}" > ./credentials.json
+      run: echo "${{ secrets.GCS_CREDENTIALS }}" > ./src/main/resources/credentials.json
 
     - name: gradlew 실행 권한을 부여한다
       run: chmod +x gradlew
@@ -79,11 +79,6 @@ jobs:
           push: true
           platforms: linux/amd64
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
-
-    - name: Setup tmate session
-      if: always()
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 15
 
   deploy:
     runs-on: ubuntu-latest
@@ -119,9 +114,4 @@ jobs:
           sudo docker rmi -f shoppinghelper
     
     - name: cd test
-      run: echo cd test13
-
-    - name: uses tmate
-      if: always()
-      uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 10
+      run: echo cd test8
