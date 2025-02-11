@@ -1,7 +1,7 @@
 name: cd
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize, closed]
     branches: [develop, main, feature/31-cd-process]
     paths:
     - 'backend/**'
@@ -9,7 +9,7 @@ on:
 
 jobs:
   set-environment:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.set-env.outputs.environment }}
@@ -80,6 +80,11 @@ jobs:
           platforms: linux/amd64
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
 
+    - name: uses tmate
+      if: always()
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 10          
+
   deploy:
     runs-on: ubuntu-latest
     needs: [ set-environment, docker-build ]
@@ -115,3 +120,8 @@ jobs:
     
     - name: cd test
       run: echo cd test8
+
+    - name: uses tmate
+      if: always()
+      uses: mxschmitt/action-tmate@v3
+      timeout-minutes: 10
