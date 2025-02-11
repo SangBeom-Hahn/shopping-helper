@@ -62,7 +62,7 @@ jobs:
       with:
         name: "credentials.json"
         json: "${{ secrets.GCS_CREDENTIALS }}"
-        dir: './src/main/resources/'
+        dir: './backend/src/main/resources/'
 
     - name: gradlew 실행 권한을 부여한다
       run: chmod +x gradlew
