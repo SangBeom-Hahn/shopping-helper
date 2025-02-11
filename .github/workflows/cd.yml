@@ -83,9 +83,7 @@ jobs:
     - name: Setup tmate session
       if: always()
       uses: mxschmitt/action-tmate@v3
-      timeout-minutes: 10
-      with:
-        limit-access-to-actor: true
+      timeout-minutes: 15
 
   deploy:
     runs-on: ubuntu-latest
