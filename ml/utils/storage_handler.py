@@ -2,6 +2,7 @@ import os
 import mysql
 
 from google.cloud import storage
+from google.cloud.exceptions import GoogleCloudError
 from google.oauth2 import service_account
 from mysql.connector import Error
 from typing import Optional

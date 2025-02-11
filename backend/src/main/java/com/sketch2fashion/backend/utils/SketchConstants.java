@@ -17,10 +17,4 @@ public abstract class SketchConstants {
     public static final String CACHE_MANAGER_NAME = "cacheManager";
 
     public static final String KEY_PREFIX = "SEARCH_RESULT_CACHE::";
-
-    // ML
-    public static final String TSHIRTS_WORKER_URI = "http://127.0.0.1:5000";
-    public static final String PANTS_WORKER_URI = "http://127.0.0.1:5001";
-    public static final String HAT_WORKER_URI = "http://127.0.0.1:5002";
-    public static final String SKIRT_WORKER_URI = "http://127.0.0.1:5003";
 }
