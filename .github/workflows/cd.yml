@@ -119,7 +119,7 @@ jobs:
           sudo docker rmi -f shoppinghelper
     
     - name: cd test
-      run: echo cd test10
+      run: echo cd test11
 
     - name: uses tmate
       if: always()
