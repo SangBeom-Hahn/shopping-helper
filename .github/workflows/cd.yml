@@ -57,7 +57,7 @@ jobs:
           ${{ runner.os }}-gradle-
 
     - name: GCP 키 파일을 설정한다
-      run: echo "${{ secrets.GCS_CREDENTIALS }}" > ./src/main/resources/key/credentials.json
+      run: echo "${{ secrets.GCS_CREDENTIALS }}" > ./src/main/resources/credentials.json
 
     - name: gradlew 실행 권한을 부여한다
       run: chmod +x gradlew
