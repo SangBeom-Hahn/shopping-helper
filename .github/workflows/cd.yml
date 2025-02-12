@@ -133,9 +133,9 @@ jobs:
       uses: tj-actions/branch-names@v8
 
     - name: 현재 working branch name을 검사한다
-      if: steps.branch-names.outputs.base_ref_branch != 'feature/31-cd-process'
+      if: steps.branch-names.outputs.base_ref_branch != 'develop'
       run: |
-          echo "운영 환경에 배포는 feature/31-cd-process 브랜치에서만 가능합니다"
+          echo "운영 환경에 배포는 develop 브랜치에서만 가능합니다"
           exit 1
 
     - name: Repository를 가져온다
