@@ -118,4 +118,4 @@ jobs:
           sudo docker rmi -f ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
     
     - name: cd test
-      run: echo cd test7
+      run: echo cd test8
