@@ -118,4 +118,4 @@ jobs:
           sudo docker rmi -f shoppinghelper
     
     - name: cd test
-      run: echo cd test8
+      run: echo cd test7
