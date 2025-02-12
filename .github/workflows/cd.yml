@@ -119,4 +119,4 @@ jobs:
           sudo docker rmi -f $(docker images -f "dangling=true" -q)
     
     - name: cd test
-      run: echo cd test8
+      run: echo cd test7
