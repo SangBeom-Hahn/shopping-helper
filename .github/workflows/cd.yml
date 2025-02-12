@@ -133,14 +133,13 @@ jobs:
       uses: tj-actions/branch-names@v8
 
     - name: 현재 워킹 브랜치를 확인한다
-      run: echo '${{ steps.branch-names.outputs.current_branch }}'
+      run: echo "${{ steps.branch-names.outputs.current_branch }}"
 
     - name: 현재 working branch name을 검사한다
+      if: steps.branch-names.outputs.current_branch != 'feature/31-cd-process'
       run: |
-        if [[ '${{ steps.branch-names.outputs.current_branch }}' != "feature/31-cd-process" ]]; then
-          echo 운영 환경에 배포는 feature/31-cd-process 브랜치에서만 가능합니다
+          echo "운영 환경에 배포는 feature/31-cd-process 브랜치에서만 가능합니다"
           exit 1
-        fi
 
     - name: Repository를 가져온다
       uses: actions/checkout@v4
