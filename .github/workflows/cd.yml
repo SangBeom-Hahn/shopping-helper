@@ -132,14 +132,11 @@ jobs:
       id: branch-names
       uses: tj-actions/branch-names@v8
 
-    - name: 현재 워킹 브랜치를 확인한다
-      run: echo "TAG=$(echo '${{ steps.branch-name.outputs.current_branch }}')" >> $GITHUB_ENV
-
-    - name: echo current branch name
-      run: echo "current branch name - ${{ env.TAG }}"      
+    - name: 현재 브랜치 확인
+      run: echo "${{ steps.branch-names.outputs.base_ref_branch }}"
 
     - name: 현재 working branch name을 검사한다
-      if: steps.branch-names.outputs.current_branch != 'feature/31-cd-process'
+      if: steps.branch-names.outputs.base_ref_branch != 'feature/31-cd-process'
       run: |
           echo "운영 환경에 배포는 feature/31-cd-process 브랜치에서만 가능합니다"
           exit 1
