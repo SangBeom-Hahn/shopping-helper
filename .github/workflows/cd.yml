@@ -62,7 +62,7 @@ jobs:
       with:
         name: "credentials.json"
         json: "${{ secrets.GCS_CREDENTIALS }}"
-        dir: './src/main/resources/'
+        dir: './backend/src/main/resources/'
 
     - name: gradlew 실행 권한을 부여한다
       run: chmod +x gradlew
@@ -112,7 +112,6 @@ jobs:
           sudo docker container prune -f          
 
           sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }} shoppinghelper
-          cd /home/${{ secrets.GCP_USERNAME }}
           sudo docker-compose up -d   
 
           sudo docker rmi -f ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}

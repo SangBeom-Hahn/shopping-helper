@@ -25,3 +25,10 @@ spring:
     data:
       host: ${SOURCE_REDIS_URL}
       port: ${SOURCE_REDIS_PORT}
+
+worker:
+  uri:
+    tshirts-server: "http://tshirts-server:5000"
+    pants-server: "http://pants-server:5001"
+    hat-server: "http://hat-server:5002"
+    skirt-server: "http://skirt-server:5003"
