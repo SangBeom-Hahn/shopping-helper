@@ -116,7 +116,7 @@ jobs:
 
           sudo docker rmi -f shoppinghelper
           sudo docker rmi -f ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
-          sudo docker rmi -f $(docker images -f "dangling=true" -q)
+          sudo docker image prune -f
     
     - name: cd test
       run: echo cd test7
