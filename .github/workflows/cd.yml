@@ -132,9 +132,6 @@ jobs:
       id: branch-names
       uses: tj-actions/branch-names@v8
 
-    - name: 현재 브랜치 확인
-      run: echo "${{ steps.branch-names.outputs.base_ref_branch }}"
-
     - name: 현재 working branch name을 검사한다
       if: steps.branch-names.outputs.base_ref_branch != 'feature/31-cd-process'
       run: |
@@ -146,7 +143,7 @@ jobs:
 
     - name: 깃허브에 로그인한다
       run: |
-        echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token 
+        echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token
 
     - name: release 브랜치를 생성한다
       run: |
