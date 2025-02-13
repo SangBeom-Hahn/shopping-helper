@@ -28,10 +28,7 @@ spring:
 
 worker:
   uri:
-    tshirts-server: "http://127.0.0.1:5000"
-    pants-server: "http://127.0.0.1:5001"
-    hat-server: "http://127.0.0.1:5002"
-    skirt-server: "http://127.0.0.1:5003"
-
-logging:
-  config: classpath:log4j2.yml
+    tshirts-server: "http://tshirts-server:5000"
+    pants-server: "http://pants-server:5001"
+    hat-server: "http://hat-server:5002"
+    skirt-server: "http://skirt-server:5003"

@@ -38,6 +38,8 @@ class ResultServiceTest extends ServiceTest {
 
     @BeforeEach
     void setUp() {
+        databaseCleaner.execute();
+
         message = new Message(ObjectType.SKIRT, "path", false);
         message1 = new Message(ObjectType.SKIRT, "path", false);
         message2 = new Message(ObjectType.SKIRT, "path", false);
@@ -71,7 +73,7 @@ class ResultServiceTest extends ServiceTest {
 
         // when
         redisTemplate.opsForValue()
-                .set("RESULT_CACHE::" + message.getId(), resultResponseDto);
+                .set("SEARCH_RESULT_CACHE::" + message.getId(), resultResponseDto);
         InferencesResponse findInferencesResponse = resultService.findResult(message.getId())
                 .getInferencesResponse();
 
@@ -86,7 +88,7 @@ class ResultServiceTest extends ServiceTest {
         // given
         ResultResponseDto resultResponseDto = createResultResponseDto();
         redisTemplate.opsForValue()
-                .set("RESULT_CACHE::" + message1.getId(), resultResponseDto);
+                .set("SEARCH_RESULT_CACHE::" + message1.getId(), resultResponseDto);
 
         // when
         resultService.handlePersistEntity(message1.getId());

@@ -16,7 +16,7 @@ import static com.sketch2fashion.backend.domain.modelresult.Status.WAIT;
 public class ClothesResult extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "result_id")
+    @Column(name = "clothes_model_result_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

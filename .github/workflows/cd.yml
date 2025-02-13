@@ -1,0 +1,155 @@
+name: cd
+on:
+  push:
+    paths:
+    - 'backend/**'
+    - '.github/**'
+    tags:
+    - 'v[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    types: [opened, synchronize, closed]
+    branches: [develop, main]
+    paths:
+    - 'backend/**'
+    - '.github/**'
+
+jobs:
+  set-environment:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.set-env.outputs.environment }}
+    steps:
+    - name: 배포 환경을 설정한다
+      id: set-env
+      run: |
+        echo "environment=develop" >> $GITHUB_OUTPUT
+
+        if [[ ${{ github.base_ref }} == "main" ]]; then
+          echo "environment=prod" >> $GITHUB_OUTPUT 
+        fi
+
+    - name: 설정된 배포 환경 확인한다
+      run: echo ${{ steps.set-env.outputs.environment }}
+
+  docker-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    needs: [set-environment]
+    strategy:
+      matrix:
+        environment: ["${{ needs.set-environment.outputs.environment }}"]
+    environment: ${{ matrix.environment }}
+    steps:
+    - name: Repository를 가져온다
+      uses: actions/checkout@v4
+    
+    - name: JDK 버전 17을 설치한다
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+    
+    - name: gradle 의존성을 캐싱한다
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: GCP 키 파일을 설정한다
+      id: create-json
+      uses: jsdaniell/create-json@v1.2.3
+      with:
+        name: "credentials.json"
+        json: "${{ secrets.GCS_CREDENTIALS }}"
+        dir: './backend/src/main/resources/'
+
+    - name: gradlew 실행 권한을 부여한다
+      run: chmod +x gradlew
+
+    - name: Gradle build를 수행한다
+      run: ./gradlew bootJar      
+
+    - name: DockerHub에 로그인한다
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Docker 이미지를 build 하고 DockerHub에 push 한다
+      uses: docker/build-push-action@v6
+      with:
+          context: .
+          file: ./backend/Dockerfile
+          push: true
+          platforms: linux/amd64
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ set-environment, docker-build ]
+    strategy:
+      matrix:
+        environment: ["${{ needs.set-environment.outputs.environment }}"]
+    environment: ${{ matrix.environment }}      
+    steps:
+    - name: DockerHub에 로그인한다
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Docker 이미지를 pull 하고 docker compose로 실행한다
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.GCP_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
+
+          sudo docker stop shoppinghelper || true
+          sudo docker container prune -f          
+
+          sudo docker tag ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }} shoppinghelper
+          sudo docker-compose up -d   
+
+          sudo docker rmi -f shoppinghelper
+          sudo docker rmi -f ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
+          sudo docker image prune -f
+
+  create-pull-request:
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    steps:
+    - name: working branch name을 가져온다
+      id: branch-names
+      uses: tj-actions/branch-names@v8
+
+    - name: 현재 working branch name을 검사한다
+      if: steps.branch-names.outputs.base_ref_branch != 'develop'
+      run: |
+          echo "운영 환경에 배포는 develop 브랜치에서만 가능합니다"
+          exit 1
+
+    - name: Repository를 가져온다
+      uses: actions/checkout@v4
+
+    - name: 깃허브에 로그인한다
+      run: |
+        echo ${{ secrets.PERSONAL_ACCESS_TOKEN }} | gh auth login --with-token
+
+    - name: release 브랜치를 생성한다
+      run: |
+        git checkout -b release/${{ github.ref_name }}
+        git push origin release/${{ github.ref_name }}
+
+    - name: main 브랜치로 pull request를 생성한다
+      run: |
+        gh pr create --base main --head release/${{ github.ref_name }} --title "feat: release/${{ github.ref_name }} -> main" --body "release pull request"            

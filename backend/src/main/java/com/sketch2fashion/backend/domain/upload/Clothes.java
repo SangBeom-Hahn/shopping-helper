@@ -16,7 +16,7 @@ import static com.sketch2fashion.backend.domain.upload.Status.SUCCESS;
 public class Clothes extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "upload_id")
+    @Column(name = "clothes_upload_file_id")
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

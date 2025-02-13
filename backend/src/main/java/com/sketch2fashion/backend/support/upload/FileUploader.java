@@ -1,15 +1,15 @@
-package com.sketch2fashion.backend.support;
+package com.sketch2fashion.backend.support.upload;
 
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.sketch2fashion.backend.domain.file.FileMetaData;
 import com.sketch2fashion.backend.exception.AbsentFileException;
+import com.sketch2fashion.backend.support.UuidHolder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 import static com.sketch2fashion.backend.utils.SketchConstants.PATH;
 import static com.sketch2fashion.backend.utils.SketchConstants.STORE_PATH_FORMAT;
@@ -21,9 +21,12 @@ public class FileUploader {
 
     private final Storage storage;
 
-    public FileUploader(@Value("${spring.cloud.gcp.storage.bucket}") String bucketName, Storage storage) {
+    private final UuidHolder uuidHolder;
+
+    public FileUploader(@Value("${spring.cloud.gcp.storage.bucket}") String bucketName, Storage storage, UuidHolder uuidHolder) {
         this.bucketName = bucketName;
         this.storage = storage;
+        this.uuidHolder = uuidHolder;
     }
 
     public String upload(final FileMetaData fileMetaData) {
@@ -33,7 +36,7 @@ public class FileUploader {
 
     private String sendImageToStorage(final FileMetaData fileMetaData) {
         try (final InputStream file = fileMetaData.getRawFile()) {
-            final String uuid = UUID.randomUUID().toString();
+            final String uuid = uuidHolder.createUuid();
             final String contentType = fileMetaData.getContentType();
             final String extension = fileMetaData.getExtension()
                     .getValues();
