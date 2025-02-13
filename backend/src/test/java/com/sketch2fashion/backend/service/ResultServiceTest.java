@@ -7,14 +7,12 @@ import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
 import com.sketch2fashion.backend.domain.modelresult.Search;
 import com.sketch2fashion.backend.domain.upload.Clothes;
 import com.sketch2fashion.backend.exception.DuplicateResultException;
-import com.sketch2fashion.backend.service.dto.MessageResponseDto;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.consume.dto.InferenceListResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.File;
