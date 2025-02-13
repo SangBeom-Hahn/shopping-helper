@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.document.dto;
 
-import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

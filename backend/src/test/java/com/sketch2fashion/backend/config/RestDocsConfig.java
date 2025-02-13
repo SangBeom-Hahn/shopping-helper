@@ -1,6 +1,5 @@
 package com.sketch2fashion.backend.config;
 
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.BooleanString;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;

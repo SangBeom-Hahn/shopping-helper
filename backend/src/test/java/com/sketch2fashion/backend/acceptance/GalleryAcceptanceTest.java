@@ -12,21 +12,17 @@ import com.sketch2fashion.backend.support.consume.dto.InferenceListResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.util.List;
 
 import static com.sketch2fashion.backend.acceptance.AcceptanceFixture.*;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;

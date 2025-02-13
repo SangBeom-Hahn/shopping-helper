@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
 import static com.sketch2fashion.backend.utils.SketchConstants.PATH;
 import static com.sketch2fashion.backend.utils.SketchConstants.STORE_PATH_FORMAT;

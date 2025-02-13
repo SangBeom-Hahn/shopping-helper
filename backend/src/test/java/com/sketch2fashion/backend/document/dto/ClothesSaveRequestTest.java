@@ -11,7 +11,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static com.sketch2fashion.backend.controller.dto.ValidateMessage.EMPTY_MESSAGE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ClothesSaveRequestTest extends RequestTest {
