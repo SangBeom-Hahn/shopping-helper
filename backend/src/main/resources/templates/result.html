@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사이트별 검색 결과</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 180px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 190px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .upload {
+            background: white;
+            height: 50px;
+            width: 160px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #1496f4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+        .bold-20 {
+            color: #000000;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .bold-20:hover {
+            color: #35C5F0;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        .image-comparison {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .image-container {
+            margin: 0 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .image-container h3 {
+            margin-bottom: 20px;
+            margin-top: 5px;
+            font-size: 20px;
+            color: #333;
+        }
+        .image-container img {
+            transition: transform 0.3s ease;
+        }
+        .button-container {
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .site-button {
+            background-color: transparent;
+            color: #007BFF;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .site-button:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+        .share-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 11%;
+        }
+        .share-button:hover {
+            background-color: #0056b3;
+        }
+        #tooltip {
+            display: none;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 5px;
+            padding: 5px;
+            border: 1px solid black;
+            z-index: 1000;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+        .review-container {
+            display: none;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            max-width: 500px;
+            width: 90%;
+        }
+        .review-container h3 {
+            margin-bottom: 15px;
+            color: #007BFF;
+        }
+        .review-container label {
+            margin-bottom: 5px;
+            display: block;
+            font-weight: bold;
+        }
+        .review-container input[type="number"],
+        .review-container textarea {
+            width: 98%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        input[type="number"] {
+            text-align: center;
+        }
+        .review-container textarea::-webkit-scrollbar {
+            width: 15px;
+        }
+        .review-container textarea::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        .review-container textarea::-webkit-scrollbar-thumb {
+            background: #007BFF;
+            border-radius: 5px;
+        }
+        .review-container textarea::-webkit-scrollbar-thumb:hover {
+            background: #0056b3;
+        }
+        .review-container button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 20%;
+        }
+        .review-container button:hover {
+            background-color: #0056b3;
+        }
+        body {
+            margin: 0px 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragment/header :: header}"></div>
+    <hr class="divider">
+    <div class="image-comparison">
+        <div class="image-container before">
+            <h3>Before</h3>
+            <img id="beforeImage" alt="업로드된 이미지" width="420" height="420"/>
+        </div>
+        <div class="image-container after">
+            <h3>After</h3>
+            <img id="afterImage" alt="업로드된 이미지" width="420" height="420"/>
+        </div>
+    </div>
+    <div class="button-container">
+        <button class="site-button" onclick="handleFarfetch()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Farfetch</button>
+        <button class="site-button" onclick="handleAmazon()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Amazon</button>
+        <button class="site-button" onclick="handlePinterest()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Pinterest</button>
+        <button class="site-button" onclick="handleEtsy()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">Etsy</button>
+        <a href="walmart.html" class="site-button">Walmart</a>
+        <a href="ebay.html" class="site-button">eBay</a>
+        <button class="site-button" onclick="handleNo()" onmouseover="showTooltip(event)" onmouseout="hideTooltip()">무작위사이트</button>
+        <button id="share-button" class="share-button" onclick="shareClothes()">갤러리에 공유하기</button>
+    </div>
+    <div id="tooltip">검색 결과로 이동합니다.</div>
+    <div class="review-container" id="reviewContainer">
+        <h3>검색 결과를 만족하시나요?</h3>
+        <label for="rating">당신의 평점 (1-5): </label>
+        <input type="number" id="rating" min="1" max="5" required>
+        <br>
+        <textarea id="review" required>채색이나 검색 결과 피드백 혹은, 채색 꿀팁을 남겨주세요!</textarea>
+        <br>
+        <button onclick="saveReview()">보내기</button>
+    </div>
+    <script>
+
+        function shareClothes() {
+            const messageId = sessionStorage.getItem('messageId');
+            const url = `/api/clothes/${messageId}/share`;
+
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ shared: true }),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('공유해주셔서 감사합니다😁');
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function showTooltip(event) {
+            const tooltip = document.getElementById('tooltip');
+            const button = event.target;
+            const siteName = button.textContent;
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'))
+            let searchResultsCount = 0;
+
+            if (siteName === "Farfetch") {
+                searchResultsCount = historyData.inferencesResponse.farfetch;
+            } else if (siteName === "Amazon") {
+                searchResultsCount = historyData.inferencesResponse.amazon;
+            } else if (siteName === "Pinterest") {
+                searchResultsCount = historyData.inferencesResponse.pinterest;
+            } else if (siteName === "Etsy") {
+                searchResultsCount = historyData.inferencesResponse.etsy;
+            } else if (siteName === "무작위사이트") {
+                searchResultsCount = historyData.inferencesResponse.noFilter;
+            }
+
+            const siteInfo = {
+                Farfetch: {
+                    description: "Farfetch는 다양한 패션 브랜드의 제품을 제공합니다.",
+                    searchResults: `검색 결과: <span style="color: #66FF66;">${searchResultsCount}개</span>`
+                },
+                Pinterest: {
+                    description: "Pinterest는 이미지 기반의 소셜 미디어 플랫폼입니다.",
+                    searchResults: `검색 결과: <span style="color: #66FF99;">${searchResultsCount}개</span>`
+                },
+                Amazon: {
+                    description: "Amazon은 세계 최대 규모의 온라인 쇼핑몰입니다.",
+                    searchResults: `검색 결과: <span style="color: #FF9966;">${searchResultsCount}개</span>`
+                },
+                Etsy: {
+                    description: "Etsy는 핸드메이드 및 빈티지 제품 등을 판매합니다.",
+                    searchResults: `검색 결과: <span style="color: #FF99FF;">${searchResultsCount}개</span>`
+                },
+                무작위사이트: {
+                    description: "세계 각국의 여러 사이트를 무작위로 검색합니다.",
+                    searchResults: `검색 결과: <span style="color: #99FFFF;">${searchResultsCount}개</span>`
+                },
+            };
+
+            if (siteInfo[siteName]) {
+                const info = siteInfo[siteName];
+                tooltip.innerHTML = `${info.description}<br>${info.searchResults}`;
+            }
+
+            tooltip.style.display = 'block';
+
+            const rect = button.getBoundingClientRect();
+            const buttonCenterX = rect.left + rect.width / 2;
+            const buttonTopY = rect.top;
+
+            tooltip.style.left = buttonCenterX + 'px';
+            tooltip.style.top = (buttonTopY - tooltip.offsetHeight - 10) + 'px';
+        }
+
+        function hideTooltip() {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'none';
+            tooltip.innerHTML = '';
+        }
+
+        function goToPinterest() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const pinterestResults = results.filter(item => item.site === 'pinterest');
+                sessionStorage.setItem('pinterestResults', JSON.stringify(pinterestResults));
+            }
+            window.location.href = '/api/pinterest';
+        }
+
+        function goToAmazon() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const amazonResults = results.filter(item => item.site === 'amazon');
+                sessionStorage.setItem('amazonResults', JSON.stringify(amazonResults));
+            }
+            window.location.href = '/api/amazon';
+        }
+
+        function goToEtsy() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const etsyResults = results.filter(item => item.site === 'etsy');
+                sessionStorage.setItem('etsyResults', JSON.stringify(etsyResults));
+            }
+            window.location.href = '/api/etsy';
+        }
+
+        function goToNo() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                const noResults = results.filter(item => item.site === 'noFilter');
+                sessionStorage.setItem('noResults', JSON.stringify(noResults));
+            }
+            window.location.href = '/api/noFilter';
+        }
+
+        function goToFarfetch() {
+            const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+            if (historyData) {
+                const results = historyData.inferencesResponse.result;
+                var farfetchResults = results.filter(item => item.site === 'farfetch');
+
+                const updatedResults = farfetchResults.map(item => {
+                    const urlParts = item.hostPageUrl.split('/');
+                    const domainIndex = urlParts.indexOf('www.farfetch.com');
+
+                    if (domainIndex > -1 && domainIndex + 1 < urlParts.length) {
+                        const countryCode = urlParts[domainIndex + 1];
+
+                        if (countryCode.length === 2) {
+                            urlParts[domainIndex + 1] = 'kr';
+                        } else {
+                            urlParts.splice(domainIndex + 1, 0, 'kr');
+                        }
+                    }
+                    item.hostPageUrl = urlParts.join('/');
+                    return item;
+                });
+
+                farfetchResults = updatedResults;
+                sessionStorage.setItem('farfetchResults', JSON.stringify(farfetchResults));
+            }
+            window.location.href = '/api/farfetch';
+        }
+
+        const beforeImage = document.getElementById('beforeImage');
+        const afterImage = document.getElementById('afterImage');
+
+        beforeImage.addEventListener('mouseover', function() {
+            beforeImage.style.transform = 'scale(1.1)';
+            beforeImage.style.transition = 'transform 0.3s ease';
+        });
+
+        beforeImage.addEventListener('mouseout', function() {
+            beforeImage.style.transform = 'scale(1)';
+        });
+
+        afterImage.addEventListener('mouseover', function() {
+            afterImage.style.transform = 'scale(1.1)';
+            afterImage.style.transition = 'transform 0.3s ease';
+        });
+
+        afterImage.addEventListener('mouseout', function() {
+            afterImage.style.transform = 'scale(1)';
+        });
+
+        const historyData = JSON.parse(sessionStorage.getItem('historyData'));
+
+        if (historyData.uploadFilePath) {
+            const imgElement = document.getElementById('beforeImage');
+            imgElement.src = historyData.uploadFilePath;
+        } else {
+            document.querySelector('.image-container.before').innerText = '이미지가 없습니다.';
+        }
+
+        if (historyData.resultFilePath) {
+            const imgElement = document.getElementById('afterImage');
+            imgElement.src = historyData.resultFilePath;
+        } else {
+            document.querySelector('.image-container.after').innerText = '이미지가 없습니다.';
+        }
+
+        function showReviewForm() {
+            document.getElementById('reviewContainer').style.display = 'block';
+            sessionStorage.setItem('reviewFormVisible', 'true');
+        }
+
+        function handleFarfetch() {
+            goToFarfetch();
+            showReviewForm();
+        }
+
+        function handleAmazon() {
+            goToAmazon();
+            showReviewForm();
+        }
+
+        function handlePinterest() {
+            goToPinterest();
+            showReviewForm();
+        }
+
+        function handleEtsy() {
+            goToEtsy();
+            showReviewForm();
+        }
+
+        function handleNo() {
+            goToNo();
+            showReviewForm();
+        }
+
+        function loadReviewFormVisibility() {
+            const isVisible = sessionStorage.getItem('reviewFormVisible');
+            if (isVisible === 'true') {
+                document.getElementById('reviewContainer').style.display = 'block';
+            }
+
+            const button = document.getElementById('share-button');
+
+            if (isVisible === 'true') {
+                button.style.display = 'block';
+            } else {
+                button.style.display = 'none';
+            }
+        }
+
+        async function saveReview() {
+            const rating = document.getElementById('rating').value;
+            const review = document.getElementById('review').value;
+
+            if (rating && review) {
+                const messageId = sessionStorage.getItem('messageId');
+                const url = `/api/clothes/${messageId}`;
+                const data = {rating: rating, review: review};
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        alert('리뷰를 제공해주셔서 감사합니다.');
+                    } else {
+                        alert('리뷰 저장에 실패했습니다.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('서버와의 연결에 문제가 발생했습니다.');
+                }
+            } else {
+                alert('모든 필드를 입력해주세요.');
+            }
+        }
+        window.onload = loadReviewFormVisibility;
+    </script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Helper</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 180px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 190px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .upload {
+            background: white;
+            height: 50px;
+            width: 160px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #1496f4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+        .bold-20 {
+            color: #000000;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .bold-20:hover {
+            color: #35C5F0;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        .vh100-desktop-upload {
+            height: 100vh;
+        }
+        .poppins-regular-32 {
+            font-size: 32px;
+        }
+        .padding-h-30 {
+            padding-top: 30px;
+            padding-bottom: 35px;
+        }
+        .button {
+            background-color: #35C5F0;
+            height: 60px;
+            width: 70%;
+            border: none;
+            color: white;
+            box-shadow: 5px 5px 10px 1px gray;
+            border-radius: 10px;
+            cursor: pointer;
+            bottom: 0;
+            right: 50%;
+            font-family: 'Poppins', sans-serif;
+        }
+        .padding-bottom-50 {
+            padding-bottom: 50px;
+        }
+        .poppins-regular-18 {
+            font-size: 18px;
+            text-align: center;
+        }
+        .poppins-regular-24 {
+            font-size: 24px;
+            color: #35C5F0;
+        }
+        .color-upload-guide-bg {
+            background-color: #e0ffff;
+        }
+        .padding-10 {
+            padding: 20px 10px;
+            font-size: 17px;
+            text-align: center;
+            line-height: 2;
+        }
+        .poppins-bold-18 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .poppins-bold-20 {
+            font-size: 20px;
+            font-weight: 700;
+            color: white;
+        }
+        body {
+            margin: 0px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .dropzone-area {
+            border: 3px dotted #35C5F0;
+            height: 100%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #imagePreview {
+            margin-top: 100px;
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+        #loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            text-align: center;
+            padding-top: 20%;
+        }
+        .v60 {
+            margin: auto;
+            padding: 0 30px;
+        }
+        .v80 {
+            margin: auto;
+            padding: 0 90px;
+            width: 70%;
+        }
+        .uploade-img {
+            height: 200px;
+            object-fit: contain;
+        }
+        a {
+            color: black;
+        }
+        a:hover {
+            color: #35C5F0;
+        }
+        select {
+            appearance: none;
+            padding: 10px 40px 10px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+    </style>
+</head>
+<body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
+    <script>
+        function previewImage(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imgPreview = document.getElementById('imagePreview');
+                imgPreview.src = e.target.result;
+                imgPreview.style.display = 'block';
+                document.getElementById('uploader-img').style.display = 'none';
+                document.getElementById('uploader-message').style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+
+        async function uploadImage() {
+            const fileInput = document.getElementById('file-upload');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("업로드할 이미지를 선택해주세요.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            const objectType = document.getElementById('clothing-type').value;
+            formData.append('objectType', objectType);
+            const refine = document.getElementById('refine-type').value;
+            formData.append('refine', refine);
+
+            try {
+                let response = await fetch('/api/clothes/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    let data = await response.json();
+
+                    if (data.id) {
+                        document.getElementById("loading").style.display = "block";
+                        const historyData = await checkInferenceResult(data.id, 0);
+
+                        if (historyData) {
+                            sessionStorage.setItem('historyData', JSON.stringify(historyData));
+                            sessionStorage.setItem('messageId', data.id);
+                            window.location.href = '/api/result';
+                        }
+                    }
+                } else {
+                    throw new Error('네트워크 응답이 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('실패:', error);
+                alert('이미지 업로드에 실패했습니다.');
+            }
+        }
+
+        async function checkInferenceResult(messageId, callCount) {
+            try {
+                let historyResponse = await fetch(`/api/clothes/${messageId}`);
+
+                const text = await historyResponse.text();
+                if (text) {
+                    let historyData = JSON.parse(text);
+                    document.getElementById("loading").style.display = "none";
+                    return historyData;
+                } else if (callCount < 10) {
+                    return new Promise((resolve) => {
+                        setTimeout(async () => {
+                            const result = await checkInferenceResult(messageId, callCount+1);
+                            resolve(result);
+                        }, 3000);
+                    })
+                } else {
+                    document.getElementById("loading").style.display = "none";
+                    alert("오류가 발생했습니다. 다시 업로드 해주세요.");
+                    return null;
+                }
+            } catch (error) {
+                console.error('Error in inference check:', error);
+                return null;
+            }
+        }
+    </script>
+
+    <div th:replace="~{fragment/header :: header}"></div>
+    <hr class="divider">
+    <div class="vh100-desktop-upload">
+        <div class="main">
+            <div class="v60">
+                <div class="poppins-regular-32 padding-h-30" style="margin-left: 80px;">찾고 싶은 의류 스케치 업로드</div>
+                <div class="v80 padding-bottom-50">
+                    <div class="stack" style="display: flex; justify-content: space-between;">
+                        <div style="width: 50%; min-height: 550px;">
+                            <div class="stack" style="display: flex; flex-direction: column; height: 100%;">
+                                <div style="height: 100%; border: 3px dotted #35C5F0; position: relative;">
+                                    <div class="dropzone-area" style="height: 100%; position: relative;">
+                                        <img id="imagePreview" alt="Image Preview" style="display: none;"/>
+                                        <div class="dropzone-text" style="height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 10px;">
+                                            <img id="uploader-img" class="uploade-img" src="/img/file_plus.png" alt="Upload Image"/>
+                                            <div class="uploader-string upload-string-color-gray" style="text-align: center;">
+                                                <div id="uploader-message" style="font-size: 22px; color: #979797;">
+                                                    가이드에 맞춘 이미지를 업로드 해주세요.<br/>
+                                                    .png, .jpg, .heic
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="file" id="file-upload" accept=".png, .jpg, .heic" style="display: none;" onchange="previewImage(this)"/>
+                                        <label for="file-upload" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; cursor: pointer;"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="poppins-regular-18" style="width: 50%; position: relative; margin-left: 16px;">
+                            <div class="poppins-regular-24" style="font-weight: bold">의류 디자인 가이드</div>
+                            <div class="color-upload-guide-bg" style="margin: 30px 0;">
+                                <div class="padding-10" style="padding: 20px 10px;">
+                                    1. 스케치 <a th:href="|/api/basic|" style="font-weight: bold; font-size: 20px;">밑그림</a>을 준비해 주세요.
+                                    <br>
+                                    2. 검은색 펜으로 원하는 디자인을 그려주세요.
+                                    <br/>
+                                    디자인 요소의 테두리가 끊김이 없을수록 완성도가 높아집니다.
+                                    <br/>
+                                    3. 디자인한 의류가 이미지 파일의 정중앙에 오도록 해주세요.
+                                    <br/>
+                                    (한 번에 한 의류만 검색할 수 있습니다.)
+                                    <br/><br/>
+                                    검색 품질을 높이기 위해 꼭!
+                                    <br/>
+                                    <a href="/api/guide" style="font-weight: bold; font-size: 20px;">상세 가이드</a>를 참고하여 디자인을 완성해 주세요.
+                                </div>
+                            </div>
+                            <div class="margin-wrapper">
+                                Helper's 쇼핑은 <span class="poppins-bold-18">딥러닝</span>을 기반으로 이미지를 채색, 실사화하는 프로그램입니다.
+                                <br/><br/>
+                                유저의 데이터에 따라 <span class="poppins-bold-18">최소 5초 ~ 최대 1분</span> 걸릴 수 있습니다.
+                                <br/>
+                                조금만 기다려주세요.
+                                <br/><br/>
+                            </div>
+                            <div style="position: relative; display: inline-block;">
+                                <label for="clothing-type" style="font-weight: bold; margin-right: 10px;">카테고리 선택 :</label>
+                                <select id="clothing-type" style="padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; appearance: none; background-color: white; cursor: pointer;">
+                                    <option value="T_SHIRTS">티셔츠</option>
+                                    <option value="PANTS">바지</option>
+                                    <option value="SKIRT">치마</option>
+                                    <option value="HAT">모자</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                            </div>
+                            <div style="position: relative; display: inline-block;">
+                                <label for="refine-type" style="font-weight: bold; margin-right: 10px;">채색 결과 정제 :</label>
+                                <select id="refine-type" style="padding: 10px 40px 10px 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; appearance: none; background-color: white; cursor: pointer;">
+                                    <option value="true">TRUE</option>
+                                    <option value="false">FALSE</option>
+                                </select>
+                                <i class="fas fa-chevron-down" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                            </div>
+                            <button class="button" style="margin: 80px auto auto;" onclick="uploadImage()">
+                                <div class="poppins-bold-20">유사 상품 검색하기</div>
+                            </button>
+                            <div id="loading" style="font-size: 30px; color: #1496f4; font-weight: bold">원하는 상품을 검색하고 있어요. 잠시만 기다려주세요🔎</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

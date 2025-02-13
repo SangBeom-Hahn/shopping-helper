@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Helper</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 180px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 190px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .upload {
+            background: white;
+            height: 50px;
+            width: 160px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #1496f4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+        .bold-20 {
+            color: #000000;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .bold-20:hover {
+            color: #35C5F0;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        .main {
+            padding-bottom: 20px;
+            padding: 0px;
+            text-align: center;
+        }
+        .main-img-overlay {
+            padding: 22px;
+            background-color: lightcyan;
+        }
+        .color-main {
+            color: #000000;
+        }
+        .color-gray {
+            color: gray;
+        }
+        .button {
+            background-color: #35C5F0;
+            height: 60px;
+            width: 200px;
+            border: none;
+            color: white;
+            box-shadow: 2px 2px 5px 1px gray;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .main-img {
+            width: 50%;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .main-img-sub {
+            width: 30%;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .main-img-sub2 {
+            width: 80%;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .main-gif {
+            width: 50%;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .text-line-height25 {
+            line-height: 25px;
+        }
+        .poppins-medium-18 {
+            font-size: 18px;
+
+        }
+        .poppins-bold-52 {
+            font-size: 52px;
+        }
+        .poppins-bold-20 {
+            font-size: 20px;
+        }
+        .poppins-bold-40 {
+            font-size: 40px;
+            line-height: 1.2;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .poppins-bold-30 {
+            font-size: 30px;
+            line-height: 1.2;
+            margin: 20px 0;
+            text-align: center;
+        }
+        @media (max-width: 700px) {
+            .poppins-bold-40 {
+                font-size: 20px;
+            }
+            .poppins-bold-30 {
+                font-size: 10px;
+            }
+        }
+        body {
+            margin: 0;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
+<div th:replace="~{fragment/header :: header}"></div>
+<hr class="divider">
+<div class="main">
+    <div class="main-img-overlay">
+        <p class="poppins-medium-18 color-gray">직접 그린 간단한 스케치로 원하는 상품 검색</p>
+        <h1 class="poppins-bold-52 color-main">키워드 검색의 한계를 극복한<br/>편리한 쇼핑 경험</h1>
+        <p class="poppins-medium-18" style="line-height: 1.5;">
+            머리속에서 상상만 하던 의류 디자인을 그대로 반영한 AI 기술로 <br/>
+            본인의 니즈를 완벽히 충족하는 의류 상품을 찾으세요.
+        </p>
+        <div style="padding-top: 10px;">
+            <button class="button" onclick="location.href='/api/gallerys'">
+                <span class="poppins-bold-20">갤러리 구경</span>
+            </button>
+            <button class="button" onclick="location.href='/api/upload'" style="margin-left: 80px;">
+                <span class="poppins-bold-20">원하는 상품 검색</span>
+            </button>
+        </div>
+
+        <p class="poppins-medium-18 color-gray" style="margin-top:30px;">
+            원활한 서비스 이용을 위해 하단에 이어지는 서비스 설명을 읽어주세요.
+        </p>
+    </div>
+
+    <div class="text-line-height25">
+        <h2 class="poppins-bold-40" style="margin-bottom:70px;">아까 본 티셔츠를 찾고 싶은데 뭐라고 검색하지?</h2>
+        <h3 class="poppins-bold-30 color-gray" style="margin-bottom:70px;"><span style="color: gray; text-decoration: underline;">키워드로는 표현할 수 없는 디자인 요소</span>가 있을 때, <br> <span style="color: #35C5F0">스케치로 그려,</span> 원하는 상품을 찾고 구매하세요.</h3>
+        <img class="main-img" src="/img/home-img1.png" alt="홈 이미지"/>
+
+        <h2 class="poppins-bold-40">간단한 스케치와 쉬운 채색으로 완성하는 의류 디자인</h2>
+        <h3 class="poppins-bold-30 color-gray" style="text-decoration: underline">그림을 잘 그리지 못해도 가능해요!</h3>
+
+        <div style="display: flex; justify-content: center; align-items: center; margin: 20px;">
+            <img class="main-img-sub" src="/img/home-img2.png" alt="홈 이미지 2" width="360" height="360"/>
+            <img src="/img/arrow.png" style="margin: auto 0px; width:30px; object-fit:contain;" alt="화살표"/>
+            <img class="main-img-sub2" src="/img/home-img5.png" alt="홈 이미지 2" width="360" height="360"/>
+            <img src="/img/arrow.png" style="margin: auto 0px; width:30px; object-fit:contain;" alt="화살표"/>
+            <img class="main-img" src="/img/home-img7.png" alt="홈 이미지 2"/>
+        </div>
+
+        <h2 class="poppins-bold-40">딥러닝으로 완성되는 스케치 결과</h2>
+        <h3 class="poppins-bold-30 color-gray" style="line-height: 1.5;">
+            사용자가 입력한 이미지로부터 실사화 딥러닝 모델이 <br/>
+            업로드된 이미지를 고퀄리티 이미지로 실사화합니다.
+        </h3>
+        <img class="main-gif" src="/img/home-img4.gif" alt="홈 이미지 3"/>
+    </div>
+
+    <div style="padding-top: 10px;">
+        <button class="button" onclick="location.href='/api/gallerys'">
+            <span class="poppins-bold-20">갤러리 구경</span>
+        </button>
+        <button class="button" onclick="location.href='/api/upload'" style="margin-left: 80px;">
+            <span class="poppins-bold-20">원하는 상품 검색</span>
+        </button>
+    </div>
+</div>
+</body>
+</html>

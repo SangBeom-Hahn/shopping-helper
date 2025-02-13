@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 180px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 190px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .upload {
+            background: white;
+            height: 50px;
+            width: 160px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #1496f4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+        .bold-20 {
+            color: #000000;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .bold-20:hover {
+            color: #35C5F0; /* 마우스 오버 시 배경색 */
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        body {
+            margin: 0px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .vh100-desktop-guide {
+            height: 100vh;
+        }
+        .v90-padding-bottom-50 {
+            padding-bottom: 50px;
+            margin: 10px 0px;
+        }
+        .poppins-regular-28 {
+            font-size: 18px;
+            padding: 50px;
+        }
+        .color-upload-guide-bg {
+            background-color: #e0ffff;
+            margin: 10px 100px 60px 100px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .category {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 20px;
+            flex: 1;
+            min-width: 150px;
+        }
+        .image-container {
+            text-align: center;
+            margin-bottom: 4px;
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 0;
+            width: 100%;
+            max-width: 300px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+        }
+        .image-name {
+            margin: 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
+<div th:replace="~{fragment/header :: header}"></div>
+<hr class="divider">
+<h1 style="margin-left: 100px">기본 스케치 이미지</h1>
+<div class="vh100-desktop-guide">
+    <div class="v90-padding-bottom-50">
+        <div class="color-upload-guide-bg poppins-regular-28">
+            <div class="category">
+                <h3>티셔츠</h3>
+                <a th:href="|/api/clothes/download/TSHIRTS1|" class="image-container">
+                    <img th:src="|/api/clothes/images/TSHIRTS1|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white" th:text="'티셔츠1'"></div>
+                </a>
+                <a th:href="|/api/clothes/download/TSHIRTS2|" class="image-container">
+                    <img th:src="|/api/clothes/images/TSHIRTS2|" width="300" height="300" />
+                    <div class="image-name" th:text="'티셔츠2'" style="background-color: white"></div>
+                </a>
+            </div>
+            <div class="category">
+                <h3>바지</h3>
+                <a th:href="|/api/clothes/download/PANTS1|" class="image-container">
+                    <img th:src="|/api/clothes/images/PANTS1|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white"  th:text="'바지1'"></div>
+                </a>
+                <a th:href="|/api/clothes/download/PANTS2|" class="image-container">
+                    <img th:src="|/api/clothes/images/PANTS2|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white"  th:text="'바지2'"></div>
+                </a>
+            </div>
+            <div class="category">
+                <h3>모자</h3>
+                <a th:href="|/api/clothes/download/HAT1|" class="image-container">
+                    <img th:src="|/api/clothes/images/HAT1|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white"  th:text="'모자1'"></div>
+                </a>
+                <a th:href="|/api/clothes/download/HAT2|" class="image-container">
+                    <img th:src="|/api/clothes/images/HAT2|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white"  th:text="'모자2'"></div>
+                </a>
+            </div>
+            <div class="category">
+                <h3>치마</h3>
+                <a th:href="|/api/clothes/download/SKIRT1|" class="image-container">
+                    <img th:src="|/api/clothes/images/SKIRT1|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white"  th:text="'치마1'"></div>
+                </a>
+                <a th:href="|/api/clothes/download/SKIRT2|" class="image-container">
+                    <img th:src="|/api/clothes/images/SKIRT2|" width="300" height="300" />
+                    <div class="image-name" style="background-color: white"  th:text="'치마2'"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

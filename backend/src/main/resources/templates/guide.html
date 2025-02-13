@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Helper</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap">
+    <style>
+        .top-logo {
+            background: white;
+            height: 50px;
+            width: 180px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top-long {
+            background: white;
+            height: 50px;
+            width: 210px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .top {
+            background: white;
+            height: 50px;
+            width: 140px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .gallery {
+            background: white;
+            height: 50px;
+            width: 190px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .upload {
+            background: white;
+            height: 50px;
+            width: 160px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        .bold-34 {
+            color: #1496f4;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+        .bold-20 {
+            color: #000000;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .bold-20:hover {
+            color: #35C5F0;
+        }
+        .divider {
+            height: 0.2px;
+            background-color: darkgray;
+            margin: 0;
+        }
+        body {
+            margin: 0px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .vh100-desktop-guide {
+            height: 100vh;
+        }
+        .v90-padding-bottom-50 {
+            padding-bottom: 50px;
+            margin: 10px 0px;
+        }
+        .color-upload-guide-bg {
+            background-color: #e0ffff;
+            margin: 30px 100px 60px 100px;
+        }
+        .padding-50 {
+            padding: 50px;
+        }
+        .text-line-height {
+            line-height: 1.5;
+        }
+        .poppins-regular-28 {
+            font-size: 28px;
+        }
+        .poppins-regular-32 {
+            font-size: 32px;
+        }
+        .poppins-bold-28 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        .poppins-bold-20 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .button {
+            background-color: #35C5F0;
+            height: 60px;
+            width: 100%;
+            border: none;
+            color: white;
+            box-shadow: 2px 2px 5px 1px gray;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+        .guide-gif {
+            width: 50%;
+            object-fit: cover;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .poppins-bold-13 {
+            font-size: 13px;
+            font-weight: 700;
+        }
+        a {
+            color: black;
+        }
+        a:hover {
+            color: #35C5F0;
+        }
+    </style>
+</head>
+<body onload="sessionStorage.setItem('reviewFormVisible', 'false');">
+<div th:replace="~{fragment/header :: header}"></div>
+<hr class="divider">
+<div class="vh100-desktop-guide">
+    <div class="main">
+        <div class="v90-padding-bottom-50">
+            <div class="v90 color-upload-guide-bg poppins-regular-28 text-line-height margin-top-50 padding-50">
+
+                <div style="background-color: white; padding: 40px;">
+                    <div class="poppins-regular-32" style="margin-bottom: 10px;">
+                        Step 1/2. 밑그림 준비하기
+                    </div>
+                    <div class="margin-wrapper">
+                        <div class="stack">
+                            <img class="guide-gif" src="/img/guide-0.png" alt="Guide Step 1"/>
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <ul>
+                                    <li>티셔츠(상의), 바지(하의), 치마, 모자 중 디자인하고자 하는 카테고리의 밑그림을 준비해 주세요.</li>
+                                    <li>태블릿 혹은 PC 그림판에 밑그림을 놓아주세요. A4 용지에 직접 그려도 됩니다.</li>
+                                    <li>준비된 밑그림이 없다면, 저희가 제공하는 밑그림을 <a th:href="|/api/basic|">다운로드</a>해 주세요.</li>
+                                    <li>밑그림을 놓을 때 흰 바탕에 놓아야 하며 그림자 등, 의류 밑그림 외 물체가 포함되지 않아야 합니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer" style="height: 30px;"></div>
+
+                <div style="background-color: white; padding: 40px;">
+                    <div class="poppins-regular-32" style="margin-bottom: 10px;">
+                        Step 2/2. 밑그림 디자인하기
+                    </div>
+                    <div class="margin-wrapper">
+                        <div class="stack">
+                            <div class="stack" style="display: flex; justify-content: center; align-items: center;">
+                                <img class="guide-gif" src="/img/guide-1.gif" alt="Guide Step 1" style="margin-right: 20px;"/>
+                                <img class="guide-gif" src="/img/guide-2.gif" alt="Guide Step 2" style="margin-left: 20px;"/>
+                            </div>
+                            <div class="poppins-regular-24" style="display: flex; justify-content: center; align-items: center;">
+                                <ul>
+                                    <li>밑그림에 원하는 무늬, 패턴, 로고 등 원하는 디자인를 검은색 펜으로 그려주세요.</li>
+                                    <li>되도록 선은 중간에 끊김 없이 이어주세요.</li>
+                                    <li>원하는 색깔로 채색해 주세요.</li>
+                                    <li>채색을 할 때는 꼼꼼히 전부 다 칠할 필요 없어요! 색깔 펜으로 테두리를 따라 한 번 잇고 테두리 안쪽으로 듬성듬성 점을 찍어주세요.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="spacer" style="height: 30px;"></div>
+
+                <div class="margin-wrapper" style="display: flex; justify-content: center; padding-bottom: 20px;">
+                    <button class="button" onclick="location.href='/api/upload'">
+                        <div class="poppins-bold-20 color-white">
+                            디자인 스케치 업로드하러 가기
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

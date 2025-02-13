@@ -1,0 +1,6 @@
+# file
+*.h5
+*.cpython-38.pyc
+
+# folder
+static/
