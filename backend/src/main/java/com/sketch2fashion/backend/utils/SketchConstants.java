@@ -17,4 +17,11 @@ public abstract class SketchConstants {
     public static final String CACHE_MANAGER_NAME = "cacheManager";
 
     public static final String KEY_PREFIX = "SEARCH_RESULT_CACHE::";
+
+    // INTERCEPTOR
+    public static final int MESSAGE_INDEX = 0;
+    public static final String APP_JSON = "application/json";
+    public static final int EMPTY = 0;
+    public static final String RESPONSE_BODY_KEY = "id";
+    public static final String REQUEST_BODY_KEY = "objectType";
 }

@@ -1,4 +1,6 @@
 drop table if exists search;
+drop table if exists transaction_log;
+drop table if exists common_log;
 drop table if exists clothes_model_result;
 drop table if exists clothes_upload_file;
 drop table if exists message;
@@ -54,6 +56,32 @@ create table search
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,
     primary key (search_id)
+);
+
+create table transaction_log
+(
+    transaction_log_id bigint not null auto_increment,
+    message_id bigint,
+    request_uri varchar(100),
+    site_name varchar(100),
+    created_date datetime(6) not null,
+    last_modified_date datetime(6) not null,
+    primary key (transaction_log_id)
+);
+
+create table common_log
+(
+    common_log_id bigint not null auto_increment,
+    message_id bigint not null,
+    search_lookup_time varchar(150),
+    search_click_count varchar(255),
+    search_category_type varchar(50),
+    queue_out_time varchar(150),
+    inference_server_name varchar(100),
+    inference_end_time varchar(150),
+    created_date datetime(6) not null,
+    last_modified_date datetime(6) not null,
+    primary key (common_log_id)
 );
 
 alter table clothes_model_result
