@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from datetime import datetime
 
 from exception import *
 from keras_preprocessing.image import load_img
@@ -14,12 +15,13 @@ class Base_GAN():
     def _load_model(self) -> None:
         raise NotImplementedError(GAN_IMPLEMENTS_EXCEPTION_MESSAGE)
 
-    def inference(self, store_file_path: str, message_id: int) -> str:
-        img = self._preprocess(store_file_path)
+    def inference(self, store_file_path: str, message_id: int, server_name: str) -> str:
+        img = self._preprocess(store_file_path, message_id, server_name)
         color_img = self.model.predict(img)
         return self._postprocess(color_img, store_file_path, message_id)
 
-    def _preprocess(self, store_file_path: str) -> np.ndarray:
+    def _preprocess(self, store_file_path: str, message_id: str, server_name: str) -> np.ndarray:
+        self.storage_handler.changeCommonLogStatus(message_id, queue_out_time = datetime.now(), inference_server_name = server_name)
         self.storage_handler.download_img(store_file_path)
         img = self._load_img(os.path.join(UPLOAD_RELATIVE_PATH, store_file_path))
         return self._pre_normalize(img)
@@ -42,6 +44,7 @@ class Base_GAN():
         colored_file_path = self._save_process(color_img, store_file_path)
         self.storage_handler.upload_img(colored_file_path, store_file_path)
         self.storage_handler.changeClothesResultStatus(store_file_path, InferenceStatus.FINISH.name, InferenceStatus.FINISH.value, message_id)        
+        self.storage_handler.changeCommonLogStatus(message_id, inference_end_time = datetime.now())
         return colored_file_path
 
     def _normalize(self, image: np.ndarray) -> np.ndarray:

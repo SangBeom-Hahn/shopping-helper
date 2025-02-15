@@ -24,7 +24,7 @@ class TshirtsWorker(BaseHTTPRequestHandler):
             self._send_response(Status.BAD.value, {ERROR: str(e)})
 
     def _inference_process(self, input_data: str, message_id: str) -> str:
-        return model.inference(input_data, message_id)
+        return model.inference(input_data, message_id, TSHIRTS_SERVER_NAME)
 
     def _get_input_data(self) -> Tuple[str, str]:
         content_length = int(self.headers['Content-Length'])
