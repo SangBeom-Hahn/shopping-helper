@@ -32,3 +32,6 @@ worker:
     pants-server: "http://pants-server:5001"
     hat-server: "http://hat-server:5002"
     skirt-server: "http://skirt-server:5003"
+
+logging:
+  config: classpath:log4j2-prod.yml
