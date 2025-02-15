@@ -54,3 +54,31 @@ class StorageHandler():
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+    
+    def changeCommonLogStatus(self, message_id: int, queue_out_time: str = None, inference_server_name: str = None, inference_end_time: str = None) -> None:
+        connection = None
+        try:
+            connection = mysql.connector.connect(
+                host='',
+                database=SOURCE_MYSQL_DATABASE,
+                user=SOURCE_MYSQL_USERNAME,
+                password=''
+            )
+
+            if connection.is_connected():
+                if(inference_end_time == None):
+                    query = f"UPDATE common_log SET queue_out_time = '{queue_out_time}', inference_server_name = '{inference_server_name}' WHERE message_id = {message_id};"
+                else:
+                    query = f"UPDATE common_log SET inference_end_time = '{inference_end_time}' WHERE message_id = {message_id};"
+                    
+                cursor = connection.cursor()
+                cursor.execute(query)
+                connection.commit()
+
+        except Error as e:
+            print(DB_CONNECT_EXCEPTION_MESSAGE, e)
+
+        finally:
+            if connection.is_connected():
+                cursor.close()
+                connection.close()
