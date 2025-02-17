@@ -1,2 +1,2 @@
-from .logger import *
+from .setup_logger import *
 from .logger_builder import *
