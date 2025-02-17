@@ -1,6 +1,7 @@
 drop table if exists search;
 drop table if exists transaction_log;
 drop table if exists common_log;
+drop table if exists inference_log;
 drop table if exists clothes_model_result;
 drop table if exists clothes_upload_file;
 drop table if exists message;
@@ -82,6 +83,14 @@ create table common_log
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,
     primary key (common_log_id)
+);
+
+create table inference_log
+(
+    inference_log_id bigint not null auto_increment,
+    message_id bigint not null,
+    content varchar(5000),
+    primary key (inference_log_id)
 );
 
 alter table clothes_model_result
