@@ -241,7 +241,8 @@
                         }
                     }
                 } else {
-                    throw new Error('네트워크 응답이 실패했습니다.');
+                    const errorData = await response.json();
+                    alert(errorData.errorCode);
                 }
             } catch (error) {
                 console.error('실패:', error);

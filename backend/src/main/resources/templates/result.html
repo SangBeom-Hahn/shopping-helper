@@ -256,7 +256,8 @@
                     if (response.ok) {
                         alert('공유해주셔서 감사합니다😁');
                     } else {
-                        throw new Error('Network response was not ok.');
+                        const errorData = response.json();
+                        alert(errorData.errorCode);
                     }
                 })
                 .catch((error) => {
@@ -499,7 +500,8 @@
                     if (response.ok) {
                         alert('리뷰를 제공해주셔서 감사합니다.');
                     } else {
-                        alert('리뷰 저장에 실패했습니다.');
+                        const errorData = await response.json();
+                        alert(errorData.errorCode);
                     }
                 } catch (error) {
                     console.error('Error:', error);
