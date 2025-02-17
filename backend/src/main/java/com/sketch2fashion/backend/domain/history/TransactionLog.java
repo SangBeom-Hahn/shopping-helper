@@ -19,6 +19,9 @@ public class TransactionLog extends BaseEntity {
     @Column(name = "message_id", length = 255)
     private Long messageId;
 
+    @Column(name = "http_method", length = 50, nullable = false)
+    private String httpMethod;
+
     @Column(name = "request_uri", length = 100, nullable = false)
     private String requestUri;
 
@@ -26,12 +29,14 @@ public class TransactionLog extends BaseEntity {
     @Column(name = "site_name", length = 100)
     private SiteName siteName;
 
-    public TransactionLog(Long messageId, String requestUri) {
+    public TransactionLog(Long messageId, String httpMethod, String requestUri) {
         this.messageId = messageId;
+        this.httpMethod = httpMethod;
         this.requestUri = requestUri;
     }
 
-    public TransactionLog(String requestUri, SiteName siteName) {
+    public TransactionLog(String httpMethod, String requestUri, SiteName siteName) {
+        this.httpMethod = httpMethod;
         this.requestUri = requestUri;
         this.siteName = siteName;
     }

@@ -63,7 +63,8 @@ create table transaction_log
 (
     transaction_log_id bigint not null auto_increment,
     message_id bigint,
-    request_uri varchar(100),
+    http_method varchar(50) not null,
+    request_uri varchar(100) not null,
     site_name varchar(100),
     created_date datetime(6) not null,
     last_modified_date datetime(6) not null,

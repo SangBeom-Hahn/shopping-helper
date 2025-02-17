@@ -1,8 +1,8 @@
 package com.sketch2fashion.backend.controller.history;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sketch2fashion.backend.controller.dto.ClothesSaveRequest;
 import com.sketch2fashion.backend.domain.history.CommonLog;
+import com.sketch2fashion.backend.domain.history.MethodName;
 import com.sketch2fashion.backend.domain.history.SiteName;
 import com.sketch2fashion.backend.domain.history.TransactionLog;
 import com.sketch2fashion.backend.repository.history.CommonHistoryRepository;
@@ -32,22 +32,57 @@ public class HistoryInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        userHistoryChargeProcess(request, response, handler);
+    }
+
+    private void userHistoryChargeProcess(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         if (handler instanceof HandlerMethod handlerMethod) {
             MethodParameter[] methodParameters = handlerMethod.getMethodParameters();
+            String requestUri = request.getRequestURI();
+            String httpMethod = request.getMethod();
 
-            if (hasHttpMessage(methodParameters)) {
-                MethodParameter methodParameter = methodParameters[MESSAGE_INDEX];
+            handleHttpMessage(request, response, methodParameters, httpMethod, requestUri);
+        }
+    }
 
-                if (isUploadRequest(methodParameter)) {
-                    final ContentCachingResponseWrapper cachingResponse = (ContentCachingResponseWrapper) response;
-                    if (isCorrectContentType(cachingResponse)) {
-                        if (isNotEmpty(cachingResponse)) {
-                            saveUploadHistory(request, cachingResponse);
-                        }
-                    }
-                }
-            } else {
-                saveUserTransactionHistory(request);
+    private void handleHttpMessage(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            MethodParameter[] methodParameters,
+            String httpMethod,
+            String requestUri
+    ) throws IOException {
+        if (hasHttpMessage(methodParameters)) {
+            MethodParameter methodParameter = methodParameters[MESSAGE_INDEX];
+            handleHistory(request, response, methodParameter, httpMethod, requestUri);
+        } else {
+            saveUserTransactionHistory(httpMethod, requestUri);
+        }
+    }
+
+    private void handleHistory(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            MethodParameter methodParameter,
+            String httpMethod,
+            String requestUri
+    ) throws IOException {
+        if (methodParameter.getMethod()!= null && MethodName.isUpload(methodParameter.getMethod().getName())) {
+            uploadHistorySaveProcess(request, (ContentCachingResponseWrapper) response, httpMethod, requestUri);
+        } else  {
+            saveUserTransactionHistory(httpMethod, requestUri);
+        }
+    }
+
+    private void uploadHistorySaveProcess(
+            HttpServletRequest request,
+            ContentCachingResponseWrapper response,
+            String httpMethod,
+            String requestUri
+    ) throws IOException {
+        if (isCorrectContentType(response)) {
+            if (isNotEmpty(response)) {
+                saveUploadHistory(httpMethod, requestUri, request.getParameter(REQUEST_BODY_KEY), response);
             }
         }
     }
@@ -64,28 +99,26 @@ public class HistoryInterceptor implements HandlerInterceptor {
         return methodParameters.length >= 1;
     }
 
-    private boolean isUploadRequest(MethodParameter methodParameter) {
-        return methodParameter.getParameterType()
-                .equals(ClothesSaveRequest.class);
-    }
-
-    private void saveUserTransactionHistory(HttpServletRequest request) {
-        String requestUri = request.getRequestURI();
+    private void saveUserTransactionHistory(String httpMethod, String requestUri) {
         SiteName siteName = SiteName.from(requestUri);
-        transactionHistoryRepository.save(new TransactionLog(requestUri, siteName));
+        transactionHistoryRepository.save(new TransactionLog(httpMethod, requestUri, siteName));
     }
 
-    private void saveUploadHistory(HttpServletRequest request, ContentCachingResponseWrapper cachingResponse) throws IOException {
+    private void saveUploadHistory(
+            String httpMethod,
+            String requestUri,
+            String searchCategoryType,
+            ContentCachingResponseWrapper cachingResponse
+    ) throws IOException {
         Long messageId = objectMapper.readTree(cachingResponse.getContentAsByteArray())
                 .get(RESPONSE_BODY_KEY)
                 .asLong();
-        String requestUri = request.getRequestURI();
 
-        transactionHistoryRepository.save(new TransactionLog(messageId, requestUri));
+        transactionHistoryRepository.save(new TransactionLog(messageId, httpMethod, requestUri));
         commonHistoryRepository.save(
                 CommonLog.builder()
                         .messageId(messageId)
-                        .searchCategoryType(request.getParameter(REQUEST_BODY_KEY))
+                        .searchCategoryType(searchCategoryType)
                         .build()
         );
     }
