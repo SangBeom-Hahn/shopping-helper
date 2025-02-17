@@ -1,7 +1,7 @@
 import logging
 import os
 
-from utils import constants
+from utils.constants import *
 
 class LoggerBuilder():
     
@@ -10,9 +10,9 @@ class LoggerBuilder():
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
         else:
-            file_path = save_dir + constants.LOG_FILENAME
+            file_path = save_dir + LOG_FILENAME
             if os.path.isfile(file_path):
-                with open(file_path, constants.WRITE_TYPE, encoding=constants.UTF8) as file:
+                with open(file_path, WRITE_TYPE, encoding=UTF8) as file:
                     file.truncate(0)
     
     @staticmethod    

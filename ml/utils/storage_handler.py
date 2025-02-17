@@ -11,33 +11,36 @@ from logger.logger_builder import LoggerBuilder
 
 log = LoggerBuilder.get_logger("StorageHandler")
 
-KEY_PATH = ""
+KEY_PATH = "./static/key/steady-goods-450501-j3-866f9490c389.json"
 credentials = service_account.Credentials.from_service_account_file(KEY_PATH)
 
 class StorageHandler():
     def download_img(self, file_name: str) -> None:
         try:
+            log.info(DOWNLOAD_START_MESSAGE)
             storage_client = storage.Client(credentials = credentials, project = credentials.project_id)
             bucket = storage_client.bucket(BUCKET_NAME)
             blob = bucket.blob(f"{BUCKET_UPLOAD_RELATIVE_PATH}/{file_name}")
             blob.download_to_filename(os.path.join(UPLOAD_RELATIVE_PATH, file_name))
+            log.info(DOWNLOAD_FINISH_MESSAGE)
         except GoogleCloudError as e:
             print(e)
         
     def upload_img(self, src: str, dest: str) -> None:
         try:
-            log.info("업로드 이미지 시작")
+            log.info(UPLOAD_START_MESSAGE)
             storage_client = storage.Client(credentials = credentials, project = credentials.project_id)
             bucket = storage_client.bucket(BUCKET_NAME)
             blob = bucket.blob(f'{BUCKET_RESULT_RELATIVE_PATH}/{dest}')
             blob.upload_from_filename(src)
-            log.info("업로드 이미지 완료")
+            log.info(UPLOAD_FINISH_MESSAGE)
         except GoogleCloudError as e:
             print(e)
             
     def changeClothesResultStatus(self, colored_file_path: str, status: str, status_message: str, message_id: int) -> None:
         connection = None
         try:
+            log.info(RESULT_UPDATE_START_MESSAGE)
             connection = mysql.connector.connect(
                 host='',
                 database=SOURCE_MYSQL_DATABASE,
@@ -50,7 +53,7 @@ class StorageHandler():
                 cursor = connection.cursor()
                 cursor.execute(query)
                 connection.commit()
-
+            log.info(RESULT_UPDATE_FINISH_MESSAGE)
         except Exception as e:
             log.error(f"{DB_CONNECT_EXCEPTION_MESSAGE}: {e}")
 
@@ -62,6 +65,7 @@ class StorageHandler():
     def changeCommonLogStatus(self, message_id: int, queue_out_time: str = None, inference_server_name: str = None, inference_end_time: str = None) -> None:
         connection = None
         try:
+            log.info(COMMON_UPDATE_START_MESSAGE)
             connection = mysql.connector.connect(
                 host='',
                 database=SOURCE_MYSQL_DATABASE,
@@ -78,7 +82,7 @@ class StorageHandler():
                 cursor = connection.cursor()
                 cursor.execute(query)
                 connection.commit()
-
+            log.info(COMMON_UPDATE_FINISH_MESSAGE)
         except Exception as e:
             log.error(f"{DB_CONNECT_EXCEPTION_MESSAGE}: {e}")
 
@@ -90,6 +94,7 @@ class StorageHandler():
     def changeInferenceLogStatus(self, message_id: int, content: str = None) -> None:
         connection = None
         try:
+            log.info(INFERENCE_UPDATE_START_MESSAGE)            
             connection = mysql.connector.connect(
                 host='',
                 database=SOURCE_MYSQL_DATABASE,
@@ -102,7 +107,7 @@ class StorageHandler():
                 cursor = connection.cursor()
                 cursor.execute(query, (message_id, content))
                 connection.commit()
-
+            log.info(INFERENCE_UPDATE_FINISH_MESSAGE)
         except Exception as e:
             log.error(f"{DB_CONNECT_EXCEPTION_MESSAGE}: {e}")
 

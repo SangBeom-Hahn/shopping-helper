@@ -7,7 +7,7 @@ from collections import OrderedDict
 from utils.constants import *
 from .logger_builder import LoggerBuilder
 
-def setup_logging(save_dir, log_config="logger/logger_config.json", default_level=logging.INFO):
+def setup_logging(save_dir, log_config=LOG_CONFIG_FILE_PATH, default_level=logging.INFO):
     LoggerBuilder.create_log_path(save_dir)
     log_config = Path(log_config)
     
