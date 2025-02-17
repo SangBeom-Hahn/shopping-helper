@@ -2,6 +2,9 @@ import requests
 from .search_converter import SearchConverter
 from .enum import Site
 from typing import Dict, List, Any, Union
+from logger.logger_builder import LoggerBuilder
+
+log = LoggerBuilder.get_logger("ImageSearcher")
 
 
 BASE_URI = "https://api.bing.microsoft.com/v7.0/images/visualsearch"
@@ -13,6 +16,7 @@ KNOWLEDGE_REQUEST_KEY = 'knowledgeRequest'
 class ImageSearcher():
     @staticmethod
     def search(image_path: str) -> Dict[str, Union[List[Any], Dict[str, int]]]:
+        log.info("검색 process 시작")
         search_results = []
         result = {}
         
@@ -35,9 +39,10 @@ class ImageSearcher():
                     ImageSearcher._convert_response(search_results, result, site.value, response)
 
                 except Exception as e:
-                    print(f"ImageSearcher Error: {e}")
+                    log.error(f"ImageSearcher 에러: {e}")
                     
         result["result"] = search_results
+        log.info("검색 process 완료")
         return result
 
     @staticmethod

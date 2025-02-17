@@ -7,6 +7,9 @@ from google.oauth2 import service_account
 from mysql.connector import Error
 from typing import Optional
 from .constants import *
+from logger.logger_builder import LoggerBuilder
+
+log = LoggerBuilder.get_logger("StorageHandler")
 
 KEY_PATH = ""
 credentials = service_account.Credentials.from_service_account_file(KEY_PATH)
@@ -23,11 +26,12 @@ class StorageHandler():
         
     def upload_img(self, src: str, dest: str) -> None:
         try:
+            log.info("업로드 이미지 시작")
             storage_client = storage.Client(credentials = credentials, project = credentials.project_id)
             bucket = storage_client.bucket(BUCKET_NAME)
             blob = bucket.blob(f'{BUCKET_RESULT_RELATIVE_PATH}/{dest}')
             blob.upload_from_filename(src)
-            return 
+            log.info("업로드 이미지 완료")
         except GoogleCloudError as e:
             print(e)
             
@@ -47,8 +51,8 @@ class StorageHandler():
                 cursor.execute(query)
                 connection.commit()
 
-        except Error as e:
-            print(DB_CONNECT_EXCEPTION_MESSAGE, e)
+        except Exception as e:
+            log.error(f"{DB_CONNECT_EXCEPTION_MESSAGE}: {e}")
 
         finally:
             if connection.is_connected():
@@ -75,10 +79,34 @@ class StorageHandler():
                 cursor.execute(query)
                 connection.commit()
 
-        except Error as e:
-            print(DB_CONNECT_EXCEPTION_MESSAGE, e)
+        except Exception as e:
+            log.error(f"{DB_CONNECT_EXCEPTION_MESSAGE}: {e}")
 
         finally:
             if connection.is_connected():
                 cursor.close()
                 connection.close()
+                
+    def changeInferenceLogStatus(self, message_id: int, content: str = None) -> None:
+        connection = None
+        try:
+            connection = mysql.connector.connect(
+                host='',
+                database=SOURCE_MYSQL_DATABASE,
+                user=SOURCE_MYSQL_USERNAME,
+                password=''
+            )
+
+            if connection.is_connected():
+                query = "INSERT INTO inference_log (message_id, content) VALUES (%s, %s);"
+                cursor = connection.cursor()
+                cursor.execute(query, (message_id, content))
+                connection.commit()
+
+        except Exception as e:
+            log.error(f"{DB_CONNECT_EXCEPTION_MESSAGE}: {e}")
+
+        finally:
+            if connection.is_connected():
+                cursor.close()
+                connection.close()                

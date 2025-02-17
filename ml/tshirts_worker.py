@@ -5,35 +5,54 @@ from exception import *
 from model_launcher import *
 from utils import *
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from logger.logger_builder import LoggerBuilder
+from logger.logger_converter import LoggerConverter
+
+
+setup_logging("logs/")
+log = LoggerBuilder.get_logger("TshirtsWorker")
 
 model = Tshirts_GAN()
 
 class TshirtsWorker(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
+        log.info("헬스 체크 완료")
         self._send_response(Status.OK.value, {STATUS: Status.OK.value})
     
     def do_POST(self) -> None:
+        log.info("요청 process 시작")
         input_data, message_id = self._get_input_data()
+        logger_convertor = LoggerConverter()
         
-        try:
+        try:    
             inference_result = self._inference_process(input_data, message_id)
             search_result = ImageSearcher.search(inference_result)
+            log.info("추론 process 완료")
+            log.info("요청 process 완료, 응답 시작")
             
+            logger_convertor.saveInferenceLog(message_id)
             self._send_response(Status.OK.value, search_result)
         except Exception as e:
+            log.error(f"요청 process 실패, 에러 메시지 : {e}")
+            log.error("에러 메시지 : ", e)
+            
+            logger_convertor.saveInferenceLog(message_id)
             self._send_response(Status.BAD.value, {ERROR: str(e)})
 
     def _inference_process(self, input_data: str, message_id: str) -> str:
+        log.info("추론 process 시작")
         return model.inference(input_data, message_id, TSHIRTS_SERVER_NAME)
 
     def _get_input_data(self) -> Tuple[str, str]:
+        log.info("HTTP 메세지로 부터 Request Body 데이터 추출 시작")
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         input_data = json.loads(post_data)
+        log.info("HTTP 메세지로 부터 Request Body 데이터 추출 완료")
         return SearchConverter.convert_upload_file_name(input_data.get(STORE_FILE_PATH, EMPTY)), input_data.get("id", EMPTY)
 
     def _send_response(self, status_code: int, response_data: Dict[str, Any]) -> None:
-        response = json.dumps(response_data, ensure_ascii=False)
+        response = json.dumps(response_data, ensure_ascii=False)            
         self.send_response(status_code)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
