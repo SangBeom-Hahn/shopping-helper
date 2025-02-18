@@ -234,10 +234,13 @@
                         document.getElementById("loading").style.display = "block";
                         const historyData = await checkInferenceResult(data.id, 0);
 
-                        if (historyData) {
+                        if (!historyData.error) {
                             sessionStorage.setItem('historyData', JSON.stringify(historyData));
                             sessionStorage.setItem('messageId', data.id);
                             window.location.href = '/api/result';
+                            console.log(historyData)
+                        } else {
+                            alert(historyData.error)
                         }
                     }
                 } else {
@@ -246,7 +249,7 @@
                 }
             } catch (error) {
                 console.error('실패:', error);
-                alert('이미지 업로드에 실패했습니다.');
+                alert('현재, 채색 요청이 많아 지체되고 있습니다. 다시 업로드 해주세요.');
             }
         }
 
@@ -256,6 +259,7 @@
 
                 const text = await historyResponse.text();
                 if (text) {
+                    console.log(text)
                     let historyData = JSON.parse(text);
                     document.getElementById("loading").style.display = "none";
                     return historyData;

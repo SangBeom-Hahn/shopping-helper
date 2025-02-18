@@ -1,6 +1,7 @@
 package com.sketch2fashion.backend.config;
 
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -31,14 +32,14 @@ public class RedisConfig {
     }
 
     @Bean
-    public Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer() {
-        return new Jackson2JsonRedisSerializer<>(ResultResponseDto.class);
+    public Jackson2JsonRedisSerializer<Object> jsonRedisSerializer() {
+        return new Jackson2JsonRedisSerializer<>(Object.class);
     }
 
     @Bean
     public RedisCacheManager cacheManager(
             RedisConnectionFactory redisConnectionFactory,
-            Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
+            Jackson2JsonRedisSerializer<Object> jsonRedisSerializer
     ) {
         final RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
@@ -52,11 +53,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, ResultResponseDto> redisTemplate(
+    public RedisTemplate<String, Object> redisTemplate(
             RedisConnectionFactory redisConnectionFactory,
-            Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
+            Jackson2JsonRedisSerializer<Object> jsonRedisSerializer
     ) {
-        final RedisTemplate<String, ResultResponseDto> redisTemplate = new RedisTemplate<>();
+        final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
