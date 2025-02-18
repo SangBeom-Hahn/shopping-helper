@@ -18,6 +18,10 @@ public abstract class SketchConstants {
 
     public static final String KEY_PREFIX = "SEARCH_RESULT_CACHE::";
 
+    public static final String MODEL_RUN_CONSUMER_GROUP = "default-group";
+
+    public static final String MODEL_RUN_CONSUMER_NAME = "model-consumer";
+
     // INTERCEPTOR
     public static final int MESSAGE_INDEX = 0;
     public static final String APP_JSON = "application/json";

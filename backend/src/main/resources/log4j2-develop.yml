@@ -34,7 +34,7 @@ Configutation:
         AppenderRef:
           - ref: File_Appender
       - name: org.springframework
-        additivity: false
+        additivity: true
         level: error
         AppenderRef:
           - ref: Error_File_Appender
