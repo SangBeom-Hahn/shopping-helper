@@ -61,7 +61,7 @@ public class ClothesController {
     }
 
     @GetMapping("/{messageId}")
-    public ResponseEntity<ResultResponseDto> findInferenceResult(@PathVariable("messageId") Long messageId) {
+    public ResponseEntity<Object> findInferenceResult(@PathVariable("messageId") Long messageId) {
         return ResponseEntity.ok(resultService.findResult(messageId));
     }
 

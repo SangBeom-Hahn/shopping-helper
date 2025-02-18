@@ -62,12 +62,8 @@ public class ResultService {
             key = "#messageId",
             cacheManager = CACHE_MANAGER_NAME
     )
-    public ErrorResponse saveErrorResult(final Long messageId) {
-        final Message message = messageRepository.findById(messageId)
-                .orElseThrow(() -> new NoSuchMessageException(messageId));
-        final ClothesResult clothesResult = resultRepository.findByMessage(message)
-                .orElseThrow(() -> new NoSuchMessageException(messageId));
-        return ErrorResponse.from(clothesResult.getStatusMessage());
+    public ErrorResponse saveErrorResult(final Long messageId, final String errorMessage) {
+        return ErrorResponse.from(errorMessage);
     }
 
     @Transactional(readOnly = true)
