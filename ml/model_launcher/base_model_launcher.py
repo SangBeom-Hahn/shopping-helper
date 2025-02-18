@@ -1,7 +1,7 @@
 import numpy as np
 import os
-from datetime import datetime
 
+from datetime import datetime
 from exception import *
 from keras_preprocessing.image import load_img
 from utils import *
@@ -53,7 +53,7 @@ class Base_GAN():
         color_img = self._normalize(color_img)
         colored_file_path = self._save_process(color_img, store_file_path)
         self.storage_handler.upload_img(colored_file_path, store_file_path)
-        self.storage_handler.changeClothesResultStatus(store_file_path, InferenceStatus.FINISH.name, InferenceStatus.FINISH.value, message_id)        
+        self.storage_handler.changeClothesResultStatus(InferenceStatus.FINISH.name, InferenceStatus.FINISH.value, message_id, store_file_path)
         self.storage_handler.changeCommonLogStatus(message_id, inference_end_time = datetime.now())
         log.info(POST_FINISH_MESSAGE)
         return colored_file_path

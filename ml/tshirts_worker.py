@@ -37,7 +37,7 @@ class TshirtsWorker(BaseHTTPRequestHandler):
             log.error("{ERROR_MESSAGE} : ", e)
             
             logger_convertor.saveInferenceLog(message_id)
-            self._send_response(Status.BAD.value, {ERROR: str(e)})
+            self._send_response(Status.BAD_GATEWAY.value, {ERROR: str(e)})
 
     def _inference_process(self, input_data: str, message_id: str) -> str:
         log.info(INFERENCE_START_MESSAGE)

@@ -14,4 +14,5 @@ class LoggerConverter():
             total_log = NEW_LINE.join(log_messages)
                 
             self.storage_handler.changeInferenceLogStatus(message_id, total_log)
+            self.storage_handler.changeClothesResultStatus(InferenceStatus.ERROR.name, InferenceStatus.ERROR.value, message_id)
             file.truncate(ZERO_IDX)
