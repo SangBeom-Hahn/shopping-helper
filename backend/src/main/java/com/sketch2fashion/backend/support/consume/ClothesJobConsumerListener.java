@@ -2,6 +2,8 @@ package com.sketch2fashion.backend.support.consume;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sketch2fashion.backend.domain.modelresult.Status;
+import com.sketch2fashion.backend.exception.AbsentFileException;
 import com.sketch2fashion.backend.exception.HealthCheckException;
 import com.sketch2fashion.backend.exception.InferenceFailException;
 import com.sketch2fashion.backend.service.ResultService;
@@ -30,26 +32,25 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.sketch2fashion.backend.domain.modelresult.Status.ERROR;
+import static com.sketch2fashion.backend.domain.modelresult.Status.HEALTH_CHECK_ERROR;
 import static com.sketch2fashion.backend.utils.SketchConstants.MODEL_RUN_CONSUMER_GROUP;
 
 @Slf4j
 @RequiredArgsConstructor
 public class ClothesJobConsumerListener implements StreamListener<String, ObjectRecord<String, MessageResponseDto>> {
 
-    private final String streamKey;
-    private final String group;
     private final ClothesModelHttpCaller clothesModelHttpCaller;
     private final ObjectMapper objectMapper;
     private final ResultService resultService;
     private final RedisTemplate<String, Object> streamRedisTemplate;
-    private final MessagePublisher messagePublisher;
 
     @Override
     public void onMessage(final ObjectRecord<String, MessageResponseDto> message) {
         try {
             final MessageResponseDto messageResponseDto = message.getValue();
             final String modelPath = ModelSearcher.searchModel(messageResponseDto.getObjectType());
-            validateUrlS(modelPath);
+            validateUrlS(modelPath, messageResponseDto.getId());
 
             final CloseableHttpResponse response = inferenceProcess(modelPath, messageResponseDto);
             final StatusCode statusCode = StatusCode.from(response.getStatusLine().getStatusCode());
@@ -66,38 +67,24 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
         failProcess(message, statusCode, response, messageResponseDto);
     }
 
-    private void failProcess(ObjectRecord<String, MessageResponseDto> message, StatusCode statusCode, CloseableHttpResponse response, MessageResponseDto messageResponseDto) {
-        if(statusCode.isBadGateWay()){
-            ErrorResponse errorResponse = SearchConverter.convertErrorResponse(response);
-            resultService.saveErrorResult(messageResponseDto.getId());
-            streamRedisTemplate.opsForStream().acknowledge(group, message);
-            throw new InferenceFailException(errorResponse.getError());
-        }
-    }
-
     private void successProcess(ObjectRecord<String, MessageResponseDto> message, StatusCode statusCode, CloseableHttpResponse response, MessageResponseDto messageResponseDto) {
         if(statusCode.isOk()) {
             final InferencesResponse inferenceResponse = SearchConverter.convertResponse(response);
             resultService.saveResult(messageResponseDto.getId(), inferenceResponse);
-            streamRedisTemplate.opsForStream().acknowledge(group, message);
+            streamRedisTemplate.opsForStream().acknowledge(MODEL_RUN_CONSUMER_GROUP, message);
         }
     }
 
-    public void claimStream(PendingMessage pendingMessage, String consumerName){
-        RedisAsyncCommands commands = (RedisAsyncCommands) this.streamRedisTemplate
-                .getConnectionFactory().getConnection().getNativeConnection();
-
-        CommandArgs<String, String> args = new CommandArgs<>(StringCodec.UTF8)
-                .add(pendingMessage.getIdAsString())
-                .add(pendingMessage.getGroupName())
-                .add(consumerName)
-                .add("20")
-                .add(pendingMessage.getIdAsString());
-        commands.dispatch(CommandType.XCLAIM, new StatusOutput(StringCodec.UTF8), args);
-        log.info("Message: " + pendingMessage.getIdAsString() + " has been claimed by " + MODEL_RUN_CONSUMER_GROUP + ":" + consumerName);
+    private void failProcess(ObjectRecord<String, MessageResponseDto> message, StatusCode statusCode, CloseableHttpResponse response, MessageResponseDto messageResponseDto) {
+        if(statusCode.isBadGateWay()){
+            ErrorResponse errorResponse = SearchConverter.convertErrorResponse(response);
+            resultService.saveErrorResult(messageResponseDto.getId(), ERROR.getMessage());
+            streamRedisTemplate.opsForStream().acknowledge(MODEL_RUN_CONSUMER_GROUP, message);
+            throw new InferenceFailException(errorResponse.getError());
+        }
     }
 
-    private void validateUrlS(final String url) {
+    private void validateUrlS(final String url, final Long messageId) {
         try {
             final URL dest = new URL(url);
             final HttpURLConnection connection = (HttpURLConnection) dest.openConnection();
@@ -108,8 +95,9 @@ public class ClothesJobConsumerListener implements StreamListener<String, Object
             if (canNotConnect(connection.getResponseCode())) {
                 throw new HealthCheckException();
             }
-        } catch (IOException e) {
-            throw new HealthCheckException();
+        } catch (IOException | HealthCheckException e) {
+                resultService.saveErrorResult(messageId, HEALTH_CHECK_ERROR.getMessage());
+                throw new HealthCheckException();
         }
     }
 
