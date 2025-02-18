@@ -26,6 +26,10 @@ spring:
       host: ${SOURCE_REDIS_URL}
       port: ${SOURCE_REDIS_PORT}
 
+slack:
+  webhook:
+    url: ${SLACK_URL}
+
 worker:
   uri:
     tshirts-server: "http://127.0.0.1:5000"
