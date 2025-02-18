@@ -2,7 +2,9 @@ package com.sketch2fashion.backend.controller;
 
 import com.sketch2fashion.backend.controller.dto.ErrorResponse;
 import com.sketch2fashion.backend.exception.HelperException;
+import com.sketch2fashion.backend.support.SlackAlarmGenerator;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,10 @@ import java.util.Objects;
 
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ControllerAdvice {
+
+    private final SlackAlarmGenerator slackAlarmGenerator;
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleInvalidRequest(
@@ -82,9 +87,23 @@ public class ControllerAdvice {
                 e.getMessage()
         );
         log.debug("Error StackTrace: ", e);
+        slackAlarmGenerator.sendSlackAlertErrorLog(e, request);
 
         return ResponseEntity
                 .status(e.getHttpStatus())
                 .body(new ErrorResponse(e.getErrorCode(), e.getShowMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> unhandledException(Exception e, HttpServletRequest request) {
+        log.error("UnhandledException: {} {} errMessage={}\n",
+                request.getMethod(),
+                request.getRequestURI(),
+                e.getMessage()
+        );
+        slackAlarmGenerator.sendSlackAlertErrorLog(e, request);
+
+        return ResponseEntity.internalServerError()
+                .body(new ErrorResponse(e.getMessage(), "일시적으로 접속이 원활하지 않습니다. SHOPPING HELPER 서비스 팀에 문의 부탁드립니다."));
     }
 }
