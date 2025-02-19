@@ -34,10 +34,11 @@ class TshirtsWorker(BaseHTTPRequestHandler):
             self._send_response(Status.OK.value, search_result)
         except Exception as e:
             log.error(f"{REQUEST_FAIL_MESSAGE} : {e}")
-            log.error("{ERROR_MESSAGE} : ", e)
+            log.error(f"{ERROR_MESSAGE} : {e}")
             
             logger_convertor.saveInferenceLog(message_id)
             self._send_response(Status.BAD_GATEWAY.value, {ERROR: str(e)})
+            
 
     def _inference_process(self, input_data: str, message_id: str) -> str:
         log.info(INFERENCE_START_MESSAGE)

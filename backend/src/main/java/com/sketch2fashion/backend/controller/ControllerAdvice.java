@@ -93,17 +93,4 @@ public class ControllerAdvice {
                 .status(e.getHttpStatus())
                 .body(new ErrorResponse(e.getErrorCode(), e.getShowMessage()));
     }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> unhandledException(Exception e, HttpServletRequest request) {
-        log.error("UnhandledException: {} {} errMessage={}\n",
-                request.getMethod(),
-                request.getRequestURI(),
-                e.getMessage()
-        );
-        slackAlarmGenerator.sendSlackAlertErrorLog(e, request);
-
-        return ResponseEntity.internalServerError()
-                .body(new ErrorResponse(e.getMessage(), "일시적으로 접속이 원활하지 않습니다. SHOPPING HELPER 서비스 팀에 문의 부탁드립니다."));
-    }
 }
