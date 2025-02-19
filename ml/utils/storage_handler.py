@@ -11,7 +11,7 @@ from logger.logger_builder import LoggerBuilder
 
 log = LoggerBuilder.get_logger("StorageHandler")
 
-KEY_PATH = "./static/key/steady-goods-450501-j3-866f9490c389.json"
+KEY_PATH = ""
 credentials = service_account.Credentials.from_service_account_file(KEY_PATH)
 
 class StorageHandler():
@@ -37,7 +37,7 @@ class StorageHandler():
         except GoogleCloudError as e:
             print(e)
             
-    def changeClothesResultStatus(self, colored_file_path: str, status: str, status_message: str, message_id: int) -> None:
+    def changeClothesResultStatus(self, status: str, status_message: str, message_id: int, colored_file_path: str = None) -> None:
         connection = None
         try:
             log.info(RESULT_UPDATE_START_MESSAGE)
@@ -49,7 +49,10 @@ class StorageHandler():
             )
 
             if connection.is_connected():
-                query = f"UPDATE clothes_model_result SET store_file_path = '{BUCKET_RESULT_RELATIVE_PATH}/{colored_file_path}', status = '{status}', status_message = '{status_message}' WHERE message_id = {message_id};"
+                if(colored_file_path == None):
+                    query = f"UPDATE clothes_model_result SET status = '{status}', status_message = '{status_message}' WHERE message_id = {message_id};"
+                else:
+                    query = f"UPDATE clothes_model_result SET store_file_path = '{BUCKET_RESULT_RELATIVE_PATH}/{colored_file_path}', status = '{status}', status_message = '{status_message}' WHERE message_id = {message_id};"
                 cursor = connection.cursor()
                 cursor.execute(query)
                 connection.commit()
