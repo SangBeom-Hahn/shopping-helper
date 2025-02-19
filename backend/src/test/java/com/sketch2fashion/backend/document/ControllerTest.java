@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sketch2fashion.backend.config.RestDocsConfig;
 import com.sketch2fashion.backend.controller.ClothesController;
 import com.sketch2fashion.backend.controller.GalleryController;
+import com.sketch2fashion.backend.controller.history.HistoryInterceptor;
+import com.sketch2fashion.backend.repository.history.CommonHistoryRepository;
+import com.sketch2fashion.backend.repository.history.TransactionHistoryRepository;
 import com.sketch2fashion.backend.service.ClothesService;
 import com.sketch2fashion.backend.service.GalleryService;
 import com.sketch2fashion.backend.service.MessageService;
 import com.sketch2fashion.backend.service.ResultService;
+import com.sketch2fashion.backend.support.SlackAlarmGenerator;
 import com.sketch2fashion.backend.support.upload.FileUploader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +41,12 @@ public abstract class ControllerTest {
     protected RestDocumentationResultHandler restDocs;
 
     @MockBean
+    protected TransactionHistoryRepository transactionHistoryRepository;
+
+    @MockBean
+    protected CommonHistoryRepository commonHistoryRepository;
+
+    @MockBean
     protected GalleryService galleryService;
 
     @Autowired
@@ -53,6 +63,12 @@ public abstract class ControllerTest {
 
     @MockBean
     protected FileUploader fileUploader;
+
+    @MockBean
+    protected SlackAlarmGenerator slackAlarmGenerator;
+
+    @MockBean
+    protected HistoryInterceptor historyInterceptor;
 
     @BeforeEach
     void setUp(WebApplicationContext context, RestDocumentationContextProvider provider) {

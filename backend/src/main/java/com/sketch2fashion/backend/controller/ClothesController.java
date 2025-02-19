@@ -11,7 +11,6 @@ import com.sketch2fashion.backend.service.ClothesService;
 import com.sketch2fashion.backend.service.MessageService;
 import com.sketch2fashion.backend.service.ResultService;
 import com.sketch2fashion.backend.service.dto.ClothesSaveResponseDto;
-import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.FileConverter;
 import com.sketch2fashion.backend.support.upload.FileUploader;
 import lombok.RequiredArgsConstructor;

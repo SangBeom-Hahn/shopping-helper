@@ -238,7 +238,6 @@
                             sessionStorage.setItem('historyData', JSON.stringify(historyData));
                             sessionStorage.setItem('messageId', data.id);
                             window.location.href = '/api/result';
-                            console.log(historyData)
                         } else {
                             alert(historyData.error)
                         }
@@ -259,7 +258,6 @@
 
                 const text = await historyResponse.text();
                 if (text) {
-                    console.log(text)
                     let historyData = JSON.parse(text);
                     document.getElementById("loading").style.display = "none";
                     return historyData;
@@ -272,7 +270,6 @@
                     })
                 } else {
                     document.getElementById("loading").style.display = "none";
-                    alert("오류가 발생했습니다. 다시 업로드 해주세요.");
                     return null;
                 }
             } catch (error) {

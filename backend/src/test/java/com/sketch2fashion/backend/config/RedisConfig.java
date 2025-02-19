@@ -56,11 +56,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, ResultResponseDto> redisTemplate(
+    public RedisTemplate<String, Object> redisTemplate(
             RedisConnectionFactory redisConnectionFactory,
             Jackson2JsonRedisSerializer<ResultResponseDto> jsonRedisSerializer
     ) {
-        RedisTemplate<String, ResultResponseDto> redisTemplate = new RedisTemplate<>();
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());

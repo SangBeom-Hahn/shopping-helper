@@ -74,7 +74,7 @@ class ResultServiceTest extends ServiceTest {
         // when
         redisTemplate.opsForValue()
                 .set("SEARCH_RESULT_CACHE::" + message.getId(), resultResponseDto);
-        InferencesResponse findInferencesResponse = resultService.findResult(message.getId())
+        InferencesResponse findInferencesResponse = objectMapper.convertValue(resultService.findResult(message.getId()), ResultResponseDto.class)
                 .getInferencesResponse();
 
         // then
