@@ -30,7 +30,7 @@ public class ClothesModelHttpCaller {
 
             return httpClient.execute(httpPost);
         } catch (IOException e) {
-            throw new InferenceFailException();
+            throw new RuntimeException(e);
         }
     }
 }

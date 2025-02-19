@@ -12,6 +12,10 @@ spring:
       host: localhost
       port: 16379
 
+slack:
+  webhook:
+    url: test
+
 worker:
   uri:
     tshirts-server: "http://127.0.0.1:5000"

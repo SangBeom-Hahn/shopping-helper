@@ -234,18 +234,21 @@
                         document.getElementById("loading").style.display = "block";
                         const historyData = await checkInferenceResult(data.id, 0);
 
-                        if (historyData) {
+                        if (!historyData.error) {
                             sessionStorage.setItem('historyData', JSON.stringify(historyData));
                             sessionStorage.setItem('messageId', data.id);
                             window.location.href = '/api/result';
+                        } else {
+                            alert(historyData.error)
                         }
                     }
                 } else {
-                    throw new Error('네트워크 응답이 실패했습니다.');
+                    const errorData = await response.json();
+                    alert(errorData.errorCode);
                 }
             } catch (error) {
                 console.error('실패:', error);
-                alert('이미지 업로드에 실패했습니다.');
+                alert('현재, 채색 요청이 많아 지체되고 있습니다. 다시 업로드 해주세요.');
             }
         }
 
@@ -267,7 +270,6 @@
                     })
                 } else {
                     document.getElementById("loading").style.display = "none";
-                    alert("오류가 발생했습니다. 다시 업로드 해주세요.");
                     return null;
                 }
             } catch (error) {
@@ -325,7 +327,7 @@
                                 </div>
                             </div>
                             <div class="margin-wrapper">
-                                Helper's 쇼핑은 <span class="poppins-bold-18">딥러닝</span>을 기반으로 이미지를 채색, 실사화하는 프로그램입니다.
+                                SHOPPING HELPER는 <span class="poppins-bold-18">딥러닝</span>을 기반으로 이미지를 채색, 실사화하는 프로그램입니다.
                                 <br/><br/>
                                 유저의 데이터에 따라 <span class="poppins-bold-18">최소 5초 ~ 최대 1분</span> 걸릴 수 있습니다.
                                 <br/>

@@ -8,7 +8,7 @@ import java.util.Arrays;
 public enum StatusCode {
 
     OK(200),
-    BAD(500)
+    BAD_GATE_Way(502)
     ;
 
     private int value;
@@ -26,5 +26,9 @@ public enum StatusCode {
 
     public boolean isOk() {
         return this == OK;
+    }
+
+    public boolean isBadGateWay() {
+        return this == BAD_GATE_Way;
     }
 }
