@@ -18,6 +18,9 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	all {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	}
 	asciidoctorExt
 }
 
@@ -66,9 +69,16 @@ dependencies {
 	// http
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 
-	// RestDocs
+	// restdocs
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	// logging
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml'
+
+	// slack
+	implementation("com.slack.api:slack-api-client:1.45.2")
 }
 
 tasks.named('test') {

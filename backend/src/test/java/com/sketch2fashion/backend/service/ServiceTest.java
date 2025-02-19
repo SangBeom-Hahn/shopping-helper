@@ -1,5 +1,6 @@
 package com.sketch2fashion.backend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sketch2fashion.backend.config.DatabaseCleaner;
 import com.sketch2fashion.backend.repository.ClothesRepository;
 import com.sketch2fashion.backend.repository.MessageRepository;
@@ -53,8 +54,11 @@ public abstract class ServiceTest {
     protected ClothesRepository clothesRepository;
 
     @Autowired
-    protected RedisTemplate<String, ResultResponseDto> redisTemplate;
+    protected RedisTemplate<String, Object> redisTemplate;
 
     @Autowired
     protected DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 }

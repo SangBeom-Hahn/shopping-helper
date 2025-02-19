@@ -3,7 +3,7 @@ from enum import Enum
 class Status(Enum):
     
     OK = 200
-    BAD = 500
+    BAD_GATEWAY = 502
     
 class Normalize(Enum):
     

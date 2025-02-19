@@ -2,6 +2,7 @@ package com.sketch2fashion.backend.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sketch2fashion.backend.exception.InferenceFailException;
+import com.sketch2fashion.backend.support.consume.dto.ErrorResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
@@ -26,9 +27,24 @@ public class SearchConverter {
         }
     }
 
+    public static ErrorResponse convertErrorResponse(final CloseableHttpResponse response) {
+        validateResponse(response);
+
+        try (final BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
+            String inputLine;
+            final StringBuilder sb = new StringBuilder();
+            while ((inputLine = in.readLine()) != null) {
+                sb.append(inputLine);
+            }
+            return new ObjectMapper().readValue(sb.toString(), ErrorResponse.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static void validateResponse(final CloseableHttpResponse response) {
         if (response == null) {
-            throw new InferenceFailException();
+            throw new InferenceFailException("추론 결과 = NULL");
         }
     }
 }

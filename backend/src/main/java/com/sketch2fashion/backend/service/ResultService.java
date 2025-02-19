@@ -1,5 +1,6 @@
 package com.sketch2fashion.backend.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sketch2fashion.backend.domain.message.Message;
 import com.sketch2fashion.backend.domain.modelresult.ClothesResult;
 import com.sketch2fashion.backend.domain.modelresult.Search;
@@ -13,6 +14,7 @@ import com.sketch2fashion.backend.repository.ResultRepository;
 import com.sketch2fashion.backend.repository.SearchRepository;
 import com.sketch2fashion.backend.service.dto.ResultResponseDto;
 import com.sketch2fashion.backend.support.SignedUrlBuilder;
+import com.sketch2fashion.backend.support.consume.dto.ErrorResponse;
 import com.sketch2fashion.backend.support.consume.dto.InferencesResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,12 +29,13 @@ import static com.sketch2fashion.backend.utils.SketchConstants.*;
 @RequiredArgsConstructor
 public class ResultService {
 
-    private final RedisTemplate<String, ResultResponseDto> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final ClothesRepository  clothesRepository;
     private final MessageRepository messageRepository;
     private final ResultRepository resultRepository;
     private final SearchRepository searchRepository;
     private final SignedUrlBuilder signedUrlBuilder;
+    private final ObjectMapper objectMapper;
 
     @Cacheable(
             value = SEARCH_RESULT_CACHE,
@@ -54,8 +57,17 @@ public class ResultService {
         );
     }
 
+    @Cacheable(
+            value = SEARCH_RESULT_CACHE,
+            key = "#messageId",
+            cacheManager = CACHE_MANAGER_NAME
+    )
+    public ErrorResponse saveErrorResult(final Long messageId, final String errorMessage) {
+        return ErrorResponse.from(errorMessage);
+    }
+
     @Transactional(readOnly = true)
-    public ResultResponseDto findResult(final Long messageId) {
+    public Object findResult(final Long messageId) {
         return redisTemplate.opsForValue()
                 .get(KEY_PREFIX + messageId);
     }
@@ -72,7 +84,8 @@ public class ResultService {
                 .orElseThrow(() -> new NoSuchClothesException(messageId));
         validateDuplicateResult(clothesResult);
 
-        findResult(messageId).getInferencesResponse()
+        objectMapper.convertValue(findResult(messageId), ResultResponseDto.class)
+                .getInferencesResponse()
                 .getResult()
                 .forEach(findResponse -> {
                     final Search search = new Search(
