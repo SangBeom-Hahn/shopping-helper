@@ -74,6 +74,9 @@
 ## 4. 이미지 요청 흐름도
 ![pipe](./asset/이미지요청.png)
 
+## 5. CI/CD 파이프라인
+![pipe](./asset/CICD.png)
+
 
 ## 💡 Get Started
 
